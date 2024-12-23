@@ -6,8 +6,8 @@ const getCompanies = async (req, res) => {
 };
 
 const getOneCompanie = async (req, res) => {
-  const { companyId } = req.body;
-  const companie = await Company.findOne({ _id: companyId });
+  const { companyName } = req.params;
+  const companie = await Company.findOne({ companyName: companyName });
   res.status(200).json({ companie });
 };
 

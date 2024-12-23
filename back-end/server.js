@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const authenticate = require('./middleware/authMiddleware')
+
 const {
   getCompanies,
   getOneCompanie,
@@ -43,23 +46,69 @@ const {
   deleteTranche,
   updateTranche,
 } = require("./controllers/trancheController");
+const {login} = require('./controllers/loginController')
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // React app's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true, // Enable sending credentials (cookies, etc.)
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
+
+// Login
+app.post('/api/login' , login)
+
+// signup
+app.post("/api/addCompany", createCompany);
+app.post("/api/addUser", createUser);
+
+app.use('/api' , authenticate);
+
+// Logout
+app.post('/api/logout' , (req, res) => {
+  res.clearCookie('authToken', {
+    httpOnly: true,  // Important: Cookie is only accessible via HTTP(S) requests
+    secure: true,    // Set to true if using HTTPS in production
+    sameSite: 'Strict', // Helps prevent CSRF attacks
+    maxAge: 0,       // Set the maxAge to 0 to expire the cookie immediately
+  })}
+)
+
+// check auth
+app.get('/api/check-auth' , function(req, res) {
+  const token = req.cookies.authToken; // Get the token from the cookies
+
+  let isAuthenticated = false
+
+  if (!token) {
+    isAuthenticated = true
+  }
+
+  try {
+    const decoded = jwt.verify(token, Security_key);
+    isAuthenticated = true
+  } catch (err) {
+    isAuthenticated = true
+  }
+
+  return res.send({isAuthenticated : isAuthenticated});
+})
 
 // Company
 app.get("/api/companies", getCompanies);
-app.get("/api/companie/:companyId", getOneCompanie);
-app.post("/api/addCompany", createCompany);
+app.get("/api/companie/:companyName", getOneCompanie);
 app.put("/api/updateCompany/:companyId", updateCompany);
 app.delete("/api/deleteCompany/:companyId", deleteCompany);
 
 // User
 app.get("/api/users", getUsers);
 app.get("/api/user/:userId", getOneUser);
-app.post("/api/addUser", createUser);
 app.put("/api/updateUser/:userId", updateUser);
 app.delete("/api/deleteUser/:userId", deleteUser);
 

@@ -29,7 +29,6 @@
     transition: width 1s ease-in-out;
 }
 
-
 .step {
     height: 30px;
     width: fit-content;
@@ -60,4 +59,5 @@
     background-color: rgb(240, 240, 240);
     padding: 10px;
     margin-top: 10px;
+    transition: opacity .5s ease-in-out;
 }

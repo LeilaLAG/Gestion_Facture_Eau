@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require('bcrypt')
 
 const getUsers = async (req, res) => {
   const users = await User.find({});
@@ -12,7 +13,8 @@ const getOneUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const addedUser = await User.create(req.body);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const addedUser = await User.create({...req.body , password : hashedPassword});
   res.status(200).json({ addedUser });
 };
 
