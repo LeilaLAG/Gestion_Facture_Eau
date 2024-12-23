@@ -1,0 +1,63 @@
+.signUpContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signUpFromProgressBar {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 15px;
+    width: 50%;
+    position: absolute;
+    margin-top: 7px;
+    z-index: -1;
+}
+
+.signUpFromProgressBar::-webkit-progress-bar {
+    background-color: rgb(238, 236, 236);
+}
+
+.signUpFromProgressBar::-webkit-progress-value {
+    background-color: rgb(123, 123, 244);
+    transition: width 1s ease-in-out;
+}
+
+.signUpFromProgressBar::-moz-progress-bar {
+    background-color: rgb(123, 123, 244);
+    transition: width 1s ease-in-out;
+}
+
+
+.step {
+    height: 30px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.step>p {
+    background-color: rgb(123, 123, 244);
+    color: white;
+    padding: 0px 10px;
+    border-radius: 100%;
+    margin: 0;
+    font-weight: bold;
+    font-size: 20px;
+    outline: 3px solid;
+}
+
+/* .signUpFormContainer {
+
+} */
+
+.signUpForm {
+    border-radius: 10px;
+    border: 1px solid rgb(200, 199, 199);
+    background-color: rgb(240, 240, 240);
+    padding: 10px;
+    margin-top: 10px;
+}
