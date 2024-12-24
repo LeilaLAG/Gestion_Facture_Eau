@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const Security_key = 'my_security_key'; // Store securely in .env
+
+const Security_key = process.env.SECURE_KEY; // Store securely in .env
 
 function authenticate(req, res, next) {
   const token = req.cookies.authToken; // Get the token from the cookies
@@ -11,7 +12,6 @@ function authenticate(req, res, next) {
   try {
     const decoded = jwt.verify(token, Security_key);
     req.user = decoded; // Attach decoded data (like userId) to the request object
-    res.status(200).json({accessToken : decoded})
     next(); // Proceed to the next route handler
   } catch (err) {
     return res.status(403).json({ message: 'Unauthorized: Invalid token' });

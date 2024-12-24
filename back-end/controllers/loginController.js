@@ -2,7 +2,7 @@ const users = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt'); 
 
-const Security_key = 'my_security_key';
+const Security_key = process.env.SECURE_KEY;
 
 async function login(req, res) {
     try{
@@ -31,7 +31,7 @@ async function login(req, res) {
           maxAge: 3600000, // Set cookie expiration time (1 hour)
         });
       
-        return res.json({ message: 'Login successful'});
+        return res.status(200).json({ message: 'Login successful'});
     }
     catch(error){
         return res.status(500).json({ message: 'An error occurred during login.', error });

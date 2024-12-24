@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+require('dotenv').config(); //to retreive the data from the .env
 
 const authenticate = require('./middleware/authMiddleware')
 const {
@@ -68,23 +69,20 @@ app.post('/api/login' , login)
 app.post("/api/addCompany", createCompany);
 app.post("/api/addUser", createUser);
 
+// all companies
+app.get("/api/companies", getCompanies);
+
+// authentication middleware
 app.use('/api' , authenticate);
 
-// Logout
-app.post('/api/logout' , (req, res) => {
-  res.clearCookie('authToken', {
-    httpOnly: true,  // Important: Cookie is only accessible via HTTP(S) requests
-    secure: true,    // Set to true if using HTTPS in production
-    sameSite: 'Strict', // Helps prevent CSRF attacks
-    maxAge: 0,       // Set the maxAge to 0 to expire the cookie immediately
-  })}
-)
-
 // check auth
-app.get('/api/checkAuth' , authenticate)
+app.get('/api/checkAuth' , authenticate , (req, res) => {
+  return res.status(200).json({
+    user: req.user,
+  });
+})
 
 // Company
-app.get("/api/companies", getCompanies);
 app.get("/api/companie/:companyName", getOneCompanie);
 app.put("/api/updateCompany/:companyId", updateCompany);
 app.delete("/api/deleteCompany/:companyId", deleteCompany);
@@ -123,6 +121,17 @@ app.post("/api/addTranche", createTranche);
 app.put("/api/updateTranche/:trancheId", updateTranche);
 app.delete("/api/deleteTranche/:trancheId", deleteTranche);
 
+// Logout
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('authToken', {
+    httpOnly: true,
+    secure: true, // Secure only in production
+    sameSite: 'Strict',
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
+// db connection
 mongoose.connect("mongodb://127.0.0.1:27017/db_GFE");
 app.listen(8000, () => {
   console.log("server is listening on port 8000");

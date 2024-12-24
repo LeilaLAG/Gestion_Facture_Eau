@@ -11,8 +11,8 @@ function App() {
   return (
     <div className="App">
         <Routes>
-          <Route path='/sign-up' element={<SignUp/>} />
-          <Route path='/log-in' element={<LogIn/>} />
+          <Route path='/Sign-up' element={<SignUp/>} />
+          <Route path='/Log-in' element={<LogIn/>} />
           <Route path='/Home' element={
             <ProtectedRoute>
               <Home/>

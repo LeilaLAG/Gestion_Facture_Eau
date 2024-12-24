@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "../style/signUp.css";
 import "../style/customCompStyle.css";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import GetCompanies from "../hooks/GetCompanies";
+import ActionLoading from "../costumComponents/ActionLoading";
 // import FormErrorMsg from "../costumComponents/FormErrorMsg";
 
 export default function SignUp() {
   const [progress, setProgress] = useState(0);
   const [signupFormOpacity, setSignupFormOpacity] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [signupLoading, setSignupLoading] = useState(false);
 
   const [company, setCompany] = useState("");
   const [user, setUser] = useState({
@@ -20,10 +22,11 @@ export default function SignUp() {
     function: "",
     companyId: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const allCompanies = GetCompanies();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleSubmitCompany(e) {
     e.preventDefault();
@@ -40,19 +43,10 @@ export default function SignUp() {
         "This comapny name already exists. Please enter a unique company name"
       );
     } else {
-      axios
-        .post("http://localhost:8000/api/addCompany", { companyName: company })
-        .then((res) => {
-          toast.success("Your company name is created");
-          setProgress(1);
-          setIsDisabled(false);
-          setSignupFormOpacity(1);
-        })
-        .catch((err) =>
-          toast.error(
-            "Somthing went wrong! Please try again or reload the page"
-          )
-        );
+      toast.success("Now create your user profile");
+      setProgress(1);
+      setIsDisabled(false);
+      setSignupFormOpacity(1);
     }
   }
 
@@ -63,44 +57,70 @@ export default function SignUp() {
   async function handleSubmitUser(e) {
     e.preventDefault();
 
-    if (user.fullName === "" || user.fullName.length < 3) {
+    if (!user.fullName.match(/[A-Za-z]{3,}/)) {
       toast.error(
-        "Please enter a valid name containing more than 2 caracters!"
+        "Please enter a valid name containing more than 3 caracters!"
       );
     } else if (
       !user.email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
       toast.error("Please enter a valid email adresse!");
-    } else if (!user.password.match("[A-Za-z0-9._%+-]{5,}")) {
+    } else if (!user.password.match(/[A-Za-z0-9._%+-]{5,}/)) {
       toast.error("Please enter a valid password with 5 caracters minimum!");
     } else if (user.function === "") {
       toast.error("Please choose your function!");
     } else {
+      setSignupLoading(true);
+      setIsDisabled(true);
+      await axios
+        .post("http://localhost:8000/api/addCompany", { companyName: company })
+        .then((res) => {
+          console.log("company created");
+        })
+        .catch((err) => {
+          setSignupLoading(false);
+          setIsDisabled(false);
+          console.error(
+            "Somthing went wrong! Please try again or reload the page"
+          );
+        });
       await axios
         .post("http://localhost:8000/api/addUser", {
           ...user,
           companyId: company,
-          password : user.password
+          password: user.password,
         })
         .then((res) => {
-                toast.success("Your profile is created")
-                setTimeout(() => {
-                    navigate('/log-in')
-                }, 3000);
-            }
-        )
-        .catch((err) =>
+          toast.success("Your profile is created");
+          setTimeout(() => {
+            navigate("/Log-in");
+          }, 3000);
+        })
+        .catch((err) => {
+          setSignupLoading(false);
+          setIsDisabled(false);
           toast.error(
             "Somthing went wrong! Please try again or reload the page!"
-          )
-        );
+          );
+        });
     }
   }
 
   return (
     <div className="h-100 w-100 signUpContainer">
       <Toaster />
-      <h1 className="fw-bold fw-1 mb-4">Sign-Up</h1>
+      <div className="d-flex justify-content-center align-items-center mb-5">
+        <img src="Assets/waterLogo.png" alt="logo" width={40} />
+        <div className="d-flex flex-column">
+          <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>
+            G-F-E
+          </h1>
+          <span style={{ fontSize: "12px" }}>Water bill management</span>
+        </div>
+      </div>
+      <div className="d-flex align-items-end gap-2 mb-5 ">
+        <h1 className="">Create a profile</h1>
+      </div>
       <div className="d-flex justify-content-center align-items-center w-100">
         <div className="d-flex justify-content-around w-100">
           <div className="signUpFormContainer">
@@ -108,7 +128,7 @@ export default function SignUp() {
               <p>1</p>
             </div>
             <form
-              className="signUpForm shadow"
+              className="UserForm shadow"
               onSubmit={(e) => {
                 handleSubmitCompany(e);
               }}
@@ -140,7 +160,7 @@ export default function SignUp() {
               <p>2</p>
             </div>
             <form
-              className="signUpForm shadow"
+              className="UserForm shadow"
               onSubmit={(e) => handleSubmitUser(e)}
               style={{ opacity: signupFormOpacity }}
             >
@@ -160,11 +180,21 @@ export default function SignUp() {
                 onChange={(e) => handleChangeUserInfo(e)}
               />
               <input
+                type={showPassword ? "text" : "password"}
                 name="password"
-                type="password"
                 className="form-control mt-2"
-                placeholder="Enter a password"
-                onChange={(e) => handleChangeUserInfo(e)}
+                placeholder="Enter your password"
+                onChange={(e) => {
+                  handleChangeUserInfo(e);
+                }}
+              />
+              <img
+                src="Assets/show.png"
+                alt="show"
+                width={20}
+                className="showPasswordIcon"
+                style={{ bottom: "40%" }}
+                onClick={() => setShowPassword((prev) => !prev)}
               />
               <select
                 className="form-control mt-2"
@@ -180,7 +210,7 @@ export default function SignUp() {
                 className="btn btn-primary w-100 mt-2 fw-bold"
                 disabled={isDisabled}
               >
-                Sign up
+                {signupLoading ? <ActionLoading /> : "Sign up"}
               </button>
             </form>
           </div>
