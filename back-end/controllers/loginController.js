@@ -21,7 +21,7 @@ async function login(req, res) {
         }
       
         const token = jwt.sign({ userId: logingInUser._id }, Security_key, {
-          expiresIn: '1h', 
+          expiresIn: '30d', 
         });
       
         res.cookie('authToken', token, {

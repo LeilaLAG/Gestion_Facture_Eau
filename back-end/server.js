@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
-const authenticate = require('./middleware/authMiddleware')
 
+const authenticate = require('./middleware/authMiddleware')
 const {
   getCompanies,
   getOneCompanie,
@@ -81,24 +81,7 @@ app.post('/api/logout' , (req, res) => {
 )
 
 // check auth
-app.get('/api/check-auth' , function(req, res) {
-  const token = req.cookies.authToken; // Get the token from the cookies
-
-  let isAuthenticated = false
-
-  if (!token) {
-    isAuthenticated = true
-  }
-
-  try {
-    const decoded = jwt.verify(token, Security_key);
-    isAuthenticated = true
-  } catch (err) {
-    isAuthenticated = true
-  }
-
-  return res.send({isAuthenticated : isAuthenticated});
-})
+app.get('/api/checkAuth' , authenticate)
 
 // Company
 app.get("/api/companies", getCompanies);

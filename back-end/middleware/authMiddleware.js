@@ -11,6 +11,7 @@ function authenticate(req, res, next) {
   try {
     const decoded = jwt.verify(token, Security_key);
     req.user = decoded; // Attach decoded data (like userId) to the request object
+    res.status(200).json({accessToken : decoded})
     next(); // Proceed to the next route handler
   } catch (err) {
     return res.status(403).json({ message: 'Unauthorized: Invalid token' });
