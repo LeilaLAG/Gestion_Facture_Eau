@@ -31,7 +31,7 @@ export default function SignUp() {
   function handleSubmitCompany(e) {
     e.preventDefault();
 
-    if (company === "" || company.length < 3) {
+    if (!company.trim().match(/[A-Za-z]{3,}/)) {
       toast.error(
         "Please enter a valid company name containing more than 2 caracters!"
       );
@@ -57,15 +57,15 @@ export default function SignUp() {
   async function handleSubmitUser(e) {
     e.preventDefault();
 
-    if (!user.fullName.match(/[A-Za-z]{3,}/)) {
+    if (!user.fullName.trim().match(/[A-Za-z]{3,}/)) {
       toast.error(
         "Please enter a valid name containing more than 3 caracters!"
       );
     } else if (
-      !user.email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
+      !user.email.trim().match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
       toast.error("Please enter a valid email adresse!");
-    } else if (!user.password.match(/[A-Za-z0-9._%+-]{5,}/)) {
+    } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{5,}/)) {
       toast.error("Please enter a valid password with 5 caracters minimum!");
     } else if (user.function === "") {
       toast.error("Please choose your function!");
@@ -93,7 +93,7 @@ export default function SignUp() {
         .then((res) => {
           toast.success("Your profile is created");
           setTimeout(() => {
-            navigate("/Log-in");
+            navigate("/log-in");
           }, 3000);
         })
         .catch((err) => {

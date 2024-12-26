@@ -36,7 +36,7 @@ export default function LogIn() {
         { withCredentials: true }
       )
       .then((res) => {
-        navigate("/Home");
+        navigate("/clients");
         setLoginLoading(false);
         setIsDisabled(false);
       })
@@ -105,7 +105,7 @@ export default function LogIn() {
             </button>
             <hr/>
             <div className="text-center">
-              <a className="text-dark" href="/Sign-up">Don't have a profile? Sign-up</a>
+              <a className="text-dark" href="/sign-up">Don't have a profile? Sign-up</a>
             </div>
           </div>
         </form>

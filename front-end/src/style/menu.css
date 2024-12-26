@@ -1,0 +1,71 @@
+.Menu {
+    width: 25%;
+    height: 100%;
+    padding: 30px;
+}
+
+/* .UserInfoSegment {
+} */
+
+.userSetting {
+    cursor: pointer;
+    position: relative;
+}
+
+.userSettingBox {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    background-color: antiquewhite;
+    right: 0;
+}
+
+.UserInfoSegment p {
+    word-wrap: break-word;
+    margin: 0;
+}
+
+.userFullName {
+    font-size: 30px;
+    text-transform: capitalize;
+    max-width: 70%;
+}
+
+.userFunction {
+    text-transform: capitalize;
+    font-size: 13px;
+}
+
+.userCompany {
+    opacity: .7;
+    font-size: 15px;
+}
+
+.navLinks {
+    overflow-y: auto;
+    height: 70%;
+}
+
+.navLinks>ul {
+    list-style-type: none;
+    padding: 0;
+    font-weight: bold;
+}
+
+.navLinks>ul>li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subNavLinks {
+    margin-bottom: 10px;
+}
+
+.subNavLinks>li {
+    padding: 5px;
+    font-size: 15px;
+    text-decoration: underline;
+    font-weight: lighter;
+}

@@ -47,7 +47,8 @@ const {
   deleteTranche,
   updateTranche,
 } = require("./controllers/trancheController");
-const {login} = require('./controllers/loginController')
+const {login} = require('./controllers/loginController');
+const User = require("./models/User");
 
 const app = express();
 
@@ -76,9 +77,10 @@ app.get("/api/companies", getCompanies);
 app.use('/api' , authenticate);
 
 // check auth
-app.get('/api/checkAuth' , authenticate , (req, res) => {
+app.get('/api/checkAuth' , authenticate , async (req, res) => {
+  const userInfo = await User.findOne({_id : req.user.userId}).select('-password')
   return res.status(200).json({
-    user: req.user,
+    user: req.user, userInfo : userInfo
   });
 })
 
