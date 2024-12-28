@@ -6,7 +6,6 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import GetCompanies from "../hooks/GetCompanies";
 import ActionLoading from "../costumComponents/ActionLoading";
-// import FormErrorMsg from "../costumComponents/FormErrorMsg";
 
 export default function SignUp() {
   const [progress, setProgress] = useState(0);
@@ -33,17 +32,17 @@ export default function SignUp() {
 
     if (!company.trim().match(/[A-Za-z]{3,}/)) {
       toast.error(
-        "Please enter a valid company name containing more than 2 caracters!"
+        "Le nom de société doit contien 3 caracteres minimum!"
       );
     } else if (
       allCompanies.find((companie) => companie.companyName === company) !==
       undefined
     ) {
       toast.error(
-        "This comapny name already exists. Please enter a unique company name"
+        "Cette société existe déja. Veuillez saisir un nom de société unique"
       );
     } else {
-      toast.success("Now create your user profile");
+      toast.success("Maintenant, creer votre profile");
       setProgress(1);
       setIsDisabled(false);
       setSignupFormOpacity(1);
@@ -59,16 +58,16 @@ export default function SignUp() {
 
     if (!user.fullName.trim().match(/[A-Za-z]{3,}/)) {
       toast.error(
-        "Please enter a valid name containing more than 3 caracters!"
+        "Le nom d'utilisateur doit contien 3 caracteres minimum!"
       );
     } else if (
       !user.email.trim().match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
-      toast.error("Please enter a valid email adresse!");
+      toast.error("Le format de l'adresse Email est invalide!");
     } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{5,}/)) {
-      toast.error("Please enter a valid password with 5 caracters minimum!");
+      toast.error("Le mot de passe doit contien 5 caracteres minimum!");
     } else if (user.function === "") {
-      toast.error("Please choose your function!");
+      toast.error("Choisir votre fonction!");
     } else {
       setSignupLoading(true);
       setIsDisabled(true);
@@ -81,7 +80,7 @@ export default function SignUp() {
           setSignupLoading(false);
           setIsDisabled(false);
           console.error(
-            "Somthing went wrong! Please try again or reload the page"
+            "Un erreur est servenue, veuillez ressayer ou actualiser la page!"
           );
         });
       await axios
@@ -91,7 +90,7 @@ export default function SignUp() {
           password: user.password,
         })
         .then((res) => {
-          toast.success("Your profile is created");
+          toast.success("Votre profile a été creer");
           setTimeout(() => {
             navigate("/log-in");
           }, 3000);
@@ -100,7 +99,7 @@ export default function SignUp() {
           setSignupLoading(false);
           setIsDisabled(false);
           toast.error(
-            "Somthing went wrong! Please try again or reload the page!"
+            "Un erreur est servenue, veuillez ressayer ou actualiser la page!"
           );
         });
     }
@@ -115,11 +114,11 @@ export default function SignUp() {
           <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>
             G-F-E
           </h1>
-          <span style={{ fontSize: "12px" }}>Water bill management</span>
+          <span style={{ fontSize: "12px" }}>Gestion des Facture d'Eau</span>
         </div>
       </div>
       <div className="d-flex align-items-end gap-2 mb-5 ">
-        <h1 className="">Create a profile</h1>
+        <h1 className="">Creer votre profile</h1>
       </div>
       <div className="d-flex justify-content-center align-items-center w-100">
         <div className="d-flex justify-content-around w-100">
@@ -133,21 +132,20 @@ export default function SignUp() {
                 handleSubmitCompany(e);
               }}
             >
-              <h4 className="text-center fw-bold">Company</h4>
+              <h4 className="text-center fw-bold">Société</h4>
               <input
                 type="text"
                 name="companyName"
                 className="form-control"
-                placeholder="Enter company name"
+                placeholder="Saisir votre nom de société"
                 onChange={(e) => {
                   setProgress(0);
                   setIsDisabled(true);
                   setCompany(e.target.value);
                 }}
               />
-              {/* <FormErrorMsg msg="Enter a valid company name containing more than 2 caracters" coleur="red" width="200px" /> */}
               <button className="btn btn-dark w-100 mt-2 fw-bold">
-                Create
+                Creer
               </button>
             </form>
           </div>
@@ -164,26 +162,26 @@ export default function SignUp() {
               onSubmit={(e) => handleSubmitUser(e)}
               style={{ opacity: signupFormOpacity }}
             >
-              <h4 className="text-center fw-bold">User</h4>
+              <h4 className="text-center fw-bold">Utilisateur</h4>
               <input
                 name="fullName"
                 type="text"
                 className="form-control mt-2"
-                placeholder="Enter your full name"
+                placeholder="Saisir votre nom d'utilisateur"
                 onChange={(e) => handleChangeUserInfo(e)}
               />
               <input
                 name="email"
                 type="email"
                 className="form-control mt-2"
-                placeholder="Enter your Email"
+                placeholder="Saisir votre adresse Email"
                 onChange={(e) => handleChangeUserInfo(e)}
               />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 className="form-control mt-2"
-                placeholder="Enter your password"
+                placeholder="Saisir un mot de passe"
                 onChange={(e) => {
                   handleChangeUserInfo(e);
                 }}
@@ -201,7 +199,7 @@ export default function SignUp() {
                 name="function"
                 onChange={(e) => handleChangeUserInfo(e)}
               >
-                <option>Choose function</option>
+                <option>Choisir une fonction</option>
                 <option value={"Admin"}>Admin</option>
                 <option value={"user1"}>user1</option>
                 <option value={"user2"}>user2</option>

@@ -39,11 +39,14 @@
 .userCompany {
     opacity: .7;
     font-size: 15px;
+    width: 70%;
+    word-wrap: break-word;
 }
 
 .navLinks {
     overflow-y: auto;
     height: 70%;
+    padding: 0px 10px 10px 0px;
 }
 
 .navLinks>ul {
@@ -57,15 +60,42 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none;
+    color: black;
+    padding-left: 10px;
+    transition: .2s;
+    border-radius: 5px;
+}
+
+.navLinks>ul>li a {
+    text-decoration: none;
+    color: black;
+    width: 100%;
 }
 
 .subNavLinks {
-    margin-bottom: 10px;
+    width: 80%;
 }
 
 .subNavLinks>li {
     padding: 5px;
+    margin: 5px;
     font-size: 15px;
     text-decoration: underline;
     font-weight: lighter;
+    transition: .2s;
+    border-radius: 5px;
+}
+
+.subNavLinks>li a {
+    display: inline-block;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.activeLink , .navLinks>ul>li:hover {
+    background-color: bisque;
+}
+.activeSubLink , .subNavLinks>li:hover {
+    background-color: beige;
 }

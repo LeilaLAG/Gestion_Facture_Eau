@@ -12,14 +12,16 @@ const ClientSchema = new mongoose.Schema({
     cin : {
         type : String,
         required : true,
+        unique: true
     },
     birthDate : {
         type : Date,
         required : true
     },
     tele : {
-        type : Number,
-        required : true
+        type : String,
+        required : true,
+        unique : true,
     },
     dateRegisterClient : {
         type : Date,

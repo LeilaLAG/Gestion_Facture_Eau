@@ -41,7 +41,7 @@ export default function LogIn() {
         setIsDisabled(false);
       })
       .catch((err) => {
-        toast.error("Full name or password is invalid");
+        toast.error("Le nom d'utilisateur ou le mot de passe est incorrect!");
         setLoginLoading(false);
         setIsDisabled(false);
       });
@@ -55,6 +55,7 @@ export default function LogIn() {
           <img src="Assets/loginImg.jpg" alt="" />
         </div>
         <form
+        method="POST"
           className="LoginFrom shadow"
           onSubmit={(e) => {
             handleSubmitLoginUser(e);
@@ -65,7 +66,7 @@ export default function LogIn() {
               <img src="Assets/waterLogo.png" alt="logo" width={40}/>
               <div className="d-flex flex-column">
                 <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>G-F-E</h1>
-                <span style={{fontSize : "12px"}}>Water bill management</span>
+                <span style={{fontSize : "12px"}}>Gestion des Facture d'Eau</span>
               </div>
             </div>
             <h1 className="mb-5 text-center">Log-In</h1>
@@ -73,7 +74,7 @@ export default function LogIn() {
               type="text"
               name="fullName"
               className="form-control"
-              placeholder="Enter your full name"
+              placeholder="Saisir votre nom d'utilisateur"
               onChange={(e) => {
                 handleChangeLoginUserInfo(e);
               }}
@@ -83,7 +84,7 @@ export default function LogIn() {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 className="form-control mt-3"
-                placeholder="Enter your password"
+                placeholder="Saisir votre mot de passe"
                 onChange={(e) => {
                   handleChangeLoginUserInfo(e);
                 }}
@@ -105,7 +106,7 @@ export default function LogIn() {
             </button>
             <hr/>
             <div className="text-center">
-              <a className="text-dark" href="/sign-up">Don't have a profile? Sign-up</a>
+              <a className="text-dark" href="/sign-up">Vous n'avez pas un profile? Sign-up</a>
             </div>
           </div>
         </form>

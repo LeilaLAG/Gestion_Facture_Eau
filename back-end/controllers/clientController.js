@@ -1,7 +1,8 @@
 const Client = require("../models/Client");
 
 const getClients = async (req, res) => {
-  const Clients = await Client.find({});
+  const {companyId} = req.params
+  const Clients = await Client.find({companyId : companyId});
   res.status(200).json({ Clients });
 };
 
@@ -12,8 +13,20 @@ const getOneClient = async (req, res) => {
 };
 
 const createClient = async (req, res) => {
-  const addedClient = await Client.create(req.body);
-  res.status(200).json({ addedClient });
+  try {
+    const checkClient = await Client.findOne({companyId : req.body.companyId , $or : [
+      {numClient : req.body.numClient},
+    ]})
+
+    if(checkClient){
+      return res.status(400).json({error : "client exist deja"})
+    }
+    const addedClient = await Client.create(req.body);
+    return res.status(200).json({ addedClient });
+  }
+  catch(err){
+    return res.status(400).json({error : "Server Error"})
+  }
 };
 
 const updateClient = async (req, res) => {

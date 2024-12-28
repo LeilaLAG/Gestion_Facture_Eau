@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 require('dotenv').config(); //to retreive the data from the .env
-
 const authenticate = require('./middleware/authMiddleware')
+const refreshToken = require('./middleware/refreshToken')
 const {
   getCompanies,
   getOneCompanie,
@@ -77,12 +77,15 @@ app.get("/api/companies", getCompanies);
 app.use('/api' , authenticate);
 
 // check auth
-app.get('/api/checkAuth' , authenticate , async (req, res) => {
+app.post('/api/checkAuth' , authenticate , async (req, res) => {
   const userInfo = await User.findOne({_id : req.user.userId}).select('-password')
   return res.status(200).json({
     user: req.user, userInfo : userInfo
   });
 })
+
+// refresh token
+app.post('/api/refresh-token', refreshToken);
 
 // Company
 app.get("/api/companie/:companyName", getOneCompanie);
@@ -96,8 +99,8 @@ app.put("/api/updateUser/:userId", updateUser);
 app.delete("/api/deleteUser/:userId", deleteUser);
 
 // Client
-app.get("/api/clients", getClients);
-app.get("/api/client/:clientId", getOneClient);
+app.get("/api/clients/:companyId", getClients);
+app.get("/api/client/:clientId/:comapnyId", getOneClient);
 app.post("/api/addClient", createClient);
 app.put("/api/updateClient/:clientId", updateClient);
 app.delete("/api/deleteClient/:clientId", deleteClient);
