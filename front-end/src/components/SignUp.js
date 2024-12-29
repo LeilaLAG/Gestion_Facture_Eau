@@ -22,6 +22,7 @@ export default function SignUp() {
     companyId: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const allCompanies = GetCompanies();
 
@@ -31,9 +32,7 @@ export default function SignUp() {
     e.preventDefault();
 
     if (!company.trim().match(/[A-Za-z]{3,}/)) {
-      toast.error(
-        "Le nom de société doit contien 3 caracteres minimum!"
-      );
+      toast.error("Le nom de société doit contien 3 caracteres minimum!");
     } else if (
       allCompanies.find((companie) => companie.companyName === company) !==
       undefined
@@ -57,11 +56,11 @@ export default function SignUp() {
     e.preventDefault();
 
     if (!user.fullName.trim().match(/[A-Za-z]{3,}/)) {
-      toast.error(
-        "Le nom d'utilisateur doit contien 3 caracteres minimum!"
-      );
+      toast.error("Le nom d'utilisateur doit contien 3 caracteres minimum!");
     } else if (
-      !user.email.trim().match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
+      !user.email
+        .trim()
+        .match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
       toast.error("Le format de l'adresse Email est invalide!");
     } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{5,}/)) {
@@ -98,9 +97,8 @@ export default function SignUp() {
         .catch((err) => {
           setSignupLoading(false);
           setIsDisabled(false);
-          toast.error(
-            "Un erreur est servenue, veuillez ressayer ou actualiser la page!"
-          );
+          setError("Peut etre cette adresse email est déja utilisée");
+          toast.error("Un erreur est servenue, veuillez ressayer plus tard!");
         });
     }
   }
@@ -144,9 +142,7 @@ export default function SignUp() {
                   setCompany(e.target.value);
                 }}
               />
-              <button className="btn btn-dark w-100 mt-2 fw-bold">
-                Creer
-              </button>
+              <button className="btn btn-dark w-100 mt-2 fw-bold">Creer</button>
             </form>
           </div>
           <progress
@@ -177,23 +173,28 @@ export default function SignUp() {
                 placeholder="Saisir votre adresse Email"
                 onChange={(e) => handleChangeUserInfo(e)}
               />
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                className="form-control mt-2"
-                placeholder="Saisir un mot de passe"
-                onChange={(e) => {
-                  handleChangeUserInfo(e);
-                }}
-              />
-              <img
-                src="Assets/show.png"
-                alt="show"
-                width={20}
-                className="showPasswordIcon"
-                style={{ bottom: "40%" }}
-                onClick={() => setShowPassword((prev) => !prev)}
-              />
+              <p className="text-danger fw-bold p-2 pt-0 pb-0" style={{ fontSize: "12px" }}>
+                {error}
+              </p>
+              <div className="LoginPasswordInput">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className="form-control mt-2"
+                  placeholder="Saisir un mot de passe"
+                  onChange={(e) => {
+                    handleChangeUserInfo(e);
+                  }}
+                />
+                <img
+                  src="Assets/show.png"
+                  alt="show"
+                  width={20}
+                  className="showPasswordIcon"
+                  style={{ bottom: "20%" }}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                />
+              </div>
               <select
                 className="form-control mt-2"
                 name="function"

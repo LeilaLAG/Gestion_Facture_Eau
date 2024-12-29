@@ -29,6 +29,7 @@
     font-size: 30px;
     text-transform: capitalize;
     max-width: 70%;
+    padding-left: .5rem;
 }
 
 .userFunction {
@@ -40,13 +41,13 @@
     opacity: .7;
     font-size: 15px;
     width: 70%;
+    padding-left: .5rem;
     word-wrap: break-word;
 }
 
 .navLinks {
     overflow-y: auto;
     height: 70%;
-    padding: 0px 10px 10px 0px;
 }
 
 .navLinks>ul {
@@ -56,7 +57,6 @@
 }
 
 .navLinks>ul>li {
-    padding: 10px 0;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -71,6 +71,7 @@
     text-decoration: none;
     color: black;
     width: 100%;
+    padding: 10px 0;
 }
 
 .subNavLinks {

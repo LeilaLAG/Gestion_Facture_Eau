@@ -7,7 +7,7 @@ import ActionLoading from "../costumComponents/ActionLoading";
 
 export default function LogIn() {
   const [loginUser, setLoginUser] = useState({
-    fullName: "",
+    email: "",
     password: "",
   });
   const [loginLoading, setLoginLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function LogIn() {
       .post(
         "http://localhost:8000/api/login",
         {
-          fullName: loginUser.fullName,
+          email: loginUser.email,
           password: loginUser.password,
         },
         { withCredentials: true }
@@ -71,10 +71,10 @@ export default function LogIn() {
             </div>
             <h1 className="mb-5 text-center">Log-In</h1>
             <input
-              type="text"
-              name="fullName"
+              type="email"
+              name="email"
               className="form-control"
-              placeholder="Saisir votre nom d'utilisateur"
+              placeholder="Saisir votre adresse email"
               onChange={(e) => {
                 handleChangeLoginUserInfo(e);
               }}

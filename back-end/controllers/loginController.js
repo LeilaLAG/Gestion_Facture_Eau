@@ -6,9 +6,9 @@ const Security_key = process.env.SECURE_KEY;
 
 async function login(req, res) {
     try{
-        const { fullName, password } = req.body;
+        const { email, password } = req.body;
       
-        const logingInUser = await users.findOne({ fullName : fullName });
+        const logingInUser = await users.findOne({ email : email });
       
         if (logingInUser === undefined) {
           return res.status(401).json({ message: 'Invalid credentials' });

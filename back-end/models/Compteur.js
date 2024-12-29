@@ -4,6 +4,7 @@ const CompteurSchema = new mongoose.Schema({
     numCompteur : {
         type : Number,
         required : true,
+        default : 0
     },
     startPoint : {
         type : Number,
@@ -24,6 +25,9 @@ const CompteurSchema = new mongoose.Schema({
     companyId : {
         type : String,
         required : true
+    },
+    modified_at : {
+        type : Date
     }
 });
 

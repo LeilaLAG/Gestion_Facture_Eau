@@ -4,6 +4,7 @@ const ClientSchema = new mongoose.Schema({
     numClient : {
         type : Number,
         required : true,
+        default : 0
     },
     nameClient : {
         type : String,
@@ -30,7 +31,10 @@ const ClientSchema = new mongoose.Schema({
     companyId : {
         type : String,
         required : true
-    }
+    },
+    modified_at : {
+        type : Date,
+    },
 });
 
 module.exports = mongoose.model("Client", ClientSchema);

@@ -1,49 +1,73 @@
 const Client = require("../models/Client");
 
 const getClients = async (req, res) => {
-  const {companyId} = req.params
-  const Clients = await Client.find({companyId : companyId});
-  res.status(200).json({ Clients });
+  try {
+    const {companyId} = req.params
+    const Clients = await Client.find({companyId : companyId});
+    return res.status(200).json({ Clients });
+  }
+  catch(err){
+    return res.status(400).json({error : "Server Error getting all clients"})
+  }
 };
 
 const getOneClient = async (req, res) => {
-  const { clientId } = req.body;
-  const client = await Client.findOne({ _id: clientId });
-  res.status(200).json({ client });
+  try{
+    const { clientId , companyId } = req.params;
+    const client = await Client.findOne({companyId : companyId , _id: clientId });
+    return res.status(200).json({ client });
+  }
+  catch(err){
+    return res.status(400).json({error : "Server Error getting one client"})
+  }
 };
 
 const createClient = async (req, res) => {
   try {
-    const checkClient = await Client.findOne({companyId : req.body.companyId , $or : [
-      {numClient : req.body.numClient},
-    ]})
+    const { companyId } = req.body;
 
-    if(checkClient){
-      return res.status(400).json({error : "client exist deja"})
-    }
-    const addedClient = await Client.create(req.body);
+    const maxNumClient = await Client.findOne({companyId : companyId}).sort({ numClient: -1 })
+    const newMaxNumClient = maxNumClient ? maxNumClient.numClient+1 : 1
+    const addedClient = await Client.create({...req.body , numClient : newMaxNumClient});
     return res.status(200).json({ addedClient });
   }
   catch(err){
-    return res.status(400).json({error : "Server Error"})
+    return res.status(400).json({error : "Server Error creatiing client"})
   }
 };
 
 const updateClient = async (req, res) => {
-  const { clientId } = req.params;
+  
+  try {
+    const { clientId } = req.params;
 
-  const clientToUpdate = await Client.findOneAndUpdate(
-    { _id: clientId },
-    req.body
-  );
-  res.status(200).json({ clientToUpdate });
+    const clientToUpdate = await Client.findOneAndUpdate(
+      { _id: clientId },
+      {...req.body , modified_at : new Date()}
+    );
+    return res.status(200).json({ clientToUpdate });
+  }
+  catch(err){
+    return res.status(400).json({error : "Server Error updating client"})
+  }
+
 };
 
 const deleteClient = async (req, res) => {
-  const { clientId } = req.params;
+  try {
+    const { clientId } = req.params;
+  
+    const clientToDelete = await Client.findOneAndDelete({ _id: clientId });
+    await Client.findOneAndUpdate(
+      { _id: clientId },
+      req.body
+    );
+    return res.status(200).json({ clientToDelete });
 
-  const clientToDelete = await Client.findOneAndDelete({ _id: clientId });
-  res.status(200).json({ clientToDelete });
+  }
+  catch(err){
+    return res.status(400).json({error : "Server Error deletting client"})
+  }
 };
 
 module.exports = {

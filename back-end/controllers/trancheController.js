@@ -6,7 +6,7 @@ const getTranches = async (req, res) => {
 };
 
 const getOneTranche = async (req, res) => {
-  const { trancheId } = req.body;
+  const { trancheId } = req.params;
   const tranche = await Tranche.findOne({ _id: trancheId });
   res.status(200).json({ tranche });
 };
