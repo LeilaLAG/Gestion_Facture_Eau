@@ -100,7 +100,7 @@ app.delete("/api/deleteUser/:userId", deleteUser);
 
 // Client
 app.get("/api/clients/:companyId", getClients);
-app.get("/api/client/:clientId/:comapnyId", getOneClient);
+app.get("/api/client/:clientId/:companyId", getOneClient);
 app.post("/api/addClient", createClient);
 app.put("/api/updateClient/:clientId", updateClient);
 app.delete("/api/deleteClient/:clientId", deleteClient);

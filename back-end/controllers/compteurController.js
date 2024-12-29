@@ -6,7 +6,7 @@ const getCompteurs = async (req, res) => {
 };
 
 const getOneCompteur = async (req, res) => {
-  const { compteurId } = req.body;
+  const { compteurId } = req.params;
   const compteur = await Compteur.find({ _id: compteurId });
   res.status(200).json({ compteur });
 };

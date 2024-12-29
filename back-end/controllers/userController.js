@@ -13,9 +13,14 @@ const getOneUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const addedUser = await User.create({...req.body , password : hashedPassword});
-  res.status(200).json({ addedUser });
+  try{
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const addedUser = await User.create({...req.body , password : hashedPassword});
+    return res.status(200).json({ addedUser });
+  }
+  catch(err){
+    return res.status(400).json({ error : "Error adding a new user" });
+  }
 };
 
 const updateUser = async (req, res) => {

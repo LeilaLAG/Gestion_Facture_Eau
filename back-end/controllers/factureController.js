@@ -6,7 +6,7 @@ const getFactures = async (req, res) => {
 };
 
 const getOneFacture = async (req, res) => {
-  const { factureId } = req.body;
+  const { factureId } = req.params;
   const facture = await Facture.findOne({ _id: factureId });
   res.status(200).json({ facture });
 };

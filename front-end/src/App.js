@@ -8,26 +8,35 @@ import LogIn from './components/LogIn';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import Clients from './components/Clients';
 import AddForm from './components/AddForm';
+import ModForm from './components/MofFrom';
 
 
 function App() {
   return (
     <div className="App">
         <Routes>
+
+          {/* authentication -------------------------------------------- */}
           <Route path='/sign-up' element={<SignUp/>} />
           <Route path='/log-in' element={<LogIn/>} />
 
+          {/* clients ---------------------------------------------------- */}
           <Route path='/clients' element={
             <ProtectedRoute>
               <Clients/>
             </ProtectedRoute>
           } />
-          
-          <Route path='/add-client' element={
+          <Route path='/clients/add-client' element={
             <ProtectedRoute>
               <AddForm page={"client"}/>
             </ProtectedRoute>
           } />
+          <Route path='/clients/update-client/:clientId' element={
+            <ProtectedRoute>
+              <ModForm page={"client"}/>
+            </ProtectedRoute>
+          } />
+
         </Routes>
       </div>
   );

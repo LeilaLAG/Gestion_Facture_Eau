@@ -12,11 +12,11 @@ export default function Menu() {
   return (
     <div className="Menu shadow">
       <div className="userSetting text-end mb-4">
-        <img src="Assets/setting.png" alt="setting" width={20} />
+        <img src="/Assets/setting.png" alt="setting" width={20} />
       </div>
       <div className="UserInfoSegment">
         <div>
-          <img src="Assets/profile.png" alt="user" width={80} />
+          <img src="/Assets/profile.png" alt="user" width={80} />
         </div>
 
         <div className="">
@@ -27,10 +27,15 @@ export default function Menu() {
                 {user.function}
               </p>
             </div>
-            <div className="d-flex justify-content-between align-items-end">
+            <div className="d-flex justify-content-between align-items-end flex-wrap">
+              <div>
               <p className="userCompany">{user.companyId}</p>
+              <p className="btn btn-dark p-2 pt-0 pb-0" style={{fontSize:'13px'}}>
+                {user.email}
+              </p>
+              </div>
               <form
-                className="logoutForm"
+                className="logoutForm mt-2"
                 onSubmit={() => {
                   axios
                     .post(
@@ -51,6 +56,7 @@ export default function Menu() {
                 </button>
               </form>
             </div>
+            
           </div>
         </div>
       </div>
@@ -58,21 +64,21 @@ export default function Menu() {
       <nav className="navLinks">
         <ul>
           <li className={currentUrl.pathname === "/clients" ? "activeLink" : ""}>
-            <img src="Assets/clients.png" alt="clients" width={20} />
+            <img src="/Assets/clients.png" alt="clients" width={20} />
             <a href="/clients">Clients</a>
           </li>
           <ul className="subNavLinks">
-            <li className={currentUrl.pathname === "/add-client" ? "activeSubLink" : ""}><a href="/add-client">Ajouter client</a></li>
+            <li className={currentUrl.pathname === "/clients/add-client" ? "activeSubLink" : ""}><a href="/clients/add-client">Ajouter client</a></li>
           </ul>
           <li>
-            <img src="Assets/counter.png" alt="compteur" width={20} />
+            <img src="/Assets/counter.png" alt="compteur" width={20} />
             <span>Compteurs</span>
           </li>
           <ul className="subNavLinks">
             <li>Ajouter Compteur</li>
           </ul>
           <li>
-            <img src="Assets/bill.png" alt="facture" width={20} />
+            <img src="/Assets/bill.png" alt="facture" width={20} />
             <span>Facture</span>
           </li>
           <ul className="subNavLinks">
@@ -80,7 +86,7 @@ export default function Menu() {
             <li>Imprimer facture</li>
           </ul>
           <li>
-            <img src="Assets/tranche.png" alt="tranche" width={20} />
+            <img src="/Assets/tranche.png" alt="tranche" width={20} />
             <span>Tranche</span>
           </li>
           <ul className="subNavLinks">

@@ -12,8 +12,13 @@ const getOneCompanie = async (req, res) => {
 };
 
 const createCompany = async (req, res) => {
-  const addedCompany = await Company.create(req.body);
-  res.status(200).json({ addedCompany });
+  try{
+    const addedCompany = await Company.create(req.body);
+    return res.status(200).json({ addedCompany });
+  }
+  catch(err){
+    return res.status(400).json({ error : "Error adding a new company" });
+  }
 };
 
 const updateCompany = async (req, res) => {
