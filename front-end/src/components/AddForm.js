@@ -78,11 +78,7 @@ export default function AddForm({ page }) {
         .then((res) => {
           toast.success(`${page} a été ajouter avec succée`);
           setLoading(false);
-          setErrorMsgs({
-            ...errorMsgs,
-            cin: "",
-            tel: "",
-          });
+          setErrorMsgs("");
         })
         .catch((err) => {
           setLoading(false);
@@ -148,12 +144,6 @@ export default function AddForm({ page }) {
                     placeholder="Saisir le CIN du client"
                     onChange={(e) => handleAddInfo(e)}
                   />
-                  <p
-                    className="text-danger fw-bold"
-                    style={{ fontSize: "12px" }}
-                  >
-                    {errorMsgs.cin}
-                  </p>
                 </div>
                 <div className="mb-3">
                   <label className="d-block">Date de naissance</label>
@@ -173,12 +163,6 @@ export default function AddForm({ page }) {
                     placeholder="Saisir le numero de telephone du client"
                     onChange={(e) => handleAddInfo(e)}
                   />
-                  <p
-                    className="text-danger fw-bold"
-                    style={{ fontSize: "12px" }}
-                  >
-                    {errorMsgs.tel}
-                  </p>
                 </div>
               </div>
             )}

@@ -26,8 +26,14 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { userId } = req.params;
 
-  const userToUpdate = await User.findOneAndUpdate({ _id: userId }, req.body);
-  res.status(200).json({ userToUpdate });
+  try{
+    const userToUpdate = await User.findOneAndUpdate({ _id: userId }, req.body);
+    return res.status(200).json({ userToUpdate });
+  }
+  catch(err){
+    return res.status(400).json({ error : "Error updating user" });
+  }
+
 };
 
 const deleteUser = async (req, res) => {

@@ -102,6 +102,7 @@ export default function ModForm({ page }) {
         .then((res) => {
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
+          setErrorMsgs("")
         })
         .catch((err) => {
           setLoading(false);

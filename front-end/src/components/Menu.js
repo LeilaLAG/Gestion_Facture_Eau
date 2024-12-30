@@ -7,12 +7,36 @@ import { useLocation } from "react-router-dom";
 export default function Menu() {
   const { user } = useUser();
 
-  const currentUrl = useLocation()
+  const currentUrl = useLocation();
 
   return (
     <div className="Menu shadow">
       <div className="userSetting text-end mb-4">
-        <img src="/Assets/setting.png" alt="setting" width={20} />
+        <div className="dropdown dropstart">
+          <img
+            src="/Assets/setting.png"
+            alt="setting"
+            width={20}
+            className="dropdown-toggle"
+            data-bs-toggle="dropdown"
+          />
+          <ul className="dropdown-menu shadow">
+            <li>
+              <a
+                className="dropdown-item"
+                href={`/users/update-user/${user._id}`}
+              >
+                Modifier votre profile
+              </a>
+            </li>
+            <hr className="mt-1 mb-1" />
+            <li>
+              <a className="dropdown-item" href="/">
+                Initialiser mot de passe
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="UserInfoSegment">
         <div>
@@ -29,10 +53,17 @@ export default function Menu() {
             </div>
             <div className="d-flex justify-content-between align-items-end flex-wrap">
               <div>
-              <p className="userCompany">{user.companyId}</p>
-              <p className="btn btn-dark p-2 pt-0 pb-0" style={{fontSize:'13px'}}>
-                {user.email}
-              </p>
+                <div className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2">
+                  <img src="/Assets/company.png" alt="name" width={15} />
+                  <span className="userCompany">{user.companyId}</span>
+                </div>
+                <div
+                  className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2"
+                  style={{ fontSize: "13px" }}
+                >
+                  <img src="/Assets/email.png" alt="email" width={15} />
+                  <span>{user.email}</span>
+                </div>
               </div>
               <form
                 className="logoutForm mt-2"
@@ -51,47 +82,82 @@ export default function Menu() {
                     });
                 }}
               >
-                <button type="submit" className="btn btn-danger fw-bold pt-1 pb-1 p-3" >
+                <button
+                  type="submit"
+                  className="btn btn-danger fw-bold pt-1 pb-1 p-3"
+                >
                   Logout
                 </button>
               </form>
             </div>
-            
           </div>
         </div>
       </div>
       <hr />
       <nav className="navLinks">
         <ul>
-          <li className={currentUrl.pathname === "/clients" ? "activeLink" : ""}>
+          <li
+            className={currentUrl.pathname === "/clients" ? "activeLink" : ""}
+          >
             <img src="/Assets/clients.png" alt="clients" width={20} />
             <a href="/clients">Clients</a>
           </li>
-          <ul className="subNavLinks">
-            <li className={currentUrl.pathname === "/clients/add-client" ? "activeSubLink" : ""}><a href="/clients/add-client">Ajouter client</a></li>
-          </ul>
+          {/* <ul className="subNavLinks">
+            <li
+              className={
+                currentUrl.pathname === "/clients/add-client"
+                  ? "activeSubLink"
+                  : ""
+              }
+            >
+              <a href="/clients/add-client">Ajouter client</a>
+            </li>
+          </ul> */}
           <li>
             <img src="/Assets/counter.png" alt="compteur" width={20} />
-            <span>Compteurs</span>
+            <a href="/compteurs">Compteur</a>
           </li>
-          <ul className="subNavLinks">
-            <li>Ajouter Compteur</li>
-          </ul>
+          {/* <ul className="subNavLinks">
+            <li
+              className={
+                currentUrl.pathname === "/compteurs/add-compteur"
+                  ? "activeSubLink"
+                  : ""
+              }
+            >
+              <a href="/compteurs/add-compteur">Ajouter compteur</a>
+            </li>
+          </ul> */}
           <li>
             <img src="/Assets/bill.png" alt="facture" width={20} />
-            <span>Facture</span>
+            <a href="/factures">Facture</a>
           </li>
-          <ul className="subNavLinks">
-            <li>Creer facture</li>
-            <li>Imprimer facture</li>
-          </ul>
+          {/* <ul className="subNavLinks">
+            <li
+              className={
+                currentUrl.pathname === "/factures/add-facture"
+                  ? "activeSubLink"
+                  : ""
+              }
+            >
+              <a href="/factures/add-facture">Creer facture</a>
+            </li>
+          </ul> */}
           <li>
             <img src="/Assets/tranche.png" alt="tranche" width={20} />
-            <span>Tranche</span>
+            <a href="/tranches">Tranche</a>
           </li>
-          <ul className="subNavLinks">
-            <li>Creer tranche</li>
-          </ul>
+          {/* <ul className="subNavLinks">
+            <li
+              className={
+                currentUrl.pathname === "/tranches/add-tranche"
+                  ? "activeSubLink"
+                  : ""
+              }
+            >
+              <a href="/tranches/add-tranche">Creer tranche</a>
+            </li>
+          </ul> */}
         </ul>
       </nav>
     </div>

@@ -23,9 +23,9 @@ const getOneClient = async (req, res) => {
 };
 
 const createClient = async (req, res) => {
+  const { companyId } = req.body;
+  
   try {
-    const { companyId } = req.body;
-
     const maxNumClient = await Client.findOne({companyId : companyId}).sort({ numClient: -1 })
     const newMaxNumClient = maxNumClient ? maxNumClient.numClient+1 : 1
     const addedClient = await Client.create({...req.body , numClient : newMaxNumClient});

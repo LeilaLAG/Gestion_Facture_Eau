@@ -36,7 +36,7 @@ export default function Clients() {
     }
 
     Swal.fire({
-      title: `<i class="bi bi-trash3-fill"></i>`,
+      title: `<i className="bi bi-trash3-fill"></i>`,
       text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -74,24 +74,50 @@ export default function Clients() {
           <div className="pb-2">
             <article
               style={{ position: "sticky", top: "0%" }}
-              className="pt-4 pb-2 p-1 bg-white"
+              className="pt-2 pb-2 bg-white accordion"
+              id="accordionExample"
             >
-              <div className="mb-3">
-                <div className="d-flex align-items-center gap-3">
-                  <img src="/Assets/filter.png" alt="filter" width={20} />
-                  <hr width={20} />
-                  <input type="text" />
-                  <input type="text" />
-                  <input type="text" />
-                </div>
-                <div className="d-flex align-items-center gap-3 mt-2">
-                  <img src="/Assets/sort.png" alt="filter" width={20} />
-                  <hr width={20} />
-                  <input type="text" />
-                  <input type="text" />
+              <div className="accordion-item border border-4">
+                <h2 className="accordion-header">
+                  <button
+                    className="accordion-button fw-bold p-2"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    <img src="/Assets/filterIcon.png" alt="" width={20} />
+                    <span className="m-3 mt-0 mb-0">
+                      Filtrer les données clients
+                    </span>
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  className="accordion-collapse collapse show"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div className="accordion-body pt-4 pb-4">
+                    <div className="">
+                      <div className="d-flex align-items-center gap-3">
+                        <img src="/Assets/filter.png" alt="filter" width={20} />
+                        <hr width={20} />
+                        <input type="text" />
+                        <input type="text" />
+                        <input type="text" />
+                      </div>
+                      <div className="d-flex align-items-center gap-3 mt-2">
+                        <img src="/Assets/sort.png" alt="filter" width={20} />
+                        <hr width={20} />
+                        <input type="text" />
+                        <input type="text" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="d-flex align-items-center gap-4">
+              <div className="d-flex align-items-center gap-4 p-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
                   <img
                     src="/Assets/clients.png"
@@ -119,6 +145,13 @@ export default function Clients() {
                     }
                   </span>
                 </div>
+                <a
+                  href="/clients/add-client"
+                  className="btn btn-success pt-1 pb-1 p-3 fw-bold"
+                  style={{ fontSize: "13px" }}
+                >
+                  Ajouter un nouveau client
+                </a>
               </div>
             </article>
             <table
@@ -210,7 +243,7 @@ export default function Clients() {
                         <td>
                           <form onSubmit={(e) => handleDeleteClient(e, client)}>
                             <button className="btn btn-danger">
-                              <i class="bi bi-trash3-fill"></i>
+                              <i className="bi bi-trash3-fill"></i>
                             </button>
                           </form>
                         </td>

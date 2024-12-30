@@ -4,12 +4,13 @@
     padding: 30px;
 }
 
-/* .UserInfoSegment {
-} */
-
-.userSetting {
+.userSetting , .userSetting img {
     cursor: pointer;
-    position: relative;
+    transition: .5s;
+}
+
+.userSetting img:hover {
+    transform: rotate(180deg);
 }
 
 .userSettingBox {
@@ -26,10 +27,11 @@
 }
 
 .userFullName {
-    font-size: 30px;
+    font-size: 25px;
     text-transform: capitalize;
     max-width: 70%;
     padding-left: .5rem;
+    font-weight: 600;
 }
 
 .userFunction {
@@ -41,7 +43,6 @@
     opacity: .7;
     font-size: 15px;
     width: 70%;
-    padding-left: .5rem;
     word-wrap: break-word;
 }
 
@@ -65,6 +66,7 @@
     padding-left: 10px;
     transition: .2s;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .navLinks>ul>li a {
@@ -76,16 +78,17 @@
 
 .subNavLinks {
     width: 80%;
+    margin: 5px 0;
 }
 
 .subNavLinks>li {
     padding: 5px;
-    margin: 5px;
     font-size: 15px;
     text-decoration: underline;
     font-weight: lighter;
     transition: .2s;
     border-radius: 5px;
+    list-style-type: none;
 }
 
 .subNavLinks>li a {
