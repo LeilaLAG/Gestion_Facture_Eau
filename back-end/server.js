@@ -18,6 +18,7 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  resetPassword
 } = require("./controllers/userController");
 const {
   getClients,
@@ -97,6 +98,7 @@ app.get("/api/users", getUsers);
 app.get("/api/user/:userId", getOneUser);
 app.put("/api/updateUser/:userId", updateUser);
 app.delete("/api/deleteUser/:userId", deleteUser);
+app.post("/api/ResetPassword" , resetPassword)
 
 // Client
 app.get("/api/clients/:companyId", getClients);

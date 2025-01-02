@@ -10,6 +10,7 @@ import Clients from "./components/Clients";
 import AddForm from "./components/AddForm";
 import ModForm from "./components/MofFrom";
 import UserModFrom from "./components/UserModFrom";
+import PasswordReset from "./components/PasswordReset";
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UserModFrom />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users/reset-user-password/:userId"
+          element={
+            <ProtectedRoute>
+              <PasswordReset />
             </ProtectedRoute>
           }
         />

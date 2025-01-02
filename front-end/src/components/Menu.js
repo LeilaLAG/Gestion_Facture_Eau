@@ -31,8 +31,8 @@ export default function Menu() {
             </li>
             <hr className="mt-1 mb-1" />
             <li>
-              <a className="dropdown-item" href="/">
-                Initialiser mot de passe
+              <a className="dropdown-item" href={`/users/reset-user-password/${user._id}`}>
+                Reinitialiser mot de passe
               </a>
             </li>
           </ul>
