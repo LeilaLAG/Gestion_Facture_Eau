@@ -7,10 +7,25 @@ import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
 import { useParams } from "react-router-dom";
 import ErrorMsg from "../costumComponents/ErrorMsg";
+import GetClients from "../hooks/GetClients";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
   const { clientId } = useParams();
+  const { compteurId } = useParams();
+  const [clients, setClients] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await axios.get(
+        `http://localhost:8000/api/clients/${user.companyId}/`,
+        {
+          withCredentials: true,
+        }
+      );
+      setClients(data.data.Clients);
+    }
+    fetchData();
+  }, [user.companyId]);
 
   let dataObject = {};
   let endPoint = "";
@@ -28,7 +43,11 @@ export default function ModForm({ page }) {
     endPoint = "updateClient";
   } else if (page === "compteur") {
     dataObject = {
-      //
+      startPoint: 0,
+      useDate: "",
+      credit: 0.0,
+      numClient: "",
+      companyId: user.companyId,
     };
     endPoint = "updateCompteur";
   }
@@ -48,13 +67,25 @@ export default function ModForm({ page }) {
   }
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/client/${clientId}/${user.companyId}`, {
-        withCredentials: true,
-      })
-      .then((res) => setDataToMod(res.data.client))
-      .catch((err) => toast.error("Un problem est servenue!"));
-  }, [clientId, user.companyId]);
+    if (clientId) {
+      axios
+        .get(`http://localhost:8000/api/client/${clientId}/${user.companyId}`, {
+          withCredentials: true,
+        })
+        .then((res) => setDataToMod(res.data.client))
+        .catch((err) => toast.error("Un problem est servenue!"));
+    } else if (compteurId) {
+      axios
+        .get(
+          `http://localhost:8000/api/compteurs/${compteurId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.compteur))
+        .catch((err) => toast.error("Un problem est servenue!"));
+    }
+  }, [clientId, compteurId, user.companyId]);
 
   function handleModInfo(e) {
     e.preventDefault();
@@ -87,7 +118,17 @@ export default function ModForm({ page }) {
   }
 
   function checkCompteurInfo() {
-    //validation compteur
+    if (page === "compteur") {
+      if (dataToMod.useDate === "") {
+        toast.error("Saisir la date d'utilisation du compteur");
+        return false;
+      } else if (dataToMod.numClient === "") {
+        toast.error("Choisir un client!");
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   function handleModData(e) {
@@ -96,18 +137,22 @@ export default function ModForm({ page }) {
     if (checkClientInfo() || checkCompteurInfo()) {
       setLoading(true);
       axios
-        .put(`http://localhost:8000/api/${endPoint}/${clientId}`, dataToMod, {
-          withCredentials: true,
-        })
+        .put(
+          `http://localhost:8000/api/${endPoint}/${clientId || compteurId}`,
+          dataToMod,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
-          setErrorMsgs("")
+          setErrorMsgs("");
         })
         .catch((err) => {
           setLoading(false);
           toast.error("Un problem est servenue lors de la modification!");
-          if(page === "client"){
+          if (page === "client") {
             setErrorMsgs(
               "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
             );
@@ -193,6 +238,104 @@ export default function ModForm({ page }) {
                     value={dataToMod.tele}
                     onChange={(e) => handleModInfo(e)}
                   />
+                </div>
+              </div>
+            )}
+
+            {page === "compteur" && (
+              <div className="mt-2">
+                <div className="mb-3">
+                  <label className="d-block">Point de depart</label>
+                  <input
+                    type="number"
+                    name="startPoint"
+                    className="form-control"
+                    placeholder="Saisir le point de depart"
+                    value={dataToMod.startPoint}
+                    onChange={(e) => handleModInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Date D'utilisation</label>
+                  <input
+                    type="date"
+                    name="useDate"
+                    className="form-control"
+                    placeholder="Choisir la date d'utilisation"
+                    value={dataToMod.useDate}
+                    onChange={(e) => handleModInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Credit</label>
+                  <input
+                    type="number"
+                    name="credit"
+                    className="form-control"
+                    value={dataToMod.credit}
+                    onChange={(e) => handleModInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Client</label>
+                  <select name="numClient" onChange={(e) => handleModInfo(e)}>
+                    {clients.map((client) => {
+                      if (client.numClient === dataToMod.numClient) {
+                        return (
+                          <option
+                            key={client.numClient}
+                            value={client.numClient}
+                            selected
+                          >
+                            {client.nameClient}
+                          </option>
+                        );
+                      }
+                      return (
+                        <option key={client.numClient} value={client.numClient}>
+                          {client.nameClient}
+                        </option>
+                      );
+                    })}
+                    {clients.length <= 0 ? (
+                      <option>
+                        <ErrorMsg
+                          msg={"Aucun data"}
+                          errorIconWidth={20}
+                          coleur={"red"}
+                          boldness="bold"
+                          imgPath="Assets/empty.png"
+                        />
+                      </option>
+                    ) : (
+                      clients.map((client, i) =>
+                        client.error ? (
+                          <option key={i}>
+                            {" "}
+                            <ErrorMsg
+                              msg={client.error}
+                              errorIconWidth={20}
+                              coleur={"red"}
+                              boldness="bold"
+                              imgPath="Assets/error.png"
+                            />
+                          </option>
+                        ) : client.numClient === dataToMod.numClient ? (
+                          <option
+                            key={client.numClient}
+                            value={client.numClient}
+                            selected
+                          >
+                            {client.nameClient}
+                          </option>
+                        ) : (
+                          <option key={i} value={client.numClient}>
+                            {client.nameClient}
+                          </option>
+                        )
+                      )
+                    )}
+                  </select>
                 </div>
               </div>
             )}

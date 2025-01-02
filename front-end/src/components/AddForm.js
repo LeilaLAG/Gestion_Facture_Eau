@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Main from "./Main";
 import Menu from "./Menu";
 import { useUser } from "../Auth/ProtectedRoute";
@@ -6,10 +6,23 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
 import ErrorMsg from "../costumComponents/ErrorMsg";
+// import GetClients from "../hooks/GetClients";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
-
+  const [clients, setClients] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await axios.get(
+        `http://localhost:8000/api/clients/${user.companyId}/`,
+        {
+          withCredentials: true,
+        }
+      );
+      setClients(data.data.Clients);
+    }
+    fetchData();
+  }, [user.companyId]);
   let dataObject = {};
   let endPoint = "";
 
@@ -26,7 +39,11 @@ export default function AddForm({ page }) {
     endPoint = "addClient";
   } else if (page === "compteur") {
     dataObject = {
-      //
+      startPoint: 0,
+      useDate: "",
+      credit: 0.0,
+      numClient: "",
+      companyId: user.companyId,
     };
     endPoint = "addCompteur";
   }
@@ -38,6 +55,7 @@ export default function AddForm({ page }) {
   function handleAddInfo(e) {
     e.preventDefault();
     setDataToAdd({ ...dataToAdd, [e.target.name]: e.target.value });
+    console.log(dataToAdd);
   }
 
   function checkClientInfo() {
@@ -63,7 +81,17 @@ export default function AddForm({ page }) {
   }
 
   function checkCompteurInfo() {
-    //validation compteur
+    if (page === "compteur") {
+      if (dataToAdd.useDate === "") {
+        toast.error("Saisir la date d'utilisation du compteur");
+        return false;
+      } else if (dataToAdd.numClient === "") {
+        toast.error("Choisir un client!");
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   function handleAddNewData(e) {
@@ -83,8 +111,10 @@ export default function AddForm({ page }) {
         .catch((err) => {
           setLoading(false);
           toast.error("Un problem est servenue lors de l'ajout!");
-          if(page === "client"){
-            setErrorMsgs("CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société");
+          if (page === "client") {
+            setErrorMsgs(
+              "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
+            );
           }
         });
     }
@@ -163,6 +193,75 @@ export default function AddForm({ page }) {
                     placeholder="Saisir le numero de telephone du client"
                     onChange={(e) => handleAddInfo(e)}
                   />
+                </div>
+              </div>
+            )}
+
+            {page === "compteur" && (
+              <div className="mt-2">
+                <div className="mb-3">
+                  <label className="d-block">Point de depart</label>
+                  <input
+                    type="number"
+                    name="startPoint"
+                    className="form-control"
+                    placeholder="Saisir le point de depart"
+                    onChange={(e) => handleAddInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Date D'utilisation</label>
+                  <input
+                    type="date"
+                    name="useDate"
+                    className="form-control"
+                    placeholder="Choisir la date d'utilisation"
+                    onChange={(e) => handleAddInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Credit</label>
+                  <input
+                    type="number"
+                    name="credit"
+                    className="form-control"
+                    onChange={(e) => handleAddInfo(e)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="d-block">Client</label>
+                  <select name="numClient" onChange={(e) => handleAddInfo(e)}>
+                    {clients.length <= 0 ? (
+                      <option>
+                        <ErrorMsg
+                          msg={"Aucun data"}
+                          errorIconWidth={20}
+                          coleur={"red"}
+                          boldness="bold"
+                          imgPath="Assets/empty.png"
+                        />
+                      </option>
+                    ) : (
+                      clients.map((client, i) =>
+                        client.error ? (
+                          <option key={i}>
+                            {" "}
+                            <ErrorMsg
+                              msg={client.error}
+                              errorIconWidth={20}
+                              coleur={"red"}
+                              boldness="bold"
+                              imgPath="Assets/error.png"
+                            />
+                          </option>
+                        ) : (
+                          <option key={i} value={client.numClient}>
+                            {client.nameClient}
+                          </option>
+                        )
+                      )
+                    )}
+                  </select>
                 </div>
               </div>
             )}

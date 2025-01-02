@@ -2,30 +2,29 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 
-export default function GetClients() {
-  const [clients, setClients] = useState(null);
+export default function GetCompteurs() {
+  const [compteurs, setCompteurs] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
 
   useEffect(() => {
-    async function fetchClientsData() {
+    async function fetchCompteursData() {
       await axios
-        .get(`http://localhost:8000/api/clients/${user.companyId}/`, {
+        .get(`http://localhost:8000/api/compteurs/${user.companyId}/`, {
           withCredentials: true,
         })
         .then((res) => {
-          console.log(res.data.Clients);
-          setClients(res.data.Clients);
+          setCompteurs(res.data.compteurs);
           setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
-          setClients([{ error: "Un problem est servenue!" }]);
+          setCompteurs([{ error: "Un problem est servenue!" }]);
         });
     }
 
-    fetchClientsData();
+    fetchCompteursData();
   }, [user.companyId]);
-  return loading ? "loading" : clients;
+  return loading ? "loading" : compteurs;
 }

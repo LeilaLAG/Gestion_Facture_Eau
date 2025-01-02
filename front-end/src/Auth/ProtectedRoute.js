@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-import Loading from '../costumComponents/Loading';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import axios from "axios";
+import Loading from "../costumComponents/Loading";
 
 const userContext = createContext();
 
@@ -12,21 +12,29 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const res = await axios.post('http://localhost:8000/api/checkAuth', {}, { withCredentials: true });
+        const res = await axios.post(
+          "http://localhost:8000/api/checkAuth",
+          {},
+          { withCredentials: true }
+        );
         setIsAuthenticated(res.data.user);
         setUser(res.data.userInfo);
       } catch (err) {
-        console.error('Authentication failed:', err);
+        console.error("Authentication failed:", err);
         setIsAuthenticated(false);
       }
     };
 
     const refreshAuthToken = async () => {
       try {
-        await axios.post('http://localhost:8000/api/refresh-token', {}, { withCredentials: true });
-        console.log('Session refreshed');
+        await axios.post(
+          "http://localhost:8000/api/refresh-token",
+          {},
+          { withCredentials: true }
+        );
+        console.log("Session refreshed");
       } catch (err) {
-        console.error('Session expired:', err);
+        console.error("Session expired:", err);
         setIsAuthenticated(false);
       }
     };
@@ -36,7 +44,7 @@ const ProtectedRoute = ({ children }) => {
     refreshAuthToken();
 
     // Set up periodic token refresh
-    const interval = setInterval(refreshAuthToken, 55 * 60 * 1000); 
+    const interval = setInterval(refreshAuthToken, 55 * 60 * 1000);
 
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
