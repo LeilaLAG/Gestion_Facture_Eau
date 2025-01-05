@@ -29,12 +29,6 @@ export default function Menu() {
                 Modifier votre profile
               </a>
             </li>
-            <hr className="mt-1 mb-1" />
-            <li>
-              <a className="dropdown-item" href={`/users/reset-user-password/${user._id}`}>
-                Reinitialiser mot de passe
-              </a>
-            </li>
           </ul>
         </div>
       </div>
@@ -70,7 +64,7 @@ export default function Menu() {
                 onSubmit={() => {
                   axios
                     .post(
-                      "http://localhost:8000/api/logout",
+                      `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/logout`,
                       {},
                       { withCredentials: true }
                     )
@@ -113,7 +107,9 @@ export default function Menu() {
               <a href="/clients/add-client">Ajouter client</a>
             </li>
           </ul> */}
-          <li>
+          <li
+          className={currentUrl.pathname === "/compteurs" ? "activeLink" : ""}
+          >
             <img src="/Assets/counter.png" alt="compteur" width={20} />
             <a href="/compteurs">Compteur</a>
           </li>

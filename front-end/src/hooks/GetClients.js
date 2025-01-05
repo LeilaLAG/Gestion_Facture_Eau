@@ -11,11 +11,10 @@ export default function GetClients() {
   useEffect(() => {
     async function fetchClientsData() {
       await axios
-        .get(`http://localhost:8000/api/clients/${user.companyId}/`, {
+        .get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/clients/${user.companyId}/`, {
           withCredentials: true,
         })
         .then((res) => {
-          console.log(res.data.Clients);
           setClients(res.data.Clients);
           setLoading(false);
         })

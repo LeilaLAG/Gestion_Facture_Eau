@@ -28,7 +28,7 @@ export default function LogIn() {
 
     await axios
       .post(
-        "http://localhost:8000/api/login",
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/login`,
         {
           email: loginUser.email,
           password: loginUser.password,
@@ -97,6 +97,9 @@ export default function LogIn() {
                 style={{ bottom: "20%" }}
                 onClick={() => setShowPassword((prev) => !prev)}
               />
+            </div>
+            <div className="text-end">
+              <a style={{fontSize : "14px"}} href="/reset-password">Mot de pass oublier?</a>
             </div>
             <button
               className="btn btn-dark w-100 mt-3 fw-bold"

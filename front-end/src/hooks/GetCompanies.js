@@ -7,7 +7,7 @@ export default function GetCompanies() {
 
     useEffect(()=>{
         async function fetchCompaniesData(){
-            await axios.get("http://localhost:8000/api/companies/")
+            await axios.get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/companies/`)
             .then(res=>setAllCompanies(res.data.companies))
         }
 

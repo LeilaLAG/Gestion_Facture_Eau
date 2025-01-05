@@ -39,7 +39,7 @@ export default function UserModFrom() {
     } else {
       axios
         .put(
-          `http://localhost:8000/api/updateUser/${userId}`,
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/updateUser/${userId}`,
           userToMod,
           { withCredentials: true }
         )

@@ -13,7 +13,7 @@ const getCompteurs = async (req, res) => {
 const getOneCompteur = async (req, res) => {
   try {
     const { compteurId, companyId } = req.params;
-    const compteur = await Compteur.find({
+    const compteur = await Compteur.findOne({
       companyId: companyId,
       _id: compteurId,
     });

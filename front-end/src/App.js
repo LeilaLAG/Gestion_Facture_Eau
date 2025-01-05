@@ -56,6 +56,12 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/reset-password"
+          element={
+            <PasswordReset />
+          }
+        />
 
         {/* compteurs ---------------------------------------------------- */}
         <Route

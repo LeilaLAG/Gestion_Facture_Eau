@@ -1,9 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-
-const Security_key = process.env.SECURE_KEY;
 
 const getUsers = async (req, res) => {
   const users = await User.find({});
@@ -48,41 +45,89 @@ const deleteUser = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const { email, userId } = req.body;
+  const { email } = req.body;
 
   try {
-    // Generate a JWT token
-    const Security_key = "your_security_key"; // Replace with your secret key
-    const token = jwt.sign({ userId: userId }, Security_key, {
-      expiresIn: "1h",
-    });
+    const verification_code = Math.floor(
+      Math.pow(10, 4 - 1) +
+        Math.random() * (Math.pow(10, 4) - Math.pow(10, 4 - 1))
+    );
 
-    // Create password reset link
-    const requestPasswordResetUrl = `http://localhost:8000/request-password-reset?token=${token}`;
-
-    // Create the transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "mail.m5tech.ma",
+      port: 587,
+      secure: false, // Use false for port 587
       auth: {
-        user: "anassboussalem8@gmail.com", // Replace with your email
-        pass: "your-app-password", // Replace with your Gmail app password
+        user: "anas@m5tech.ma", // Your email
+        pass: "Anas@G-FE07", // Your email password
       },
     });
 
-    // Send the email
-    await transporter.sendMail({
-      from: "anassboussalem8@gmail.com", // Sender's email
-      to: email, // Recipient's email
-      subject: "Password Reset",
-      text: `Reset your password here: ${requestPasswordResetUrl}`,
-    });
+    // HTML email body
+    const emailBody = `
+            <p>Votre code vérification est: <strong>${verification_code}</strong></p>
+            <div style="font-weight:900; color:#fdd85a; -webkit-text-stroke: 2px black;">
+            </div>
+            <br>
+            <h2 style="color:#fdd85a;">------------------------------------------</h2>
+            <br>
+            <div style="font-family: Arial, sans-serif; color: #333;">
+                <img src="/Assets/logo.png" width="50">
+                <h4 style="margin-top:5px; margin-bottom:5px; font-size: 12px; color: #fdd85a;">
+                    <span style="padding:5px; background-color:#463300; border-top-left-radius:10px; border-bottom-right-radius:10px;">No-Reply</span>
+                </h4>
+                <p style="margin: 0; font-size: 10px;">
+                    <a href="mailto:support@chronoflare.com" style="font-size: 10px; text-decoration: none; color: #333; font-weight: bold;">support@chronoflare.com</a><br>
+                    <span style="font-size: 10px;">+212 645-350405 | +212 524-012688</span><br>
 
-    return res.status(200).send("Password reset email sent");
-  } catch (err) {
-    console.error("Error sending email:", err);
-    return res.status(500).json({ error: "Error sending email" });
+                    <a href="https://chronoflare.com" style="color: #463300; text-decoration: none;">chronoflare.com</a>
+                </p>
+            </div>
+        `;
+
+    // Mail options
+    const mailOptions = {
+      from: '"GFE Support" <no-reply@chronoflare.com>', // Sender name and email
+      to: email, // Recipient email
+      subject: "RECUPERATION DE MOT DE PASSE",
+      html: emailBody, // HTML body
+    };
+
+    // Send the email
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({ verification_code });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return res
+      .status(500)
+      .send("Une erreur s'est produite lors de l'envoi de l'e-mail.");
   }
 };
 
+async function ModifyPassword(req, res) {
+  const { email } = req.params;
 
-module.exports = { getUsers, getOneUser, createUser, updateUser, deleteUser , resetPassword };
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const userToUpdatePassword = await User.findOneAndUpdate(
+      { email: email },
+      {
+        password: hashedPassword,
+      }
+    );
+    return res.status(200).json({ userToUpdatePassword });
+  } catch (err) {
+    return res.status(400).json({ error: "Error updating user" });
+  }
+}
+
+module.exports = {
+  getUsers,
+  getOneUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  resetPassword,
+  ModifyPassword,
+};

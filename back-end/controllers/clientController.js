@@ -4,7 +4,6 @@ const getClients = async (req, res) => {
   try {
     const { companyId } = req.params;
     const Clients = await Client.find({ companyId: companyId });
-    console.log(Clients);
     return res.status(200).json({ Clients });
   } catch (err) {
     return res.status(400).json({ error: "Server Error getting all clients" });

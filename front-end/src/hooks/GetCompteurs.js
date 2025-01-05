@@ -11,7 +11,7 @@ export default function GetCompteurs() {
   useEffect(() => {
     async function fetchCompteursData() {
       await axios
-        .get(`http://localhost:8000/api/compteurs/${user.companyId}/`, {
+        .get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/compteurs/${user.companyId}/`, {
           withCredentials: true,
         })
         .then((res) => {

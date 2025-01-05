@@ -18,7 +18,8 @@ const {
   createUser,
   deleteUser,
   updateUser,
-  resetPassword
+  resetPassword,
+  ModifyPassword
 } = require("./controllers/userController");
 const {
   getClients,
@@ -74,6 +75,10 @@ app.post("/api/addUser", createUser);
 // all companies
 app.get("/api/companies", getCompanies);
 
+// password reset
+app.post("/api/ResetPassword" , resetPassword)
+app.put("/api/modify_password/:email" , ModifyPassword)
+
 // authentication middleware
 app.use("/api", authenticate);
 
@@ -101,11 +106,10 @@ app.get("/api/users", getUsers);
 app.get("/api/user/:userId", getOneUser);
 app.put("/api/updateUser/:userId", updateUser);
 app.delete("/api/deleteUser/:userId", deleteUser);
-app.post("/api/ResetPassword" , resetPassword)
 
 // Client
 app.get("/api/clients/:companyId", getClients);
-app.get("/api/client/:clientId/:companyId", getOneClient);
+app.get("/api/clients/:clientId/:companyId", getOneClient);
 app.post("/api/addClient", createClient);
 app.put("/api/updateClient/:clientId", updateClient);
 app.delete("/api/deleteClient/:clientId", deleteClient);
@@ -142,7 +146,10 @@ app.post("/api/logout", (req, res) => {
 });
 
 // db connection
-mongoose.connect("mongodb://127.0.0.1:27017/db_GFE");
-app.listen(8000, () => {
-  console.log("server is listening on port 8000");
+const host = process.env.Host;
+const port = process.env.Port;
+const db = process.env.DBName;
+mongoose.connect(`${host}/${db}`);
+app.listen(port, () => {
+  console.log(`server is listening on port ${port}`);
 });

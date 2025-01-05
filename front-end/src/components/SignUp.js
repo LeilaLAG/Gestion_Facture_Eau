@@ -63,15 +63,15 @@ export default function SignUp() {
         .match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
       toast.error("Le format de l'adresse Email est invalide!");
-    } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{5,}/)) {
-      toast.error("Le mot de passe doit contien 5 caracteres minimum!");
+    } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{8,}/)) {
+      toast.error("Le mot de passe doit contien 8 caracteres minimum!");
     } else if (user.function === "") {
       toast.error("Choisir votre fonction!");
     } else {
       setSignupLoading(true);
       setIsDisabled(true);
       await axios
-        .post("http://localhost:8000/api/addCompany", { companyName: company })
+        .post(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addCompany`, { companyName: company })
         .then((res) => {
           console.log("company created");
         })
@@ -83,7 +83,7 @@ export default function SignUp() {
           );
         });
       await axios
-        .post("http://localhost:8000/api/addUser", {
+        .post(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addUser`, {
           ...user,
           companyId: company,
           password: user.password,

@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
     const verifyAuth = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:8000/api/checkAuth",
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/checkAuth`,
           {},
           { withCredentials: true }
         );
@@ -28,7 +28,7 @@ const ProtectedRoute = ({ children }) => {
     const refreshAuthToken = async () => {
       try {
         await axios.post(
-          "http://localhost:8000/api/refresh-token",
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/refresh-token`,
           {},
           { withCredentials: true }
         );

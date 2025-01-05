@@ -8,24 +8,14 @@ import ActionLoading from "../costumComponents/ActionLoading";
 import { useParams } from "react-router-dom";
 import ErrorMsg from "../costumComponents/ErrorMsg";
 import GetClients from "../hooks/GetClients";
+import ModClient from "./crufForm/ModClient";
+import ModCompteur from "./crufForm/ModCompteur";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
   const { clientId } = useParams();
   const { compteurId } = useParams();
-  const [clients, setClients] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      const data = await axios.get(
-        `http://localhost:8000/api/clients/${user.companyId}/`,
-        {
-          withCredentials: true,
-        }
-      );
-      setClients(data.data.Clients);
-    }
-    fetchData();
-  }, [user.companyId]);
+  const clients = GetClients();
 
   let dataObject = {};
   let endPoint = "";
@@ -46,7 +36,7 @@ export default function ModForm({ page }) {
       startPoint: 0,
       useDate: "",
       credit: 0.0,
-      numClient: "",
+      numClient: 0,
       companyId: user.companyId,
     };
     endPoint = "updateCompteur";
@@ -56,28 +46,21 @@ export default function ModForm({ page }) {
   const [loading, setLoading] = useState(false);
   const [errorMsgs, setErrorMsgs] = useState("");
 
-  function convertDate(inputdate) {
-    const date = new Date(inputdate);
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-
-    console.log(`${yyyy}-${mm}-${dd}`);
-    return `${yyyy}-${mm}-${dd}`;
-  }
-
   useEffect(() => {
     if (clientId) {
       axios
-        .get(`http://localhost:8000/api/client/${clientId}/${user.companyId}`, {
-          withCredentials: true,
-        })
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/clients/${clientId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => setDataToMod(res.data.client))
         .catch((err) => toast.error("Un problem est servenue!"));
     } else if (compteurId) {
       axios
         .get(
-          `http://localhost:8000/api/compteurs/${compteurId}/${user.companyId}`,
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/compteurs/${compteurId}/${user.companyId}`,
           {
             withCredentials: true,
           }
@@ -138,7 +121,7 @@ export default function ModForm({ page }) {
       setLoading(true);
       axios
         .put(
-          `http://localhost:8000/api/${endPoint}/${clientId || compteurId}`,
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/${endPoint}/${clientId || compteurId}`,
           dataToMod,
           {
             withCredentials: true,
@@ -151,7 +134,7 @@ export default function ModForm({ page }) {
         })
         .catch((err) => {
           setLoading(false);
-          toast.error("Un problem est servenue lors de la modification!");
+          toast.error("Un problem est servenu lors de la modification!");
           if (page === "client") {
             setErrorMsgs(
               "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
@@ -195,149 +178,11 @@ export default function ModForm({ page }) {
               />
             )}
             {page === "client" && (
-              <div className="mt-2">
-                <div className="mb-3">
-                  <label className="d-block">Nom complet</label>
-                  <input
-                    type="text"
-                    name="nameClient"
-                    className="form-control"
-                    placeholder="Saisir le nom complet du client"
-                    value={dataToMod.nameClient}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">CIN</label>
-                  <input
-                    type="text"
-                    name="cin"
-                    className="form-control"
-                    placeholder="Saisir le CIN du client"
-                    value={dataToMod.cin}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">Date de naissance</label>
-                  <input
-                    type="date"
-                    name="birthDate"
-                    className="form-control"
-                    value={convertDate(dataToMod.birthDate)}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">Telephone</label>
-                  <input
-                    type="text"
-                    name="tele"
-                    className="form-control"
-                    placeholder="Saisir le numero de telephone du client"
-                    value={dataToMod.tele}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-              </div>
+              <ModClient onChangeModInfo={e=>handleModInfo(e)} dataToMod={dataToMod} />
             )}
 
             {page === "compteur" && (
-              <div className="mt-2">
-                <div className="mb-3">
-                  <label className="d-block">Point de depart</label>
-                  <input
-                    type="number"
-                    name="startPoint"
-                    className="form-control"
-                    placeholder="Saisir le point de depart"
-                    value={dataToMod.startPoint}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">Date D'utilisation</label>
-                  <input
-                    type="date"
-                    name="useDate"
-                    className="form-control"
-                    placeholder="Choisir la date d'utilisation"
-                    value={dataToMod.useDate}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">Credit</label>
-                  <input
-                    type="number"
-                    name="credit"
-                    className="form-control"
-                    value={dataToMod.credit}
-                    onChange={(e) => handleModInfo(e)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="d-block">Client</label>
-                  <select name="numClient" onChange={(e) => handleModInfo(e)}>
-                    {clients.map((client) => {
-                      if (client.numClient === dataToMod.numClient) {
-                        return (
-                          <option
-                            key={client.numClient}
-                            value={client.numClient}
-                            selected
-                          >
-                            {client.nameClient}
-                          </option>
-                        );
-                      }
-                      return (
-                        <option key={client.numClient} value={client.numClient}>
-                          {client.nameClient}
-                        </option>
-                      );
-                    })}
-                    {clients.length <= 0 ? (
-                      <option>
-                        <ErrorMsg
-                          msg={"Aucun data"}
-                          errorIconWidth={20}
-                          coleur={"red"}
-                          boldness="bold"
-                          imgPath="Assets/empty.png"
-                        />
-                      </option>
-                    ) : (
-                      clients.map((client, i) =>
-                        client.error ? (
-                          <option key={i}>
-                            {" "}
-                            <ErrorMsg
-                              msg={client.error}
-                              errorIconWidth={20}
-                              coleur={"red"}
-                              boldness="bold"
-                              imgPath="Assets/error.png"
-                            />
-                          </option>
-                        ) : client.numClient === dataToMod.numClient ? (
-                          <option
-                            key={client.numClient}
-                            value={client.numClient}
-                            selected
-                          >
-                            {client.nameClient}
-                          </option>
-                        ) : (
-                          <option key={i} value={client.numClient}>
-                            {client.nameClient}
-                          </option>
-                        )
-                      )
-                    )}
-                  </select>
-                </div>
-              </div>
+              <ModCompteur onChangeModInfo={e=>handleModInfo(e)} dataToMod={dataToMod} clients={clients} />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">
               <button

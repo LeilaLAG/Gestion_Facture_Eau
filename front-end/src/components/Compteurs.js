@@ -8,6 +8,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useUser } from "../Auth/ProtectedRoute";
+import GetClients from "../hooks/GetClients";
 
 export default function Compteurs() {
   const { user } = useUser();
@@ -19,6 +20,7 @@ export default function Compteurs() {
   };
 
   let compteursData = GetCompteurs();
+  const clientData = GetClients()
 
   //To enable realtime deletion simulating websockets
   const [compteurs, setCompteurs] = useState([]);
@@ -36,8 +38,8 @@ export default function Compteurs() {
     }
 
     Swal.fire({
-      title: `<i className="bi bi-trash3-fill"></i>`,
-      text: `Etes vous sure de supprimer le compteur ${compteurToDlt.numCompteur}`,
+      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      text: `Etes vous sure de supprimer le compteur N°${compteurToDlt.numCompteur}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
       confirmButtonText: "Oui, supprimer",
@@ -47,7 +49,7 @@ export default function Compteurs() {
       if (res.isConfirmed) {
         axios
           .delete(
-            `http://localhost:8000/api/deleteCompteur/${compteurToDlt._id}`,
+            `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/deleteCompteur/${compteurToDlt._id}`,
             {
               withCredentials: true,
             }
@@ -167,7 +169,7 @@ export default function Compteurs() {
                   <th>Point De Depart</th>
                   <th>Date d'utilisation</th>
                   <th>Credit</th>
-                  <th>Num Client</th>
+                  <th>Nom Client</th>
                   <th>Date de modification</th>
                   <th colSpan={2}>Actions</th>
                 </tr>
@@ -210,7 +212,7 @@ export default function Compteurs() {
                           )}
                         </td>
                         <td>{compteur.credit}</td>
-                        <td>{compteur.numClient}</td>
+                        <td>{clientData !== "loading" && clientData.find(client=>client.numClient === compteur.numClient).nameClient}</td>
                         <td>
                           {!compteur.modified_at
                             ? "-"

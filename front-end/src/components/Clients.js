@@ -36,7 +36,7 @@ export default function Clients() {
     }
 
     Swal.fire({
-      title: `<i className="bi bi-trash3-fill"></i>`,
+      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -46,7 +46,7 @@ export default function Clients() {
     }).then((res) => {
       if (res.isConfirmed) {
         axios
-          .delete(`http://localhost:8000/api/deleteClient/${clientToDlt._id}`, {
+          .delete(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/deleteClient/${clientToDlt._id}`, {
             withCredentials: true,
           })
           .then((res) => {
