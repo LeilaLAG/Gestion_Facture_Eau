@@ -7,6 +7,7 @@ import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 import Clients from "./components/Clients";
+import Compteurs from "./components/Compteurs";
 import AddForm from "./components/AddForm";
 import ModForm from "./components/MofFrom";
 import UserModFrom from "./components/UserModFrom";
@@ -55,11 +56,29 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* compteurs ---------------------------------------------------- */}
         <Route
-          path="/users/reset-user-password/:userId"
+          path="/compteurs"
           element={
             <ProtectedRoute>
-              <PasswordReset />
+              <Compteurs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/compteurs/add-compteur"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"compteur"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/compteurs/update-compteur/:compteurId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"compteur"} />
             </ProtectedRoute>
           }
         />
