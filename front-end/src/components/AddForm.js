@@ -5,7 +5,7 @@ import { useUser } from "../Auth/ProtectedRoute";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
-import ErrorMsg from "../costumComponents/ErrorMsg";
+// import ErrorMsg from "../costumComponents/ErrorMsg";
 import AddClient from "./crufForm/AddClient";
 import AddCompteur from "./crufForm/AddCompteur";
 import GetClients from "../hooks/GetClients";
@@ -41,7 +41,7 @@ export default function AddForm({ page }) {
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
   const [loading, setLoading] = useState(false);
-  const [errorMsgs, setErrorMsgs] = useState("");
+  // const [errorMsgs, setErrorMsgs] = useState("");
 
   function handleAddInfo(e) {
     e.preventDefault();
@@ -72,7 +72,11 @@ export default function AddForm({ page }) {
 
   function checkCompteurInfo() {
     if (page === "compteur") {
-      if (dataToAdd.useDate === "") {
+      if(dataToAdd.startPoint > 99999){
+        toast.error("La valeur du compteur ne doit pas depasser 99999!");
+        return false;
+      }
+      else if (dataToAdd.useDate === "") {
         toast.error("Saisir la date d'utilisation du compteur");
         return false;
       } else if (dataToAdd.numClient === "") {
@@ -94,18 +98,24 @@ export default function AddForm({ page }) {
           withCredentials: true,
         })
         .then((res) => {
+          if(page === 'client' && res.data.isClientexisting){
+            toast.error("Ce client exist deja!");
+            setLoading(false);
+          // setErrorMsgs("");
+            return;
+          }
           toast.success(`${page} a été ajouter avec succée`);
           setLoading(false);
-          setErrorMsgs("");
+          // setErrorMsgs("");
         })
         .catch((err) => {
           setLoading(false);
           toast.error("Un problem est servenu lors de l'ajout!");
-          if (page === "client") {
-            setErrorMsgs(
-              "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
-            );
-          }
+          // if (page === "client") {
+          //   setErrorMsgs(
+          //     "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
+          //   );
+          // }
         });
     }
   }
@@ -134,7 +144,7 @@ export default function AddForm({ page }) {
               className="bg-success"
             ></div>
             <h3 className="text-center mb-4">{`Ajouter un ${page}`}</h3>
-            {errorMsgs && (
+            {/* {errorMsgs && (
               <ErrorMsg
                 msg={errorMsgs}
                 errorIconWidth={20}
@@ -142,7 +152,7 @@ export default function AddForm({ page }) {
                 boldness="bold"
                 imgPath="/Assets/error.png"
               />
-            )}
+            )} */}
             {page === "client" && (
               <AddClient onChangeInfo={(e) => handleAddInfo(e)} />
             )}

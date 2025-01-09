@@ -24,18 +24,24 @@ const getOneClient = async (req, res) => {
 };
 
 const createClient = async (req, res) => {
-  const { companyId } = req.body;
+  const { companyId , cin } = req.body;
 
   try {
     const maxNumClient = await Client.findOne({ companyId: companyId }).sort({
       numClient: -1,
     });
     const newMaxNumClient = maxNumClient ? maxNumClient.numClient + 1 : 1;
-    const addedClient = await Client.create({
-      ...req.body,
-      numClient: newMaxNumClient,
-    });
-    return res.status(200).json({ addedClient });
+
+    const isClientexisting = await Client.findOne({companyId , cin})
+
+    if(!isClientexisting){
+      const addedClient = await Client.create({
+        ...req.body,
+        numClient: newMaxNumClient,
+      });
+      return res.status(200).json({ addedClient });
+    }
+    return res.status(200).json({ isClientexisting });
   } catch (err) {
     return res.status(400).json({ error: "Server Error creatiing client" });
   }
@@ -44,12 +50,19 @@ const createClient = async (req, res) => {
 const updateClient = async (req, res) => {
   try {
     const { clientId } = req.params;
+    const { companyId , cin } = req.body;
 
-    const clientToUpdate = await Client.findOneAndUpdate(
-      { _id: clientId },
-      { ...req.body, modified_at: new Date() }
-    );
-    return res.status(200).json({ clientToUpdate });
+    const isClientexisting = await Client.findOne({companyId , cin})
+
+    if(!isClientexisting){
+      const clientToUpdate = await Client.findOneAndUpdate(
+        { _id: clientId },
+        { ...req.body, modified_at: new Date() }
+      );
+      return res.status(200).json({ clientToUpdate });
+    }
+    return res.status(200).json({ isClientexisting });
+
   } catch (err) {
     return res.status(400).json({ error: "Server Error updating client" });
   }

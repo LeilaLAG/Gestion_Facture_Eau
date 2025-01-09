@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useUser } from "../Auth/ProtectedRoute";
 import GetClients from "../hooks/GetClients";
+import FilterData from "./FilterData";
 
 export default function Compteurs() {
   const { user } = useUser();
@@ -65,6 +66,27 @@ export default function Compteurs() {
     });
   }
 
+  // filtring --------------------------------------------------------
+    const [filterParams, setFilterParams] = useState({
+      numCompteur: "",
+    });
+  
+    function handleFilterParams(e) {
+      setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
+    }
+  
+    function handleSubmitFilter(e) {
+      e.preventDefault();
+  
+      setCompteurs(compteursData)
+  
+      const { numCompteur } = filterParams;
+  
+      if (numCompteur !== "") {
+        setCompteurs(prev=>prev.filter((compteur) => parseInt(compteur.numCompteur) === parseInt(numCompteur)));
+      }
+    }
+
   return (
     <div className="d-flex h-100">
       <Toaster position="top-right" />
@@ -82,46 +104,9 @@ export default function Compteurs() {
               className="pt-2 pb-2 bg-white accordion"
               id="accordionExample"
             >
-              <div className="accordion-item border border-4">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button fw-bold p-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    <img src="/Assets/filterIcon.png" alt="" width={20} />
-                    <span className="m-3 mt-0 mb-0">
-                      Filtrer les données compteurs
-                    </span>
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div className="accordion-body pt-4 pb-4">
-                    <div className="">
-                      <div className="d-flex align-items-center gap-3">
-                        <img src="/Assets/filter.png" alt="filter" width={20} />
-                        <hr width={20} />
-                        <input type="text" />
-                        <input type="text" />
-                        <input type="text" />
-                      </div>
-                      <div className="d-flex align-items-center gap-3 mt-2">
-                        <img src="/Assets/sort.png" alt="filter" width={20} />
-                        <hr width={20} />
-                        <input type="text" />
-                        <input type="text" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <FilterData page="compteur"
+                onSubmitFilter={(e) => handleSubmitFilter(e)}
+                onChangeFilter={(e) => handleFilterParams(e)}/>
               <div className="d-flex align-items-center gap-4 p-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
                   <img

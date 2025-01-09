@@ -8,24 +8,24 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useUser } from "../Auth/ProtectedRoute";
+import FilterData from "./FilterData";
 
 export default function Clients() {
   const { user } = useUser();
-
   const DateConfig = {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   };
-
   let clientsData = GetClients();
 
-  //To enable realtime deletion simulating websockets
+  // To enable realtime deletion simulating websockets
   const [clients, setClients] = useState([]);
   useEffect(() => {
     setClients(clientsData);
   }, [clientsData]);
 
+  // Deleting -------------------------------------------------------
   function handleDeleteClient(e, clientToDlt) {
     e.preventDefault();
 
@@ -46,9 +46,12 @@ export default function Clients() {
     }).then((res) => {
       if (res.isConfirmed) {
         axios
-          .delete(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/deleteClient/${clientToDlt._id}`, {
-            withCredentials: true,
-          })
+          .delete(
+            `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/deleteClient/${clientToDlt._id}`,
+            {
+              withCredentials: true,
+            }
+          )
           .then((res) => {
             toast.success("Le client a été supprimer");
             removeDeletedClient();
@@ -58,6 +61,32 @@ export default function Clients() {
           );
       }
     });
+  }
+
+  // filtring --------------------------------------------------------
+  const [filterParams, setFilterParams] = useState({
+    cin: "",
+    tele: "",
+  });
+
+  function handleFilterParams(e) {
+    setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmitFilter(e) {
+    e.preventDefault();
+
+    setClients(clientsData)
+
+    const { cin, tele } = filterParams;
+
+    if (cin !== "") {
+      setClients(prev=>prev.filter((client) => client.cin === cin));
+    }
+
+    if (tele !== "") {
+      setClients(prev=>prev.filter((client) => client.tele === tele));
+    }
   }
 
   return (
@@ -77,46 +106,11 @@ export default function Clients() {
               className="pt-2 pb-2 bg-white accordion"
               id="accordionExample"
             >
-              <div className="accordion-item border border-4">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button fw-bold p-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    <img src="/Assets/filterIcon.png" alt="" width={20} />
-                    <span className="m-3 mt-0 mb-0">
-                      Filtrer les données clients
-                    </span>
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div className="accordion-body pt-4 pb-4">
-                    <div className="">
-                      <div className="d-flex align-items-center gap-3">
-                        <img src="/Assets/filter.png" alt="filter" width={20} />
-                        <hr width={20} />
-                        <input type="text" />
-                        <input type="text" />
-                        <input type="text" />
-                      </div>
-                      <div className="d-flex align-items-center gap-3 mt-2">
-                        <img src="/Assets/sort.png" alt="filter" width={20} />
-                        <hr width={20} />
-                        <input type="text" />
-                        <input type="text" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <FilterData
+                page="client"
+                onSubmitFilter={(e) => handleSubmitFilter(e)}
+                onChangeFilter={(e) => handleFilterParams(e)}
+              />
               <div className="d-flex align-items-center gap-4 p-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
                   <img

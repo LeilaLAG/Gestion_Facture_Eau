@@ -13,7 +13,6 @@ const ClientSchema = new mongoose.Schema({
     cin : {
         type : String,
         required : true,
-        unique: true
     },
     birthDate : {
         type : Date,
@@ -22,7 +21,6 @@ const ClientSchema = new mongoose.Schema({
     tele : {
         type : String,
         required : true,
-        unique : true,
     },
     dateRegisterClient : {
         type : Date,
