@@ -1,13 +1,14 @@
 const Facture = require("../models/Facture");
 
 const getFactures = async (req, res) => {
-  const factures = await Facture.find({});
+  const {companyId} = req.params
+  const factures = await Facture.find({companyId});
   res.status(200).json({ factures });
 };
 
 const getOneFacture = async (req, res) => {
-  const { factureId } = req.params;
-  const facture = await Facture.findOne({ _id: factureId });
+  const { factureId , companyId } = req.params;
+  const facture = await Facture.findOne({ _id: factureId , companyId });
   res.status(200).json({ facture });
 };
 

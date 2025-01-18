@@ -41,7 +41,7 @@ export default function LogIn() {
         setIsDisabled(false);
       })
       .catch((err) => {
-        toast.error("Le nom d'utilisateur ou le mot de passe est incorrect!");
+        toast.error("L'adresse E-mail ou le mot de passe est incorrect!");
         setLoginLoading(false);
         setIsDisabled(false);
       });
@@ -102,14 +102,14 @@ export default function LogIn() {
               <a style={{fontSize : "14px"}} href="/reset-password">Mot de pass oublier?</a>
             </div>
             <button
-              className="btn btn-dark w-100 mt-3 fw-bold"
+              className="bg_blue_button w-100 mt-3 fw-bold"
               disabled={isDisabled}
             >
               {loginLoading ? <ActionLoading /> : "Log in"}
             </button>
             <hr/>
             <div className="text-center">
-              <a className="text-dark" href="/sign-up">Vous n'avez pas un profile? Sign-up</a>
+              <a className="color_blue_text" href="/sign-up">Vous n'avez pas un profile? Enregistrez-vous</a>
             </div>
           </div>
         </form>

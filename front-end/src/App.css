@@ -4,3 +4,38 @@
   margin: 0;
   padding: 0;
 }
+
+.color_blue_text {
+  color: #0080cb;
+}
+.color_blue_text:hover {
+  color: #00509a;
+}
+
+.bg_blue_button {
+  background-color: #0080cb;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  border: none;
+  transition: .3s background-color;
+  text-decoration: none;
+}
+.bg_blue_button:hover {
+  background-color: #006acb;
+}
+
+.bg_red_button {
+  background-color: #f7568d;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  border: none;
+  transition: .3s background-color;
+  text-decoration: none;
+}
+.bg_red_button:hover {
+  background-color: #fe3175;
+}

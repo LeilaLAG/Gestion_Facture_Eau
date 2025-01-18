@@ -19,6 +19,7 @@ export default function SignUp() {
     email: "",
     password: "",
     function: "",
+    role: "",
     companyId: "",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -130,7 +131,7 @@ export default function SignUp() {
                 handleSubmitCompany(e);
               }}
             >
-              <h4 className="text-center fw-bold">Société</h4>
+              <h4 className="text-center fw-bold mb-3">Société</h4>
               <input
                 type="text"
                 name="companyName"
@@ -142,7 +143,7 @@ export default function SignUp() {
                   setCompany(e.target.value);
                 }}
               />
-              <button className="btn btn-dark w-100 mt-2 fw-bold">Creer</button>
+              <button className="bg_blue_button w-100 mt-2 fw-bold">Creer</button>
             </form>
           </div>
           <progress
@@ -158,7 +159,7 @@ export default function SignUp() {
               onSubmit={(e) => handleSubmitUser(e)}
               style={{ opacity: signupFormOpacity }}
             >
-              <h4 className="text-center fw-bold">Utilisateur</h4>
+              <h4 className="text-center fw-bold mb-3">Utilisateur</h4>
               <input
                 name="fullName"
                 type="text"
@@ -173,9 +174,12 @@ export default function SignUp() {
                 placeholder="Saisir votre adresse Email"
                 onChange={(e) => handleChangeUserInfo(e)}
               />
-              <p className="text-danger fw-bold p-2 pt-0 pb-0" style={{ fontSize: "12px" }}>
-                {error}
-              </p>
+              {
+                error && 
+                <p className="text-danger fw-bold p-2 pt-0 pb-0" style={{ fontSize: "12px" }}>
+                  {error}
+                </p>
+              }
               <div className="LoginPasswordInput">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -202,14 +206,20 @@ export default function SignUp() {
               >
                 <option>Choisir une fonction</option>
                 <option value={"Admin"}>Admin</option>
-                <option value={"user1"}>user1</option>
-                <option value={"user2"}>user2</option>
+                <option value={"Employer"}>Employer</option>
               </select>
+              <input
+                name="role"
+                type="text"
+                className="form-control mt-2"
+                placeholder="Saisir votre role"
+                onChange={(e) => handleChangeUserInfo(e)}
+              />
               <button
                 className="btn btn-primary w-100 mt-2 fw-bold"
                 disabled={isDisabled}
               >
-                {signupLoading ? <ActionLoading /> : "Sign up"}
+                {signupLoading ? <ActionLoading /> : "Enregistrez-vous"}
               </button>
             </form>
           </div>

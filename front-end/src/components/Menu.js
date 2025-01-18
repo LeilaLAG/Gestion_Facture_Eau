@@ -3,11 +3,30 @@ import "../style/menu.css";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
+import GetCompanies from "../hooks/GetCompanies";
 
 export default function Menu() {
   const { user } = useUser();
 
+  const comapnies = GetCompanies();
+
   const currentUrl = useLocation();
+
+  function obtainSignUpId() {
+    const signUpId = comapnies.find(
+      (comapnie) => comapnie.companyName === user.companyId
+    )._id;
+
+    Swal.fire({
+      title: "ID de votre société",
+      text: signUpId,
+      showCancelButton: false,
+      confirmButtonColor: "#006acb",
+      confirmButtonText: "Copier",
+      padding: "10px",
+    });
+  }
 
   return (
     <div className="Menu shadow">
@@ -20,7 +39,7 @@ export default function Menu() {
             className="dropdown-toggle"
             data-bs-toggle="dropdown"
           />
-          <ul className="dropdown-menu shadow">
+          <ul className="dropdown-menu shadow text-center">
             <li>
               <a
                 className="dropdown-item"
@@ -29,36 +48,14 @@ export default function Menu() {
                 Modifier votre profile
               </a>
             </li>
-          </ul>
-        </div>
-      </div>
-      <div className="UserInfoSegment">
-        <div>
-          <img src="/Assets/profile.png" alt="user" width={80} />
-        </div>
-
-        <div className="">
-          <div className="w-100">
-            <div className="d-flex align-items-center gap-2">
-              <p className="userFullName">{user.fullName}</p>
-              <p className="userFunction btn btn-warning p-2 pt-0 pb-0">
-                {user.function}
-              </p>
-            </div>
-            <div className="d-flex justify-content-between align-items-end flex-wrap">
-              <div>
-                <div className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2">
-                  <img src="/Assets/company.png" alt="name" width={15} />
-                  <span className="userCompany">{user.companyId}</span>
-                </div>
-                <div
-                  className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2"
-                  style={{ fontSize: "13px" }}
-                >
-                  <img src="/Assets/email.png" alt="email" width={15} />
-                  <span>{user.email}</span>
-                </div>
-              </div>
+            <hr className="m-0 mt-1 mb-1" />
+            {user.function === "Admin" && (
+              <li className="dropdown-item" onClick={obtainSignUpId}>
+                Obtenir l'ID du société
+              </li>
+            )}
+            <hr className="m-0 mt-1 mb-1" />
+            <li className="d-flex justify-content-center">
               <form
                 className="logoutForm mt-2"
                 onSubmit={() => {
@@ -78,11 +75,42 @@ export default function Menu() {
               >
                 <button
                   type="submit"
-                  className="btn btn-danger fw-bold pt-1 pb-1 p-3"
+                  className="bg_red_button fw-bold pt-1 pb-1 p-3"
                 >
-                  Logout
+                  Déconnexion
                 </button>
               </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="UserInfoSegment">
+        <div>
+          <img src="/Assets/profile.png" alt="user" width={80} />
+        </div>
+
+        <div className="">
+          <div className="w-100">
+            <div className="d-flex align-items-center gap-2">
+              <p className="userFullName">{user.fullName}</p>
+              <p className="userFunction bg_blue_button p-2 pt-0 pb-0">
+                {user.role}
+              </p>
+            </div>
+            <div className="d-flex justify-content-between align-items-end flex-wrap">
+              <div>
+                <div className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2">
+                  <img src="/Assets/company.png" alt="name" width={15} />
+                  <span className="userCompany">{user.companyId}</span>
+                </div>
+                <div
+                  className="p-2 pt-0 pb-0 mt-1 d-flex align-items-center gap-2"
+                  style={{ fontSize: "13px" }}
+                >
+                  <img src="/Assets/email.png" alt="email" width={15} />
+                  <span>{user.email}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -108,7 +136,7 @@ export default function Menu() {
             </li>
           </ul> */}
           <li
-          className={currentUrl.pathname === "/compteurs" ? "activeLink" : ""}
+            className={currentUrl.pathname === "/compteurs" ? "activeLink" : ""}
           >
             <img src="/Assets/counter.png" alt="compteur" width={20} />
             <a href="/compteurs">Compteur</a>
@@ -124,7 +152,9 @@ export default function Menu() {
               <a href="/compteurs/add-compteur">Ajouter compteur</a>
             </li>
           </ul> */}
-          <li>
+          <li
+            className={currentUrl.pathname === "/factures" ? "activeLink" : ""}
+          >
             <img src="/Assets/bill.png" alt="facture" width={20} />
             <a href="/factures">Facture</a>
           </li>

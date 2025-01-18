@@ -122,15 +122,15 @@ app.put("/api/updateCompteur/:compteurId", updateCompteur);
 app.delete("/api/deleteCompteur/:compteurId", deleteCompteur);
 
 // Facture
-app.get("/api/factures", getFactures);
-app.get("/api/facture/factureId", getOneFacture);
+app.get("/api/factures/:companyId", getFactures);
+app.get("/api/facture/factureId/:companyId", getOneFacture);
 app.post("/api/addFacture", createFacture);
 app.put("/api/updateFacture/:factureId", updateFacture);
 app.delete("/api/deleteFacture/:factureId", deleteFacture);
 
 // Tranche
-app.get("/api/tranches", getTranches);
-app.get("/api/tranche/:trancheId", getOneTranche);
+app.get("/api/tranches/:companyId", getTranches);
+app.get("/api/tranche/:trancheId/:companyId", getOneTranche);
 app.post("/api/addTranche", createTranche);
 app.put("/api/updateTranche/:trancheId", updateTranche);
 app.delete("/api/deleteTranche/:trancheId", deleteTranche);

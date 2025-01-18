@@ -98,8 +98,8 @@
 }
 
 .activeLink , .navLinks>ul>li:hover {
-    background-color: bisque;
+    background-color: #00aad9;
 }
 .activeSubLink , .subNavLinks>li:hover {
-    background-color: beige;
+    background-color: #0077bb;
 }

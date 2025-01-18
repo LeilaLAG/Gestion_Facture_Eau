@@ -11,7 +11,7 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
           aria-controls="collapseOne"
         >
           <img src="/Assets/filterIcon.png" alt="" width={20} />
-          <span className="m-3 mt-0 mb-0">Filtrer les données clients</span>
+          <span className="m-3 mt-0 mb-0">Filtrer les données {page}s</span>
         </button>
       </h2>
       <div

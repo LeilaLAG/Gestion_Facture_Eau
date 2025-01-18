@@ -12,6 +12,7 @@ import AddForm from "./components/AddForm";
 import ModForm from "./components/MofFrom";
 import UserModFrom from "./components/UserModFrom";
 import PasswordReset from "./components/PasswordReset";
+import Facture from "./components/Facture";
 
 function App() {
   return (
@@ -56,12 +57,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/reset-password"
-          element={
-            <PasswordReset />
-          }
-        />
+        <Route path="/reset-password" element={<PasswordReset />} />
 
         {/* compteurs ---------------------------------------------------- */}
         <Route
@@ -85,6 +81,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ModForm page={"compteur"} />
+            </ProtectedRoute>
+          }
+        />
+        {/* facture --------------------------------------------------- */}
+        <Route
+          path="/factures"
+          element={
+            <ProtectedRoute>
+              <Facture />
             </ProtectedRoute>
           }
         />
