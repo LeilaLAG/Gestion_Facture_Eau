@@ -12,12 +12,15 @@ const getOneCompanie = async (req, res) => {
 };
 
 const createCompany = async (req, res) => {
-  try{
+  try {
     const addedCompany = await Company.create(req.body);
     return res.status(200).json({ addedCompany });
-  }
-  catch(err){
-    return res.status(400).json({ error : "Error adding a new company" });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({
+        error: "Un erreur est servenu lors de la creaction de votre société",
+      });
   }
 };
 

@@ -14,15 +14,29 @@ const getOneUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  const adminPass = process.env.AdminPass
+  
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const addedUser = await User.create({
-      ...req.body,
-      password: hashedPassword,
-    });
-    return res.status(200).json({ addedUser });
+    if(req.body.function === "Admin"){
+      if(req.body.password != adminPass){
+        return res.status(400).json({ error: "Votre Admin mot de passe est invalide !" });
+      }
+    }
+
+    const isEmailexist = await User.findOne({email : req.body.email})
+
+    if(!isEmailexist){
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const addedUser = await User.create({
+        ...req.body,
+        password: hashedPassword,
+      });
+      return res.status(200).json({ addedUser });
+    }
+    return res.status(200).json({ isEmailexist });
+
   } catch (err) {
-    return res.status(400).json({ error: "Error adding a new user" });
+    return res.status(400).json({ error: "Un erreur est servenue lors de l'enregistrement !" });
   }
 };
 

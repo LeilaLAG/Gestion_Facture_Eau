@@ -69,7 +69,7 @@ export default function LogIn() {
                 <span style={{fontSize : "12px"}}>Gestion des Facture d'Eau</span>
               </div>
             </div>
-            <h1 className="mb-5 text-center">Log-In</h1>
+            <h1 className="mb-5 text-center">Authentifier</h1>
             <input
               type="email"
               name="email"
@@ -105,11 +105,11 @@ export default function LogIn() {
               className="bg_blue_button w-100 mt-3 fw-bold"
               disabled={isDisabled}
             >
-              {loginLoading ? <ActionLoading /> : "Log in"}
+              {loginLoading ? <ActionLoading /> : "Authentifier"}
             </button>
             <hr/>
             <div className="text-center">
-              <a className="color_blue_text" href="/sign-up">Vous n'avez pas un profile? Enregistrez-vous</a>
+              <a className="color_blue_text" href="/sign-up">Creer votre profile Administratif</a>
             </div>
           </div>
         </form>

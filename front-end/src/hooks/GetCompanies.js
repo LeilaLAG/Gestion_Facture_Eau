@@ -9,6 +9,7 @@ export default function GetCompanies() {
         async function fetchCompaniesData(){
             await axios.get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/companies/`)
             .then(res=>setAllCompanies(res.data.companies))
+            // .catch(err=>setAllCompanies(err.data.error))
         }
 
         fetchCompaniesData()
