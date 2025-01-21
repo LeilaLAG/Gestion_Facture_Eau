@@ -69,7 +69,7 @@ function App() {
           }
         />
         <Route
-          path="/compteurs/add-compteur"
+          path="/compteurs/add-compteur/:numClient"
           element={
             <ProtectedRoute>
               <AddForm page={"compteur"} />

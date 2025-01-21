@@ -9,11 +9,12 @@ import ActionLoading from "../costumComponents/ActionLoading";
 import AddClient from "./crufForm/AddClient";
 import AddCompteur from "./crufForm/AddCompteur";
 import GetClients from "../hooks/GetClients";
+import { useParams } from "react-router-dom";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
-  const clients = GetClients()
-
+  const clients = GetClients();
+  const { numClient } = useParams();
   let dataObject = {};
   let endPoint = "";
 
@@ -33,7 +34,7 @@ export default function AddForm({ page }) {
       startPoint: 0,
       useDate: "",
       credit: 0.0,
-      numClient: 0,
+      numClient: parseInt(numClient) || 0,
       companyId: user.companyId,
     };
     endPoint = "addCompteur";
@@ -72,11 +73,10 @@ export default function AddForm({ page }) {
 
   function checkCompteurInfo() {
     if (page === "compteur") {
-      if(dataToAdd.startPoint > 99999){
+      if (dataToAdd.startPoint > 99999) {
         toast.error("La valeur du compteur ne doit pas depasser 99999!");
         return false;
-      }
-      else if (dataToAdd.useDate === "") {
+      } else if (dataToAdd.useDate === "") {
         toast.error("Saisir la date d'utilisation du compteur");
         return false;
       } else if (dataToAdd.numClient === "") {
@@ -94,14 +94,18 @@ export default function AddForm({ page }) {
     if (checkClientInfo() || checkCompteurInfo()) {
       setLoading(true);
       axios
-        .post(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/${endPoint}`, dataToAdd, {
-          withCredentials: true,
-        })
+        .post(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/${endPoint}`,
+          dataToAdd,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
-          if(page === 'client' && res.data.isClientexisting){
+          if (page === "client" && res.data.isClientexisting) {
             toast.error("Ce client exist deja!");
             setLoading(false);
-          // setErrorMsgs("");
+            // setErrorMsgs("");
             return;
           }
           toast.success(`${page} a été ajouter avec succée`);
@@ -161,6 +165,7 @@ export default function AddForm({ page }) {
               <AddCompteur
                 clients={clients}
                 onChangeInfo={(e) => handleAddInfo(e)}
+                numClient={dataObject.numClient}
               />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">

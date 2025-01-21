@@ -19,7 +19,7 @@
   padding: 5px;
   outline: none;
   border: none;
-  transition: .3s background-color;
+  transition: 0.3s background-color;
   text-decoration: none;
 }
 .bg_blue_button:hover {
@@ -33,9 +33,20 @@
   padding: 5px;
   outline: none;
   border: none;
-  transition: .3s background-color;
+  transition: 0.3s background-color;
   text-decoration: none;
 }
 .bg_red_button:hover {
   background-color: #fe3175;
+}
+
+details {
+  background-color: #eee;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
