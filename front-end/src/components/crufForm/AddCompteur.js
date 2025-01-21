@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AddCompteur({onChangeInfo , clients}) {
+export default function AddCompteur({ onChangeInfo, clients, numClient }) {
   return (
     <div className="mt-2">
       <div className="mb-3">
@@ -41,14 +41,15 @@ export default function AddCompteur({onChangeInfo , clients}) {
         >
           <option>Choisir le client</option>
           {clients.length <= 0 ? (
-            <option>
-              Aucun client
-            </option>
+            <option>Aucun client</option>
           ) : (
-            clients !== "loading" && clients.map((client, i) =>
+            clients !== "loading" &&
+            clients.map((client, i) =>
               client.error ? (
-                <option key={i}>
-                  Un erreur est servenu
+                <option key={i}>Un erreur est servenu</option>
+              ) : client.numClient === numClient ? (
+                <option key={i} value={client.numClient} selected>
+                  {client.nameClient}
                 </option>
               ) : (
                 <option key={i} value={client.numClient}>

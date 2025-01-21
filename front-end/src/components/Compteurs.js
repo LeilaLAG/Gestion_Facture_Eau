@@ -21,7 +21,7 @@ export default function Compteurs() {
   };
 
   let compteursData = GetCompteurs();
-  const clientData = GetClients()
+  const clientData = GetClients();
 
   //To enable realtime deletion simulating websockets
   const [compteurs, setCompteurs] = useState([]);
@@ -67,25 +67,29 @@ export default function Compteurs() {
   }
 
   // filtring --------------------------------------------------------
-    const [filterParams, setFilterParams] = useState({
-      numCompteur: "",
-    });
-  
-    function handleFilterParams(e) {
-      setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
+  const [filterParams, setFilterParams] = useState({
+    numCompteur: "",
+  });
+
+  function handleFilterParams(e) {
+    setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmitFilter(e) {
+    e.preventDefault();
+
+    setCompteurs(compteursData);
+
+    const { numCompteur } = filterParams;
+
+    if (numCompteur !== "") {
+      setCompteurs((prev) =>
+        prev.filter(
+          (compteur) => parseInt(compteur.numCompteur) === parseInt(numCompteur)
+        )
+      );
     }
-  
-    function handleSubmitFilter(e) {
-      e.preventDefault();
-  
-      setCompteurs(compteursData)
-  
-      const { numCompteur } = filterParams;
-  
-      if (numCompteur !== "") {
-        setCompteurs(prev=>prev.filter((compteur) => parseInt(compteur.numCompteur) === parseInt(numCompteur)));
-      }
-    }
+  }
 
   return (
     <div className="d-flex h-100">
@@ -104,9 +108,11 @@ export default function Compteurs() {
               className="pt-2 pb-2 bg-white accordion"
               id="accordionExample"
             >
-              <FilterData page="compteur"
+              <FilterData
+                page="compteur"
                 onSubmitFilter={(e) => handleSubmitFilter(e)}
-                onChangeFilter={(e) => handleFilterParams(e)}/>
+                onChangeFilter={(e) => handleFilterParams(e)}
+              />
               <div className="d-flex align-items-center gap-4 p-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
                   <img
@@ -135,16 +141,132 @@ export default function Compteurs() {
                     }
                   </span>
                 </div>
-                <a
+                {/* <a
                   href="/compteurs/add-compteur"
                   className="btn btn-success pt-1 pb-1 p-3 fw-bold"
                   style={{ fontSize: "13px" }}
                 >
                   Ajouter un nouveau compteur
-                </a>
+                </a> */}
               </div>
             </article>
-            <table
+            {clientData !== "loading" &&
+              clientData.map((client, i) => (
+                <details key={i}>
+                  <summary>{client.nameClient}</summary>
+                  <table
+                    className="table table-bordered text-center w-100"
+                    style={{ verticalAlign: "middle" }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Point De Depart</th>
+                        <th>Date d'utilisation</th>
+                        <th>Credit</th>
+                        <th>Nom Client</th>
+                        <th>Date de modification</th>
+                        <th colSpan={2}>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {compteurs.filter((c) => c.numClient === client.numClient)
+                        .length <= 0 ? (
+                        <tr className="border border-0">
+                          <td colSpan={8} className="border border-0 pt-4">
+                            <ErrorMsg
+                              msg={"Aucun data"}
+                              errorIconWidth={20}
+                              coleur={"red"}
+                              boldness="bold"
+                              imgPath="Assets/empty.png"
+                            />
+                          </td>
+                        </tr>
+                      ) : (
+                        compteurs
+                          .filter((c) => c.numClient === client.numClient)
+                          .map((compteur, i) =>
+                            compteur.error ? (
+                              <tr key={i} className="border border-0">
+                                <td
+                                  colSpan={8}
+                                  className="border border-0 pt-4"
+                                >
+                                  <ErrorMsg
+                                    msg={compteur.error}
+                                    errorIconWidth={20}
+                                    coleur={"red"}
+                                    boldness="bold"
+                                    imgPath="Assets/error.png"
+                                  />
+                                </td>
+                              </tr>
+                            ) : (
+                              <tr key={i}>
+                                <td>{compteur.numCompteur}</td>
+                                <td>{compteur.startPoint}</td>
+                                <td>
+                                  {new Date(
+                                    compteur.useDate
+                                  ).toLocaleDateString("eu", DateConfig)}
+                                </td>
+                                <td>{compteur.credit}</td>
+                                <td>{client.nameClient}</td>
+                                <td>
+                                  {!compteur.modified_at
+                                    ? "-"
+                                    : new Date(
+                                        compteur.modified_at
+                                      ).toLocaleDateString("eu", {
+                                        ...DateConfig,
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                </td>
+                                <td>
+                                  <form
+                                    method="put"
+                                    action={`/compteurs/update-compteur/${compteur._id}`}
+                                  >
+                                    <button className="btn btn-primary">
+                                      <i className="bi bi-pencil-square"></i>
+                                    </button>
+                                  </form>
+                                </td>
+                                <td>
+                                  <form
+                                    onSubmit={(e) =>
+                                      handleDeleteCompteur(e, compteur)
+                                    }
+                                  >
+                                    <button className="btn btn-danger">
+                                      <i className="bi bi-trash3-fill"></i>
+                                    </button>
+                                  </form>
+                                </td>
+                              </tr>
+                            )
+                          )
+                      )}
+                    </tbody>
+                    <td>
+                      {compteurs.filter((c) => c.numClient === client.numClient)
+                        .length < 5 && (
+                        <a
+                          href={`/compteurs/add-compteur/${client.numClient}`}
+                          className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-3"
+                          style={{ fontSize: "13px" }}
+                        >
+                          Ajouter un nouveau compteur
+                        </a>
+                      )}
+                    </td>
+                  </table>
+                </details>
+              ))}
+            {/* <table
               className="table table-bordered text-center w-100"
               style={{ verticalAlign: "middle" }}
             >
@@ -197,7 +319,13 @@ export default function Compteurs() {
                           )}
                         </td>
                         <td>{compteur.credit}</td>
-                        <td>{clientData !== "loading" && clientData.find(client=>client.numClient === compteur.numClient).nameClient}</td>
+                        <td>
+                          {clientData !== "loading" &&
+                            clientData.find(
+                              (client) =>
+                                client.numClient === compteur.numClient
+                            ).nameClient}
+                        </td>
                         <td>
                           {!compteur.modified_at
                             ? "-"
@@ -234,7 +362,7 @@ export default function Compteurs() {
                   )
                 )}
               </tbody>
-            </table>
+            </table> */}
           </div>
         )}
       </Main>
