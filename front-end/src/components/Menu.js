@@ -3,8 +3,8 @@ import "../style/menu.css";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 import { useLocation } from "react-router-dom";
-import Swal from "sweetalert2";
 import GetCompanies from "../hooks/GetCompanies";
+import toast from "react-hot-toast";
 
 export default function Menu() {
   const { user } = useUser();
@@ -18,31 +18,34 @@ export default function Menu() {
       (comapnie) => comapnie.companyName === user.companyId
     )._id;
 
-    Swal.fire({
-      title: "ID de votre société",
-      text: signUpId,
-      showCancelButton: false,
-      confirmButtonColor: "#006acb",
-      confirmButtonText: "Copier",
-      padding: "10px",
-    });
+    const tempInput = document.createElement("textarea");
+    tempInput.value = signUpId;
+    document.body.appendChild(tempInput);
+
+    tempInput.select();
+    document.execCommand("copy");
+
+    document.body.removeChild(tempInput);
+
+    toast.success("L'ID de votre société a été copié");
   }
 
   return (
     <div className="Menu shadow">
       <div className="userSetting text-end mb-4">
-        <div className="dropdown dropstart">
-          <img
-            src="/Assets/setting.png"
-            alt="setting"
-            width={20}
-            className="dropdown-toggle"
+        <div className="dropdown">
+          <button
+            className="btn btn-dark p-3 pt-1 pb-1 dropdown-toggle"
             data-bs-toggle="dropdown"
-          />
-          <ul className="dropdown-menu shadow text-center">
-            <li>
+          >
+            Paramètre
+          </button>
+          <ul className="dropdown-menu shadow">
+            <li className="d-flex align-items-center gap-2 dropdown-item">
+              <img src="/Assets/clientEdit.png" alt="edit client" width={20} />
               <a
-                className="dropdown-item"
+                className="text-dark"
+                style={{ textDecoration: "none" }}
                 href={`/users/update-user/${user._id}`}
               >
                 Modifier votre profile
@@ -50,14 +53,18 @@ export default function Menu() {
             </li>
             <hr className="m-0 mt-1 mb-1" />
             {user.function === "Admin" && (
-              <li className="dropdown-item" onClick={obtainSignUpId}>
+              <li
+                className="d-flex align-items-center gap-2 dropdown-item"
+                onClick={obtainSignUpId}
+              >
+                <img src="/Assets/companyId.png" alt="companuId" width={20} />
                 Obtenir l'ID du société
               </li>
             )}
             <hr className="m-0 mt-1 mb-1" />
-            <li className="d-flex justify-content-center">
+            <li className="">
               <form
-                className="logoutForm mt-2"
+                className="logoutForm"
                 onSubmit={() => {
                   axios
                     .post(
@@ -75,8 +82,14 @@ export default function Menu() {
               >
                 <button
                   type="submit"
-                  className="bg_red_button fw-bold pt-1 pb-1 p-3"
+                  className="pt-1 pb-1 p-3 d-flex align-items-center gap-2 dropdown-item"
+                  style={{
+                    outline: "none",
+                    border: "none",
+                    backgroundColor: "white",
+                  }}
                 >
+                  <img src="/Assets/logout.png" alt="logout" width={20} />
                   Déconnexion
                 </button>
               </form>

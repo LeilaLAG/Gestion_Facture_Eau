@@ -5,7 +5,6 @@ import { useUser } from "../Auth/ProtectedRoute";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
-// import ErrorMsg from "../costumComponents/ErrorMsg";
 import AddClient from "./crufForm/AddClient";
 import AddCompteur from "./crufForm/AddCompteur";
 import GetClients from "../hooks/GetClients";
@@ -42,7 +41,6 @@ export default function AddForm({ page }) {
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
   const [loading, setLoading] = useState(false);
-  // const [errorMsgs, setErrorMsgs] = useState("");
 
   function handleAddInfo(e) {
     e.preventDefault();
@@ -56,7 +54,7 @@ export default function AddForm({ page }) {
           "Le nom complet du client doit contien 3 caracteres minimum!"
         );
         return false;
-      } else if (!dataToAdd.cin.trim().match(/^[A-Z0-9]{8}$/)) {
+      } else if (!dataToAdd.cin.trim().match(/^[A-Z0-9]{7,8}$/)) {
         toast.error("Saisir un CIN valide!");
         return false;
       } else if (dataToAdd.birthDate === "") {
@@ -103,23 +101,21 @@ export default function AddForm({ page }) {
         )
         .then((res) => {
           if (page === "client" && res.data.isClientexisting) {
-            toast.error("Ce client exist deja!");
+            toast.error("Cette CIN exist deja!");
             setLoading(false);
-            // setErrorMsgs("");
+            return;
+          }
+          else if (page === "compteur" && res.data.maxCompteurs) {
+            toast.error(`${res.data.error}!`);
+            setLoading(false);
             return;
           }
           toast.success(`${page} a été ajouter avec succée`);
-          setLoading(false);
-          // setErrorMsgs("");
+          setLoading(false)
         })
         .catch((err) => {
           setLoading(false);
           toast.error("Un problem est servenu lors de l'ajout!");
-          // if (page === "client") {
-          //   setErrorMsgs(
-          //     "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
-          //   );
-          // }
         });
     }
   }
@@ -148,15 +144,6 @@ export default function AddForm({ page }) {
               className="bg-success"
             ></div>
             <h3 className="text-center mb-4">{`Ajouter un ${page}`}</h3>
-            {/* {errorMsgs && (
-              <ErrorMsg
-                msg={errorMsgs}
-                errorIconWidth={20}
-                coleur={"red"}
-                boldness="bold"
-                imgPath="/Assets/error.png"
-              />
-            )} */}
             {page === "client" && (
               <AddClient onChangeInfo={(e) => handleAddInfo(e)} />
             )}

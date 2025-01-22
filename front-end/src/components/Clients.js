@@ -37,7 +37,7 @@ export default function Clients() {
 
     Swal.fire({
       title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
-      text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}`,
+      text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}? tous les données (compteurs et factures) vont etre supprimer aussi`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
       confirmButtonText: "Oui, supprimer",
@@ -53,8 +53,22 @@ export default function Clients() {
             }
           )
           .then((res) => {
-            toast.success("Le client a été supprimer");
-            removeDeletedClient();
+            axios
+              .delete(
+                `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/deleteClientCompteurs/${clientToDlt.numClient}`,
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((res) => {
+                toast.success("Le client a été supprimer");
+                removeDeletedClient();
+              })
+              .catch((err) =>
+                toast.error(
+                  "Un problem est servenue lors de la suppresion des données client!"
+                )
+              );
           })
           .catch((err) =>
             toast.error("Un problem est servenue lors de la suppresion!")
@@ -76,16 +90,16 @@ export default function Clients() {
   function handleSubmitFilter(e) {
     e.preventDefault();
 
-    setClients(clientsData)
+    setClients(clientsData);
 
     const { cin, tele } = filterParams;
 
     if (cin !== "") {
-      setClients(prev=>prev.filter((client) => client.cin === cin));
+      setClients((prev) => prev.filter((client) => client.cin === cin));
     }
 
     if (tele !== "") {
-      setClients(prev=>prev.filter((client) => client.tele === tele));
+      setClients((prev) => prev.filter((client) => client.tele === tele));
     }
   }
 
@@ -169,7 +183,7 @@ export default function Clients() {
                   <tr className="border border-0">
                     <td colSpan={8} className="border border-0 pt-4">
                       <ErrorMsg
-                        msg={"Aucun data"}
+                        msg={"Aucun client a été enregistrer"}
                         errorIconWidth={20}
                         coleur={"red"}
                         boldness="bold"

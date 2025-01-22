@@ -6,11 +6,6 @@
 
 .userSetting , .userSetting img {
     cursor: pointer;
-    transition: .5s;
-}
-
-.userSetting img:hover {
-    transform: rotate(180deg);
 }
 
 .userSettingBox {
@@ -29,7 +24,7 @@
 .userFullName {
     font-size: 25px;
     text-transform: capitalize;
-    max-width: 70%;
+    max-width: 65%;
     padding-left: .5rem;
     font-weight: 600;
 }

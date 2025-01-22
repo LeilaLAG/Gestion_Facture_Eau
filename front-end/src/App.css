@@ -12,6 +12,14 @@
   color: #00509a;
 }
 
+.bg_blue {
+  background-color: #7bcdfd;
+  transition: .3s;
+}
+.bg_blue:hover {
+  background-color: #3398f6;
+}
+
 .bg_blue_button {
   background-color: #0080cb;
   color: white;
@@ -40,7 +48,7 @@
   background-color: #fe3175;
 }
 
-details {
+/* details {
   background-color: #eee;
   padding: 10px 15px;
   margin-bottom: 10px;
@@ -49,4 +57,4 @@ details {
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
-}
+} */

@@ -1,6 +1,6 @@
 export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
   return (
-    <div className="accordion-item border border-4">
+    <div className="accordion-item border border-4 rounded">
       <h2 className="accordion-header">
         <button
           className="accordion-button fw-bold p-2"
@@ -19,7 +19,7 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
         className="accordion-collapse collapse show"
         data-bs-parent="#accordionExample"
       >
-        <div className="accordion-body pt-4 pb-4">
+        <div className="accordion-body p-2 mt-2 mb-2">
           <div className="">
             <form
               className="d-flex align-items-center gap-3"
@@ -32,14 +32,14 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
                   <input
                     type="text"
                     style={{ fontSize: "15px", padding: "2px 5px" }}
-                    placeholder="Filtrer par CIN"
+                    placeholder="CIN de client"
                     name="cin"
                     onChange={onChangeFilter}
                   />
                   <input
                     type="text"
                     style={{ fontSize: "15px", padding: "2px 5px" }}
-                    placeholder="Filtrer par Telephone"
+                    placeholder="Telephone de client"
                     name="tele"
                     onChange={onChangeFilter}
                   />
@@ -47,10 +47,10 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
               ) : (
                 <div className="d-flex align-items-center gap-3">
                   <input
-                    type="number"
+                    type="text"
                     style={{ fontSize: "15px", padding: "2px 5px" }}
-                    placeholder="Filtrer par N°"
-                    name="numCompteur"
+                    placeholder="Nom de client"
+                    name="nameClient"
                     onChange={onChangeFilter}
                   />
                 </div>

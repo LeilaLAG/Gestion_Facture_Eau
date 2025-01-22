@@ -34,6 +34,7 @@ const {
   createCompteur,
   deleteCompteur,
   updateCompteur,
+  deleteClientCompteurs
 } = require("./controllers/compteurController");
 const {
   getFactures,
@@ -120,6 +121,7 @@ app.get("/api/compteurs/:compteurId/:companyId", getOneCompteur);
 app.post("/api/addCompteur", createCompteur);
 app.put("/api/updateCompteur/:compteurId", updateCompteur);
 app.delete("/api/deleteCompteur/:compteurId", deleteCompteur);
+app.delete("/api/deleteClientCompteurs/:clientId", deleteClientCompteurs);
 
 // Facture
 app.get("/api/factures/:companyId", getFactures);

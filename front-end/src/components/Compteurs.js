@@ -25,9 +25,11 @@ export default function Compteurs() {
 
   //To enable realtime deletion simulating websockets
   const [compteurs, setCompteurs] = useState([]);
+  const [clients, setClients] = useState([]);
   useEffect(() => {
     setCompteurs(compteursData);
-  }, [compteursData]);
+    setClients(clientData);
+  }, [compteursData, clientData]);
 
   function handleDeleteCompteur(e, compteurToDlt) {
     e.preventDefault();
@@ -68,7 +70,7 @@ export default function Compteurs() {
 
   // filtring --------------------------------------------------------
   const [filterParams, setFilterParams] = useState({
-    numCompteur: "",
+    nameClient: "",
   });
 
   function handleFilterParams(e) {
@@ -78,15 +80,13 @@ export default function Compteurs() {
   function handleSubmitFilter(e) {
     e.preventDefault();
 
-    setCompteurs(compteursData);
+    setClients(clientData);
 
-    const { numCompteur } = filterParams;
+    const { nameClient } = filterParams;
 
-    if (numCompteur !== "") {
-      setCompteurs((prev) =>
-        prev.filter(
-          (compteur) => parseInt(compteur.numCompteur) === parseInt(numCompteur)
-        )
+    if (nameClient !== "") {
+      setClients((prev) =>
+        prev.filter((client) => client.nameClient === nameClient)
       );
     }
   }
@@ -104,9 +104,8 @@ export default function Compteurs() {
         ) : (
           <div className="pb-2">
             <article
-              style={{ position: "sticky", top: "0%" }}
+              style={{ position: "sticky", top: "0%", zIndex: 10 }}
               className="pt-2 pb-2 bg-white accordion"
-              id="accordionExample"
             >
               <FilterData
                 page="compteur"
@@ -141,228 +140,185 @@ export default function Compteurs() {
                     }
                   </span>
                 </div>
-                {/* <a
-                  href="/compteurs/add-compteur"
-                  className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                  style={{ fontSize: "13px" }}
-                >
-                  Ajouter un nouveau compteur
-                </a> */}
               </div>
             </article>
-            {clientData !== "loading" &&
-              clientData.map((client, i) => (
-                <details key={i}>
-                  <summary>{client.nameClient}</summary>
-                  <table
-                    className="table table-bordered text-center w-100"
-                    style={{ verticalAlign: "middle" }}
+            {clients !== "loading" &&
+              (clients.length <= 0 ? (
+                <div className="mt-5">
+                  <ErrorMsg
+                    msg={"Aucun Compteur a été enregistrer"}
+                    errorIconWidth={20}
+                    coleur={"red"}
+                    boldness="bold"
+                    imgPath="Assets/empty.png"
+                  />
+                </div>
+              ) : (
+                clients.map((client, i) => (
+                  <div
+                    className="accordion border border-4 mb-2 rounded"
+                    key={i}
                   >
-                    <thead>
-                      <tr>
-                        <th>N°</th>
-                        <th>Point De Depart</th>
-                        <th>Date d'utilisation</th>
-                        <th>Credit</th>
-                        <th>Nom Client</th>
-                        <th>Date de modification</th>
-                        <th colSpan={2}>Actions</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {compteurs.filter((c) => c.numClient === client.numClient)
-                        .length <= 0 ? (
-                        <tr className="border border-0">
-                          <td colSpan={8} className="border border-0 pt-4">
-                            <ErrorMsg
-                              msg={"Aucun data"}
-                              errorIconWidth={20}
-                              coleur={"red"}
-                              boldness="bold"
-                              imgPath="Assets/empty.png"
+                    <h2 className="accordion-header">
+                      <button
+                        className="accordion-button fw-bold p-2"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#${i}`}
+                        aria-expanded="true"
+                        aria-controls={i}
+                      >
+                        <img src="/Assets/user.png" alt="" width={18} />
+                        <div className="d-flex align-items-center justify-content-between w-100">
+                          <span className="m-3 mt-0 mb-0">
+                            {client.nameClient}
+                          </span>
+                          <div className="d-flex align-items-center m-3 mt-0 mb-0">
+                            <img
+                              src="/Assets/counter.png"
+                              alt="compteur count"
+                              width={20}
+                              title="Nombre totale de compteurs"
                             />
-                          </td>
-                        </tr>
-                      ) : (
-                        compteurs
-                          .filter((c) => c.numClient === client.numClient)
-                          .map((compteur, i) =>
-                            compteur.error ? (
-                              <tr key={i} className="border border-0">
+                            <span className="m-2 mt-0 mb-0">
+                              {
+                                compteurs.filter(
+                                  (c) => c.numClient === client.numClient
+                                ).length
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    </h2>
+                    <div
+                      id={i}
+                      className="accordion-collapse collapse show"
+                      data-bs-parent="#accordionExample"
+                    >
+                      <div className="accordion-body p-2">
+                        <table
+                          className="table table-bordered text-center w-100 mt-2 mb-0"
+                          style={{ verticalAlign: "middle" }}
+                        >
+                          <thead>
+                            <tr>
+                              <th>N°</th>
+                              <th>Point De Depart</th>
+                              <th>Date d'utilisation</th>
+                              <th>Credit</th>
+                              {/* <th>Nom Client</th> */}
+                              <th>Date de modification</th>
+                              <th colSpan={2}>Actions</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {compteurs.filter(
+                              (c) => c.numClient === client.numClient
+                            ).length <= 0 ? (
+                              <tr className="border border-0">
                                 <td
                                   colSpan={8}
                                   className="border border-0 pt-4"
                                 >
                                   <ErrorMsg
-                                    msg={compteur.error}
+                                    msg={
+                                      "Aucun Compteur a été enregistrer pour ce client"
+                                    }
                                     errorIconWidth={20}
                                     coleur={"red"}
                                     boldness="bold"
-                                    imgPath="Assets/error.png"
+                                    imgPath="Assets/empty.png"
                                   />
                                 </td>
                               </tr>
                             ) : (
-                              <tr key={i}>
-                                <td>{compteur.numCompteur}</td>
-                                <td>{compteur.startPoint}</td>
-                                <td>
-                                  {new Date(
-                                    compteur.useDate
-                                  ).toLocaleDateString("eu", DateConfig)}
-                                </td>
-                                <td>{compteur.credit}</td>
-                                <td>{client.nameClient}</td>
-                                <td>
-                                  {!compteur.modified_at
-                                    ? "-"
-                                    : new Date(
-                                        compteur.modified_at
-                                      ).toLocaleDateString("eu", {
-                                        ...DateConfig,
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                </td>
-                                <td>
-                                  <form
-                                    method="put"
-                                    action={`/compteurs/update-compteur/${compteur._id}`}
-                                  >
-                                    <button className="btn btn-primary">
-                                      <i className="bi bi-pencil-square"></i>
-                                    </button>
-                                  </form>
-                                </td>
-                                <td>
-                                  <form
-                                    onSubmit={(e) =>
-                                      handleDeleteCompteur(e, compteur)
-                                    }
-                                  >
-                                    <button className="btn btn-danger">
-                                      <i className="bi bi-trash3-fill"></i>
-                                    </button>
-                                  </form>
-                                </td>
-                              </tr>
-                            )
-                          )
-                      )}
-                    </tbody>
-                    <td>
-                      {compteurs.filter((c) => c.numClient === client.numClient)
-                        .length < 5 && (
-                        <a
-                          href={`/compteurs/add-compteur/${client.numClient}`}
-                          className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-3"
-                          style={{ fontSize: "13px" }}
-                        >
-                          Ajouter un nouveau compteur
-                        </a>
-                      )}
-                    </td>
-                  </table>
-                </details>
+                              compteurs
+                                .filter((c) => c.numClient === client.numClient)
+                                .map((compteur, i) =>
+                                  compteur.error ? (
+                                    <tr key={i} className="border border-0">
+                                      <td
+                                        colSpan={8}
+                                        className="border border-0 pt-4"
+                                      >
+                                        <ErrorMsg
+                                          msg={compteur.error}
+                                          errorIconWidth={20}
+                                          coleur={"red"}
+                                          boldness="bold"
+                                          imgPath="Assets/error.png"
+                                        />
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    <tr key={i}>
+                                      <td>{compteur.numCompteur}</td>
+                                      <td>{compteur.startPoint}</td>
+                                      <td>
+                                        {new Date(
+                                          compteur.useDate
+                                        ).toLocaleDateString("eu", DateConfig)}
+                                      </td>
+                                      <td>{compteur.credit}</td>
+                                      {/* <td>{client.nameClient}</td> */}
+                                      <td>
+                                        {!compteur.modified_at
+                                          ? "-"
+                                          : new Date(
+                                              compteur.modified_at
+                                            ).toLocaleDateString("eu", {
+                                              ...DateConfig,
+                                              hour: "2-digit",
+                                              minute: "2-digit",
+                                            })}
+                                      </td>
+                                      <td>
+                                        <form
+                                          method="put"
+                                          action={`/compteurs/update-compteur/${compteur._id}`}
+                                        >
+                                          <button className="btn btn-primary">
+                                            <i className="bi bi-pencil-square"></i>
+                                          </button>
+                                        </form>
+                                      </td>
+                                      <td>
+                                        <form
+                                          onSubmit={(e) =>
+                                            handleDeleteCompteur(e, compteur)
+                                          }
+                                        >
+                                          <button className="btn btn-danger">
+                                            <i className="bi bi-trash3-fill"></i>
+                                          </button>
+                                        </form>
+                                      </td>
+                                    </tr>
+                                  )
+                                )
+                            )}
+                          </tbody>
+                          <td colSpan={4} className="text-start">
+                            {compteurs.filter(
+                              (c) => c.numClient === client.numClient
+                            ).length < 5 && (
+                              <a
+                                href={`/compteurs/add-compteur/${client.numClient}`}
+                                className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                style={{ fontSize: "13px" }}
+                              >
+                                Ajouter un nouveau compteur
+                              </a>
+                            )}
+                          </td>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                ))
               ))}
-            {/* <table
-              className="table table-bordered text-center w-100"
-              style={{ verticalAlign: "middle" }}
-            >
-              <thead>
-                <tr>
-                  <th>N°</th>
-                  <th>Point De Depart</th>
-                  <th>Date d'utilisation</th>
-                  <th>Credit</th>
-                  <th>Nom Client</th>
-                  <th>Date de modification</th>
-                  <th colSpan={2}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {compteurs.length <= 0 ? (
-                  <tr className="border border-0">
-                    <td colSpan={8} className="border border-0 pt-4">
-                      <ErrorMsg
-                        msg={"Aucun data"}
-                        errorIconWidth={20}
-                        coleur={"red"}
-                        boldness="bold"
-                        imgPath="Assets/empty.png"
-                      />
-                    </td>
-                  </tr>
-                ) : (
-                  compteurs.map((compteur, i) =>
-                    compteur.error ? (
-                      <tr key={i} className="border border-0">
-                        <td colSpan={8} className="border border-0 pt-4">
-                          <ErrorMsg
-                            msg={compteur.error}
-                            errorIconWidth={20}
-                            coleur={"red"}
-                            boldness="bold"
-                            imgPath="Assets/error.png"
-                          />
-                        </td>
-                      </tr>
-                    ) : (
-                      <tr key={i}>
-                        <td>{compteur.numCompteur}</td>
-                        <td>{compteur.startPoint}</td>
-                        <td>
-                          {new Date(compteur.useDate).toLocaleDateString(
-                            "eu",
-                            DateConfig
-                          )}
-                        </td>
-                        <td>{compteur.credit}</td>
-                        <td>
-                          {clientData !== "loading" &&
-                            clientData.find(
-                              (client) =>
-                                client.numClient === compteur.numClient
-                            ).nameClient}
-                        </td>
-                        <td>
-                          {!compteur.modified_at
-                            ? "-"
-                            : new Date(compteur.modified_at).toLocaleDateString(
-                                "eu",
-                                {
-                                  ...DateConfig,
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                }
-                              )}
-                        </td>
-                        <td>
-                          <form
-                            method="put"
-                            action={`/compteurs/update-compteur/${compteur._id}`}
-                          >
-                            <button className="btn btn-primary">
-                              <i className="bi bi-pencil-square"></i>
-                            </button>
-                          </form>
-                        </td>
-                        <td>
-                          <form
-                            onSubmit={(e) => handleDeleteCompteur(e, compteur)}
-                          >
-                            <button className="btn btn-danger">
-                              <i className="bi bi-trash3-fill"></i>
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                    )
-                  )
-                )}
-              </tbody>
-            </table> */}
           </div>
         )}
       </Main>

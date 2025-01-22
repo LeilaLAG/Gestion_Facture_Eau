@@ -73,7 +73,7 @@ const deleteClient = async (req, res) => {
     const { clientId } = req.params;
 
     const clientToDelete = await Client.findOneAndDelete({ _id: clientId });
-    await Client.findOneAndUpdate({ _id: clientId }, req.body);
+    // await Client.findOneAndUpdate({ _id: clientId }, req.body);
     return res.status(200).json({ clientToDelete });
   } catch (err) {
     return res.status(400).json({ error: "Server Error deletting client" });

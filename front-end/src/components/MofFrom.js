@@ -6,7 +6,6 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
 import { useParams } from "react-router-dom";
-// import ErrorMsg from "../costumComponents/ErrorMsg";
 import GetClients from "../hooks/GetClients";
 import ModClient from "./crufForm/ModClient";
 import ModCompteur from "./crufForm/ModCompteur";
@@ -44,7 +43,6 @@ export default function ModForm({ page }) {
 
   const [dataToMod, setDataToMod] = useState(dataObject);
   const [loading, setLoading] = useState(false);
-  // const [errorMsgs, setErrorMsgs] = useState("");
 
   useEffect(() => {
     if (clientId) {
@@ -135,21 +133,14 @@ export default function ModForm({ page }) {
           if(page === 'client' && res.data.isClientexisting){
             toast.error("Cette CIN exist deja!");
             setLoading(false);
-          // setErrorMsgs("");
             return;
           }
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
-          // setErrorMsgs("");
         })
         .catch((err) => {
           setLoading(false);
           toast.error("Un problem est servenu lors de la modification!");
-          // if (page === "client") {
-          //   setErrorMsgs(
-          //     "CIN ou numéro de télephone existe déja dans votre liste de clients ou déja enregistrer dans une autre société"
-          //   );
-          // }
         });
     }
   }
@@ -178,15 +169,6 @@ export default function ModForm({ page }) {
               className="bg-primary"
             ></div>
             <h3 className="text-center mb-4">{`Modifier ${page}`}</h3>
-            {/* {errorMsgs && (
-              <ErrorMsg
-                msg={errorMsgs}
-                errorIconWidth={20}
-                coleur={"red"}
-                boldness="bold"
-                imgPath="/Assets/error.png"
-              />
-            )} */}
             {page === "client" && (
               <ModClient onChangeModInfo={e=>handleModInfo(e)} dataToMod={dataToMod} />
             )}

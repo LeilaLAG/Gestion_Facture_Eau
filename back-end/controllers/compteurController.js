@@ -27,6 +27,11 @@ const createCompteur = async (req, res) => {
   const { companyId } = req.body;
 
   try {
+    const compteursNumber = (await Compteur.find({numClient : req.body.numClient})).length
+
+    if(compteursNumber >= 5){
+      return res.status(200).json({ maxCompteurs : "5 est le max nombre des compteurs pour un client" });
+    }
     const maxNumCompteur = await Compteur.findOne({
       companyId: companyId,
     }).sort({ numCompteur: -1 });
@@ -64,8 +69,20 @@ const deleteCompteur = async (req, res) => {
     const compteurToDelete = await Compteur.findOneAndDelete({
       _id: compteurId,
     });
-    await Compteur.findOneAndUpdate({ _id: compteurId }, req.body);
+    // await Compteur.findOneAndUpdate({ _id: compteurId }, req.body);
     return res.status(200).json({ compteurToDelete });
+  } catch (err) {
+    return res.status(400).json({ error: "Server Error deletting client" });
+  }
+};
+
+const deleteClientCompteurs = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const clientCompteursToDelete = await Compteur.deleteMany({
+      numClient: clientId,
+    });
+    return res.status(200).json(clientCompteursToDelete);
   } catch (err) {
     return res.status(400).json({ error: "Server Error deletting client" });
   }
@@ -77,4 +94,5 @@ module.exports = {
   createCompteur,
   updateCompteur,
   deleteCompteur,
+  deleteClientCompteurs
 };
