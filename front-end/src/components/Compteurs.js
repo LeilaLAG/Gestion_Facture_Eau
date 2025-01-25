@@ -98,7 +98,7 @@ export default function Compteurs() {
       <Main>
         <h3 className="fw-bold mb-4">Liste des compteurs :</h3>
         {compteurs === "loading" ? (
-          <div className="d-flex justify-content-center w-100">
+          <div className="centerDiv w-100">
             <Loading />
           </div>
         ) : (
@@ -274,45 +274,55 @@ export default function Compteurs() {
                                               minute: "2-digit",
                                             })}
                                       </td>
-                                      <td>
-                                        <form
-                                          method="put"
-                                          action={`/compteurs/update-compteur/${compteur._id}`}
-                                        >
-                                          <button className="btn btn-primary">
-                                            <i className="bi bi-pencil-square"></i>
-                                          </button>
-                                        </form>
-                                      </td>
-                                      <td>
-                                        <form
-                                          onSubmit={(e) =>
-                                            handleDeleteCompteur(e, compteur)
-                                          }
-                                        >
-                                          <button className="btn btn-danger">
-                                            <i className="bi bi-trash3-fill"></i>
-                                          </button>
-                                        </form>
-                                      </td>
+                                      {
+                                        (user.crudAccess.compteurs.mod && user.function === "Employer") &&
+                                        <td>
+                                          <form
+                                            method="put"
+                                            action={`/compteurs/update-compteur/${compteur._id}`}
+                                          >
+                                            <button className="btn btn-primary" title="Modifier">
+                                              <i className="bi bi-pencil-square"></i>
+                                            </button>
+                                          </form>
+                                        </td>
+                                      }
+
+                                      {
+                                        (user.crudAccess.compteurs.dlt && user.function === "Employer") &&
+                                        <td>
+                                          <form
+                                            onSubmit={(e) =>
+                                              handleDeleteCompteur(e, compteur)
+                                            }
+                                          >
+                                            <button className="btn btn-danger" title="Supprimer">
+                                              <i className="bi bi-trash3-fill"></i>
+                                            </button>
+                                          </form>
+                                        </td>
+                                      }
                                     </tr>
                                   )
                                 )
                             )}
                           </tbody>
-                          <td colSpan={4} className="text-start">
-                            {compteurs.filter(
-                              (c) => c.numClient === client.numClient
-                            ).length < 5 && (
-                              <a
-                                href={`/compteurs/add-compteur/${client.numClient}`}
-                                className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
-                                style={{ fontSize: "13px" }}
-                              >
-                                Ajouter un nouveau compteur
-                              </a>
-                            )}
-                          </td>
+                          {
+                            (user.crudAccess.compteurs.add && user.function === "Employer") &&
+                            <td colSpan={4} className="text-start">
+                              {compteurs.filter(
+                                (c) => c.numClient === client.numClient
+                              ).length < 5 && (
+                                <a
+                                  href={`/compteurs/add-compteur/${client.numClient}`}
+                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                  style={{ fontSize: "13px" }}
+                                >
+                                  Ajouter un nouveau compteur
+                                </a>
+                              )}
+                            </td>
+                          }
                         </table>
                       </div>
                     </div>

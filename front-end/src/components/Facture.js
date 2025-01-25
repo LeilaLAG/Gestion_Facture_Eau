@@ -91,7 +91,7 @@ export default function Facture() {
       <Main>
         <h3 className="fw-bold mb-4">Liste des factures :</h3>
         {facture === "loading" ? (
-          <div className="d-flex justify-content-center w-100">
+          <div className="centerDiv w-100">
             <Loading />
           </div>
         ) : (
@@ -215,31 +215,19 @@ export default function Facture() {
                             minute: "2-digit",
                           })}
                         </td>
-                        {/* <td>
-                          {!fact.modified_at
-                            ? "-"
-                            : new Date(fact.modified_at).toLocaleDateString(
-                                "eu",
-                                {
-                                  ...DateConfig,
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                }
-                              )}
-                        </td> */}
                         <td>
                           <form
                             method="put"
                             action={`/facture/update-fact/${fact._id}`}
                           >
-                            <button className="btn btn-primary">
+                            <button className="btn btn-primary" title="Modifier">
                               <i className="bi bi-pencil-square"></i>
                             </button>
                           </form>
                         </td>
                         <td>
                           <form onSubmit={(e) => handleDeletefact(e, fact)}>
-                            <button className="btn btn-danger">
+                            <button className="btn btn-danger" title="Supprimer">
                               <i className="bi bi-trash3-fill"></i>
                             </button>
                           </form>

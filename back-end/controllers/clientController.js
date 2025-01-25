@@ -50,9 +50,9 @@ const createClient = async (req, res) => {
 const updateClient = async (req, res) => {
   try {
     const { clientId } = req.params;
-    const { companyId , cin } = req.body;
+    const { companyId , cin , _id } = req.body;
 
-    const isClientexisting = await Client.findOne({companyId , cin})
+    const isClientexisting = await Client.findOne({companyId , cin , _id : {$ne : _id}})
 
     if(!isClientexisting){
       const clientToUpdate = await Client.findOneAndUpdate(
@@ -73,7 +73,6 @@ const deleteClient = async (req, res) => {
     const { clientId } = req.params;
 
     const clientToDelete = await Client.findOneAndDelete({ _id: clientId });
-    // await Client.findOneAndUpdate({ _id: clientId }, req.body);
     return res.status(200).json({ clientToDelete });
   } catch (err) {
     return res.status(400).json({ error: "Server Error deletting client" });

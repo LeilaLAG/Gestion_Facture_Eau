@@ -13,14 +13,56 @@ import ModForm from "./components/MofFrom";
 import UserModFrom from "./components/UserModFrom";
 import PasswordReset from "./components/PasswordReset";
 import Facture from "./components/Facture";
+import Home from "./components/Home";
+import Employees from "./components/Employees";
+import AddEmployee from "./components/AddEmployee";
 
 function App() {
   return (
     <div className="App">
       <Routes>
         {/* authentication -------------------------------------------- */}
-        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/log-in" element={<LogIn />} />
+
+        {/* home page --------------------------------------------------- */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* employees --------------------------------------------------- */}
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute>
+              <Employees />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users/add-employee"
+          element={
+            <ProtectedRoute>
+              <AddEmployee />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* user ---------------------------------------------------*/}
+        <Route path="/add-admin-user" element={<SignUp />} />
+        <Route
+          path="/users/update-user/:userId"
+          element={
+            <ProtectedRoute>
+              <UserModFrom />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/reset-password" element={<PasswordReset />} />
 
         {/* clients ---------------------------------------------------- */}
         <Route
@@ -47,17 +89,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* user ---------------------------------------------------*/}
-        <Route
-          path="/users/update-user/:userId"
-          element={
-            <ProtectedRoute>
-              <UserModFrom />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/reset-password" element={<PasswordReset />} />
 
         {/* compteurs ---------------------------------------------------- */}
         <Route

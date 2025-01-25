@@ -51,7 +51,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (isAuthenticated === null) {
     return (
-      <div className="vh-100 w-100 d-flex justify-content-center align-items-center">
+      <div className="vh-100 w-100 centerDiv">
         <Loading />
       </div>
     );

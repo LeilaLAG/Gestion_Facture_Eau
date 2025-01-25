@@ -19,7 +19,8 @@ const {
   deleteUser,
   updateUser,
   resetPassword,
-  ModifyPassword
+  ModifyPassword,
+  updateEmployeePrivileges
 } = require("./controllers/userController");
 const {
   getClients,
@@ -71,7 +72,7 @@ app.post("/api/login", login);
 
 // signup
 app.post("/api/addCompany", createCompany);
-app.post("/api/addUser", createUser);
+app.post("/api/addAdmin", createUser);
 
 // all companies
 app.get("/api/companies", getCompanies);
@@ -103,9 +104,11 @@ app.put("/api/updateCompany/:companyId", updateCompany);
 app.delete("/api/deleteCompany/:companyId", deleteCompany);
 
 // User
-app.get("/api/users", getUsers);
+app.get("/api/users/:companyId", getUsers);
 app.get("/api/user/:userId", getOneUser);
+app.post("/api/addEmployee", createUser);
 app.put("/api/updateUser/:userId", updateUser);
+app.put("/api/updateEmployeePrivileges", updateEmployeePrivileges);
 app.delete("/api/deleteUser/:userId", deleteUser);
 
 // Client

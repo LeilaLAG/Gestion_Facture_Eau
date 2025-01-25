@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Menu from "./Menu";
 import Main from "./Main";
 import ActionLoading from "../costumComponents/ActionLoading";
 import ErrorMsg from "../costumComponents/ErrorMsg";
-import { useUser } from "../Auth/ProtectedRoute";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function UserModFrom() {
   const { userId } = useParams();
 
-  const { user } = useUser();
+  const [userToMod, setUserToMod] = useState({});
 
-  const [userToMod, setUserToMod] = useState(user);
+  useEffect(()=>{
+    async function fetchUser(){
+      await axios.get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/user/${userId}`, {
+        withCredentials: true,
+      }).then(res=>setUserToMod(res.data.user))
+      .catch(err=>toast.error(err.response.data.error))
+    }
+
+    fetchUser()
+    
+  } , [userId])
+
   const [loading, setLoading] = useState(false);
   const [errorMsgs, setErrorMsgs] = useState("");
 
@@ -44,14 +54,17 @@ export default function UserModFrom() {
           { withCredentials: true }
         )
         .then((res) => {
-          toast.success("Votre profile a été modifier");
           setLoading(false);
-          setErrorMsgs("")
-          setTimeout(()=>window.location.reload() , 3000)
+          if(res.data.isEmailexist){
+            setErrorMsgs("L'adresse Email est déja utilisée par un autre utilisateur")
+          }
+          else{
+            toast.success("Votre profile a été modifier");
+            setTimeout(()=>window.location.reload() , 3000)
+          }
         })
         .catch((err) => {
           toast.error("Un erreur est servenue!");
-          setErrorMsgs("Peut etre l'adresse Email est déja utilisée");
           setLoading(false);
         });
     }
@@ -62,9 +75,9 @@ export default function UserModFrom() {
       <Toaster position="top-right" />
       <Menu />
       <Main>
-        <div className="d-flex justify-content-center align-items-center h-100">
+        <div className="centerDiv h-100">
           <form
-            method="POST"
+            method="PUT"
             onSubmit={(e) => handleModUser(e)}
             className="shadow p-5 pt-4 pb-4 rounded w-50"
             style={{ position: "relative" }}
@@ -113,12 +126,23 @@ export default function UserModFrom() {
                   onChange={(e) => handleUserChange(e)}
                 />
               </div>
+              <div className="mb-3">
+                <label className="d-block">Role</label>
+                <input
+                  type="text"
+                  name="role"
+                  className="form-control"
+                  placeholder="Saisir votre role"
+                  value={userToMod.role}
+                  onChange={(e) => handleUserChange(e)}
+                />
+              </div>
             </div>
             <div className="mt-4 d-flex justify-content-around w-100">
               <button className="btn btn-dark w-25 fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Modifier"}
               </button>
-              <a href="/clients" className="btn btn-danger w-25 fw-bold">
+              <a href="/home" className="btn btn-danger w-25 fw-bold">
                 Retour
               </a>
             </div>

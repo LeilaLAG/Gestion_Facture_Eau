@@ -87,7 +87,7 @@ export default function PasswordReset() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center h-100">
+    <div className="centerDiv h-100">
       <Toaster />
       <div style={{ width: "40%" }}>
         {showResetForm ? (

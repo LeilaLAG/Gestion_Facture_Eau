@@ -150,7 +150,7 @@ export default function ModForm({ page }) {
       <Toaster position="top-right" />
       <Menu />
       <Main>
-        <div className="d-flex justify-content-center align-items-center h-100">
+        <div className="centerDiv h-100">
           <form
             method="POST"
             onSubmit={(e) => handleModData(e)}

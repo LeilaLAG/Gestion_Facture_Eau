@@ -36,7 +36,7 @@ export default function LogIn() {
         { withCredentials: true }
       )
       .then((res) => {
-        navigate("/clients");
+        navigate("/home");
         setLoginLoading(false);
         setIsDisabled(false);
       })
@@ -62,7 +62,7 @@ export default function LogIn() {
           }}
         >
           <div>
-            <div className="d-flex justify-content-center align-items-center mb-5">
+            <div className="centerDiv mb-5">
               <img src="Assets/waterLogo.png" alt="logo" width={40}/>
               <div className="d-flex flex-column">
                 <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>G-F-E</h1>
@@ -107,10 +107,10 @@ export default function LogIn() {
             >
               {loginLoading ? <ActionLoading /> : "Authentifier"}
             </button>
-            <hr/>
+            {/* <hr/>
             <div className="text-center">
-              <a className="color_blue_text" href="/sign-up">Creer votre profile Administratif</a>
-            </div>
+              <a className="color_blue_text" href="/sign-up">Creer votre profile</a>
+            </div> */}
           </div>
         </form>
       </div>

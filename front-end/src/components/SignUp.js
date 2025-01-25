@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../style/signUp.css";
 import "../style/customCompStyle.css";
 import axios from "axios";
@@ -12,7 +11,7 @@ export default function SignUp() {
   const [signupLoading, setSignupLoading] = useState(false);
 
   const [company, setCompany] = useState("");
-  const [user, setUser] = useState({
+  const [Admin, setAdmin] = useState({
     fullName: "",
     email: "",
     password: "",
@@ -21,56 +20,69 @@ export default function SignUp() {
     companyId: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  // const [error, setError] = useState("");
 
   const allCompanies = GetCompanies();
 
-  const navigate = useNavigate();
-
-  function handleChangeUserInfo(e) {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  function handleChangeAdminInfo(e) {
+    setAdmin({ ...Admin, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmitUser(e) {
-    e.preventDefault();
-
+  function formTest() {
     if (
-      !user.email
+      !Admin.email
         .trim()
         .match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
     ) {
       toast.error("Le format de l'adresse Email est invalide!");
-    } else if (!user.password.trim().match(/[A-Za-z0-9._%+-]{8,}/)) {
+      return false;
+    }
+    if (!Admin.password.trim().match(/[A-Za-z0-9._%+-]{8,}/)) {
       toast.error("Le mot de passe doit contien 8 caracteres minimum!");
-    } else if (!user.fullName.trim().match(/[A-Za-z]{3,}/)) {
+      return false;
+    }
+    if (!Admin.fullName.trim().match(/[A-Za-z]{3,}/)) {
       toast.error("Le nom d'utilisateur doit contien 3 caracteres minimum!");
-    } else if (user.role === "") {
+      return false;
+    }
+    if (Admin.role === "") {
       toast.error("Choisir votre fonction!");
-    } else if (!company.trim().match(/[A-Za-z]{3,}/)) {
+      return false;
+    }
+    if (!company.trim().match(/[A-Za-z]{3,}/)) {
       toast.error("Le nom de société doit contien 3 caracteres minimum!");
-    } else if (
+      return false;
+    }
+    if (
       allCompanies.find((societe) => company === societe.companyName) !==
       undefined
     ) {
       toast.error("Cette société existe déja!");
-    } else {
+      return false;
+    }
+    return true;
+  }
+
+  async function handleSubmitAdmin(e) {
+    e.preventDefault();
+
+    if (formTest()) {
       setSignupLoading(true);
       setIsDisabled(true);
 
-      // adding user
+      // adding Admin
       await axios
         .post(
-          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addUser`,
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addAdmin`,
           {
-            ...user,
+            ...Admin,
             companyId: company,
           }
         )
         .then(async (res) => {
           if (res.data.isEmailexist) {
-            toast.error("Cette adresse Email est déja utilisé!");
             setSignupLoading(false);
             setIsDisabled(false);
+            toast.error("Cette adresse Email est déja utilisé!");
             return;
           }
           // adding company
@@ -81,7 +93,7 @@ export default function SignUp() {
 
           toast.success("Votre profile a été creer");
           setTimeout(() => {
-            navigate("/log-in");
+            window.location.reload()
           }, 3000);
         })
         .catch((err) => {
@@ -91,6 +103,7 @@ export default function SignUp() {
         });
     }
   }
+
   return (
     <div>
       <Toaster position="top-right" />
@@ -98,15 +111,9 @@ export default function SignUp() {
         <div>
           <img src="Assets/loginImg.jpg" alt="" />
         </div>
-        <form
-          method="POST"
-          className="LoginFrom shadow"
-          onSubmit={(e) => {
-            handleSubmitUser(e);
-          }}
-        >
+        <div className="LoginFrom shadow">
           <div>
-            <div className="d-flex justify-content-center align-items-center mb-5">
+            <div className="centerDiv mb-5">
               <img src="Assets/waterLogo.png" alt="logo" width={40} />
               <div className="d-flex flex-column">
                 <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>
@@ -117,82 +124,87 @@ export default function SignUp() {
                 </span>
               </div>
             </div>
-            <h1 className="mb-5 text-center">S'enregister</h1>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              placeholder="Saisir votre adresse email"
-              onChange={(e) => {
-                handleChangeUserInfo(e);
+            <h2 className="mb-3 text-center">Creer profile Admin</h2>
+            <form
+              method="POST"
+              onSubmit={(e) => {
+                handleSubmitAdmin(e);
               }}
-            />
-            <div className="LoginPasswordInput">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                className="form-control mt-3"
-                placeholder="Saisir le mot de passe Admin"
-                onChange={(e) => {
-                  handleChangeUserInfo(e);
-                }}
-              />
-              <img
-                src="Assets/show.png"
-                alt="show"
-                width={20}
-                className="showPasswordIcon"
-                style={{ bottom: "20%" }}
-                onClick={() => setShowPassword((prev) => !prev)}
-              />
-            </div>
-            <div className="LoginPasswordInput">
-              <input
-                type="text"
-                name="fullName"
-                className="form-control mt-3"
-                placeholder="Saisir le nom de votre nom complet"
-                onChange={(e) => {
-                  handleChangeUserInfo(e);
-                }}
-              />
-            </div>
-            <div className="LoginPasswordInput">
-              <input
-                type="text"
-                name="role"
-                className="form-control mt-3"
-                placeholder="Saisir le nom de votre role"
-                onChange={(e) => {
-                  handleChangeUserInfo(e);
-                }}
-              />
-            </div>
-            <div className="LoginPasswordInput">
-              <input
-                type="text"
-                name="company"
-                className="form-control mt-3"
-                placeholder="Saisir le nom de votre société"
-                onChange={(e) => {
-                  setCompany(e.target.value);
-                }}
-              />
-            </div>
-            <button
-              className="btn btn-primary w-100 mt-3 fw-bold"
-              disabled={isDisabled}
             >
-              {signupLoading ? <ActionLoading /> : "Crerer"}
-            </button>
-            <hr />
-            <div className="text-center">
-              <a className="color_blue_text" href="/log-in">
-                Retour à la page d'authentification
-              </a>
-            </div>
+              <div>
+                <div className="LoginPasswordInput">
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    placeholder="Saisir l'adresse email"
+                    onChange={(e) => {
+                      handleChangeAdminInfo(e);
+                    }}
+                  />
+                </div>
+                <div className="LoginPasswordInput">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    className="form-control mt-3"
+                    placeholder="Saisir le mot de passe"
+                    onChange={(e) => {
+                      handleChangeAdminInfo(e);
+                    }}
+                  />
+                  <img
+                    src="Assets/show.png"
+                    alt="show"
+                    width={20}
+                    className="showPasswordIcon"
+                    style={{ bottom: "20%" }}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  />
+                </div>
+                <div className="LoginPasswordInput">
+                  <input
+                    type="text"
+                    name="fullName"
+                    className="form-control mt-3"
+                    placeholder="Saisir le nom complet"
+                    onChange={(e) => {
+                      handleChangeAdminInfo(e);
+                    }}
+                  />
+                </div>
+                <div className="LoginPasswordInput">
+                  <input
+                    type="text"
+                    name="role"
+                    className="form-control mt-3"
+                    placeholder="Saisir le role"
+                    onChange={(e) => {
+                      handleChangeAdminInfo(e);
+                    }}
+                  />
+                </div>
+                <div className="LoginPasswordInput">
+                  <input
+                    type="text"
+                    name="company"
+                    className="form-control mt-3"
+                    placeholder="Saisir le nom de société"
+                    onChange={(e) => {
+                      setCompany(e.target.value);
+                    }}
+                  />
+                </div>
+                <button
+                  className="btn btn-primary w-100 mt-3 fw-bold"
+                  disabled={isDisabled}
+                >
+                  {signupLoading ? <ActionLoading /> : "Crerer"}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

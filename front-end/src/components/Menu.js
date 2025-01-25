@@ -3,32 +3,32 @@ import "../style/menu.css";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 import { useLocation } from "react-router-dom";
-import GetCompanies from "../hooks/GetCompanies";
-import toast from "react-hot-toast";
+// import GetCompanies from "../hooks/GetCompanies";
+// import toast from "react-hot-toast";
 
 export default function Menu() {
   const { user } = useUser();
 
-  const comapnies = GetCompanies();
+  // const comapnies = GetCompanies();
 
   const currentUrl = useLocation();
 
-  function obtainSignUpId() {
-    const signUpId = comapnies.find(
-      (comapnie) => comapnie.companyName === user.companyId
-    )._id;
+  // function obtainSignUpId() {
+  //   const signUpId = comapnies.find(
+  //     (comapnie) => comapnie.companyName === user.companyId
+  //   )._id;
 
-    const tempInput = document.createElement("textarea");
-    tempInput.value = signUpId;
-    document.body.appendChild(tempInput);
+  //   const tempInput = document.createElement("textarea");
+  //   tempInput.value = signUpId;
+  //   document.body.appendChild(tempInput);
 
-    tempInput.select();
-    document.execCommand("copy");
+  //   tempInput.select();
+  //   document.execCommand("copy");
 
-    document.body.removeChild(tempInput);
+  //   document.body.removeChild(tempInput);
 
-    toast.success("L'ID de votre société a été copié");
-  }
+  //   toast.success("L'ID de votre société a été copié");
+  // }
 
   return (
     <div className="Menu shadow">
@@ -38,7 +38,7 @@ export default function Menu() {
             className="btn btn-dark p-3 pt-1 pb-1 dropdown-toggle"
             data-bs-toggle="dropdown"
           >
-            Paramètre
+            Options
           </button>
           <ul className="dropdown-menu shadow">
             <li className="d-flex align-items-center gap-2 dropdown-item">
@@ -51,15 +51,34 @@ export default function Menu() {
                 Modifier votre profile
               </a>
             </li>
-            <hr className="m-0 mt-1 mb-1" />
             {user.function === "Admin" && (
-              <li
-                className="d-flex align-items-center gap-2 dropdown-item"
-                onClick={obtainSignUpId}
-              >
-                <img src="/Assets/companyId.png" alt="companuId" width={20} />
-                Obtenir l'ID du société
-              </li>
+              <div>
+                <hr className="m-0 mt-1 mb-1" />
+                <li
+                  className="d-flex align-items-center gap-2 dropdown-item"
+                  // onClick={obtainSignUpId}
+                >
+                  <img src="/Assets/signup.png" alt="companuId" width={20} />
+                  <a
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                    href="/users/add-employee"
+                  >
+                    Ajouter un employer
+                  </a>
+                </li>
+                <hr className="m-0 mt-1 mb-1" />
+                <li className="d-flex align-items-center gap-2 dropdown-item">
+                  <img src="/Assets/employee.png" alt="companuId" width={20} />
+                  <a
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                    href="/employees"
+                  >
+                    Vos employers
+                  </a>
+                </li>
+              </div>
             )}
             <hr className="m-0 mt-1 mb-1" />
             <li className="">
@@ -130,74 +149,89 @@ export default function Menu() {
       </div>
       <hr />
       <nav className="navLinks">
-        <ul>
-          <li
-            className={currentUrl.pathname === "/clients" ? "activeLink" : ""}
-          >
-            <img src="/Assets/clients.png" alt="clients" width={20} />
-            <a href="/clients">Clients</a>
-          </li>
-          {/* <ul className="subNavLinks">
+        {user.function === "Admin" && (
+          <ul>
+            <li
+              className={currentUrl.pathname === "/clients" ? "activeLink" : ""}
+            >
+              <img src="/Assets/clients.png" alt="clients" width={20} />
+              <a href="/clients">Clients</a>
+            </li>
             <li
               className={
-                currentUrl.pathname === "/clients/add-client"
-                  ? "activeSubLink"
-                  : ""
+                currentUrl.pathname === "/compteurs" ? "activeLink" : ""
               }
             >
-              <a href="/clients/add-client">Ajouter client</a>
+              <img src="/Assets/counter.png" alt="compteur" width={20} />
+              <a href="/compteurs">Compteur</a>
             </li>
-          </ul> */}
-          <li
-            className={currentUrl.pathname === "/compteurs" ? "activeLink" : ""}
-          >
-            <img src="/Assets/counter.png" alt="compteur" width={20} />
-            <a href="/compteurs">Compteur</a>
-          </li>
-          {/* <ul className="subNavLinks">
             <li
               className={
-                currentUrl.pathname === "/compteurs/add-compteur"
-                  ? "activeSubLink"
-                  : ""
+                currentUrl.pathname === "/factures" ? "activeLink" : ""
               }
             >
-              <a href="/compteurs/add-compteur">Ajouter compteur</a>
+              <img src="/Assets/bill.png" alt="facture" width={20} />
+              <a href="/factures">Facture</a>
             </li>
-          </ul> */}
-          <li
-            className={currentUrl.pathname === "/factures" ? "activeLink" : ""}
-          >
-            <img src="/Assets/bill.png" alt="facture" width={20} />
-            <a href="/factures">Facture</a>
-          </li>
-          {/* <ul className="subNavLinks">
+
             <li
               className={
-                currentUrl.pathname === "/factures/add-facture"
-                  ? "activeSubLink"
-                  : ""
+                currentUrl.pathname === "/tranches" ? "activeLink" : ""
               }
             >
-              <a href="/factures/add-facture">Creer facture</a>
+              <img src="/Assets/tranche.png" alt="tranche" width={20} />
+              <a href="/tranches">Tranche</a>
             </li>
-          </ul> */}
-          <li>
-            <img src="/Assets/tranche.png" alt="tranche" width={20} />
-            <a href="/tranches">Tranche</a>
-          </li>
-          {/* <ul className="subNavLinks">
-            <li
-              className={
-                currentUrl.pathname === "/tranches/add-tranche"
-                  ? "activeSubLink"
-                  : ""
-              }
-            >
-              <a href="/tranches/add-tranche">Creer tranche</a>
-            </li>
-          </ul> */}
-        </ul>
+          </ul>
+        )}
+
+        {user.function === "Employer" && (
+          <ul>
+            {user.privileges.clients && (
+              <li
+                className={
+                  currentUrl.pathname === "/clients" ? "activeLink" : ""
+                }
+              >
+                <img src="/Assets/clients.png" alt="clients" width={20} />
+                <a href="/clients">Clients</a>
+              </li>
+            )}
+
+            {user.privileges.compteurs && (
+              <li
+                className={
+                  currentUrl.pathname === "/compteurs" ? "activeLink" : ""
+                }
+              >
+                <img src="/Assets/counter.png" alt="compteur" width={20} />
+                <a href="/compteurs">Compteur</a>
+              </li>
+            )}
+
+            {user.privileges.factures && (
+              <li
+                className={
+                  currentUrl.pathname === "/factures" ? "activeLink" : ""
+                }
+              >
+                <img src="/Assets/bill.png" alt="facture" width={20} />
+                <a href="/factures">Facture</a>
+              </li>
+            )}
+
+            {user.privileges.tranches && (
+              <li
+                className={
+                  currentUrl.pathname === "/tranches" ? "activeLink" : ""
+                }
+              >
+                <img src="/Assets/tranche.png" alt="tranche" width={20} />
+                <a href="/tranches">Tranche</a>
+              </li>
+            )}
+          </ul>
+        )}
       </nav>
     </div>
   );

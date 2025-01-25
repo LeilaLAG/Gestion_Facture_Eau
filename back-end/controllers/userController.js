@@ -3,29 +3,52 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
 const getUsers = async (req, res) => {
-  const users = await User.find({});
-  res.status(200).json({ users });
+  const { companyId } = req.params;
+  try {
+    const users = await User.find({ companyId, function: "Employer" });
+    return res.status(200).json({ users });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Un erreur est servenue lors de l'obtention des données !",
+    });
+  }
 };
 
 const getOneUser = async (req, res) => {
-  const { userId } = req.body;
-  const user = await User.findOne({ _id: userId });
-  res.status(200).json({ user });
+  try {
+    const { userId } = req.params;
+    const user = await User.findOne({ _id: userId });
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Un erreur est servenue lors de l'obtention des données !",
+    });
+  }
 };
 
 const createUser = async (req, res) => {
-  const adminPass = process.env.AdminPass
-  
+  // const adminPass = process.env.AdminPass
+
   try {
-    if(req.body.function === "Admin"){
-      if(req.body.password != adminPass){
-        return res.status(400).json({ error: "Votre Admin mot de passe est invalide !" });
-      }
-    }
+    // if(req.body.function === "Admin"){
+    //   if(req.body.password != adminPass){
+    //     return res.status(400).json({ error: "Votre Admin mot de passe est invalide !" });
+    //   }
+    // }
+    // else if(req.body.function === "Employer"){
+    //   const findingCompany = await Company.findOne({_id : req.body.companyId}) ;
 
-    const isEmailexist = await User.findOne({email : req.body.email})
+    //   if(!findingCompany){
+    //     return res.status(400).json({ error: "Ce ID de société est invalide !" });
+    //   }
 
-    if(!isEmailexist){
+    //   req.body.companyId = findingCompany.companyName
+
+    // }
+
+    const isEmailexist = await User.findOne({ email: req.body.email });
+
+    if (!isEmailexist) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const addedUser = await User.create({
         ...req.body,
@@ -34,9 +57,10 @@ const createUser = async (req, res) => {
       return res.status(200).json({ addedUser });
     }
     return res.status(200).json({ isEmailexist });
-
   } catch (err) {
-    return res.status(400).json({ error: "Un erreur est servenue lors de l'enregistrement !" });
+    return res
+      .status(400)
+      .json({ error: "Un erreur est servenue lors de l'enregistrement !" });
   }
 };
 
@@ -44,12 +68,90 @@ const updateUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
+    const isEmailexist = await User.findOne({
+      email: req.body.email,
+      _id: { $ne: userId },
+    });
+
+    if (isEmailexist) {
+      return res.status(200).json({ isEmailexist });
+    }
     const userToUpdate = await User.findOneAndUpdate({ _id: userId }, req.body);
     return res.status(200).json({ userToUpdate });
   } catch (err) {
     return res.status(400).json({ error: "Error updating user" });
   }
 };
+
+const updateEmployeePrivileges = async (req, res) => {
+  const { privileges, crudAccess } = req.body;
+
+  try {
+    // Update privileges
+    const updatePrivPromises = privileges.map((grant) =>
+      User.findOneAndUpdate(
+        { _id: grant.empID },
+        {
+          $set: {
+            "privileges.clients": grant.clients,
+            "privileges.compteurs": grant.compteurs,
+            "privileges.factures": grant.factures,
+            "privileges.tranches": grant.tranches,
+          },
+        },
+        { new: true } // Return the updated document
+      )
+    );
+
+    // Update CRUD access
+    const updateCrudPromises = crudAccess.map((crud) =>
+      User.findOneAndUpdate(
+        { _id: crud.empID },
+        {
+          $set: {
+            "crudAccess.clients": {
+              add: crud.clients.add,
+              mod: crud.clients.mod,
+              dlt: crud.clients.dlt,
+            },
+            "crudAccess.compteurs": {
+              add: crud.compteurs.add,
+              mod: crud.compteurs.mod,
+              dlt: crud.compteurs.dlt,
+            },
+            "crudAccess.factures": {
+              add: crud.factures.add,
+              mod: crud.factures.mod,
+              dlt: crud.factures.dlt,
+            },
+            "crudAccess.tranches": {
+              add: crud.tranches.add,
+              mod: crud.tranches.mod,
+              dlt: crud.tranches.dlt,
+            },
+          },
+        },
+        { new: true } // Return the updated document
+      )
+    );
+
+    // Combine all promises
+    const results = await Promise.all([...updatePrivPromises, ...updateCrudPromises]);
+
+    return res.status(200).json({
+      success: "Les privilèges ont été modifiés avec succès.",
+      results,
+    });
+  } catch (err) {
+    console.error("Error updating employee privileges:", err);
+    return res.status(400).json({
+      error: "Une erreur est survenue lors de la modification !",
+      details: err.message,
+    });
+  }
+};
+
+
 
 const deleteUser = async (req, res) => {
   const { userId } = req.params;
@@ -141,6 +243,7 @@ module.exports = {
   getOneUser,
   createUser,
   updateUser,
+  updateEmployeePrivileges,
   deleteUser,
   resetPassword,
   ModifyPassword,

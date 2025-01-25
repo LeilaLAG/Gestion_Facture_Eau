@@ -12,6 +12,13 @@
   color: #00509a;
 }
 
+.color_red_text {
+  color: #f7568d;
+}
+.color_red_text:hover {
+  color: #fe206a;
+}
+
 .bg_blue {
   background-color: #7bcdfd;
   transition: .3s;
@@ -48,13 +55,8 @@
   background-color: #fe3175;
 }
 
-/* details {
-  background-color: #eee;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-} */
+.centerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
