@@ -146,7 +146,7 @@ export default function Compteurs() {
               (clients.length <= 0 ? (
                 <div className="mt-5">
                   <ErrorMsg
-                    msg={"Aucun Compteur a été enregistrer"}
+                    msg={"Aucun client a été enregistrer"}
                     errorIconWidth={20}
                     coleur={"red"}
                     boldness="bold"
@@ -274,55 +274,113 @@ export default function Compteurs() {
                                               minute: "2-digit",
                                             })}
                                       </td>
-                                      {
-                                        (user.crudAccess.compteurs.mod && user.function === "Employer") &&
-                                        <td>
-                                          <form
-                                            method="put"
-                                            action={`/compteurs/update-compteur/${compteur._id}`}
-                                          >
-                                            <button className="btn btn-primary" title="Modifier">
-                                              <i className="bi bi-pencil-square"></i>
-                                            </button>
-                                          </form>
-                                        </td>
-                                      }
+                                      {user.function === "Employer"
+                                        ? user.crudAccess.compteurs.mod && (
+                                            <td>
+                                              <form
+                                                method="put"
+                                                action={`/compteurs/update-compteur/${compteur._id}`}
+                                              >
+                                                <button
+                                                  className="btn btn-primary"
+                                                  title="Modifier"
+                                                >
+                                                  <i className="bi bi-pencil-square"></i>
+                                                </button>
+                                              </form>
+                                            </td>
+                                          )
+                                        : user.function === "Admin" && (
+                                            <td>
+                                              <form
+                                                method="put"
+                                                action={`/compteurs/update-compteur/${compteur._id}`}
+                                              >
+                                                <button
+                                                  className="btn btn-primary"
+                                                  title="Modifier"
+                                                >
+                                                  <i className="bi bi-pencil-square"></i>
+                                                </button>
+                                              </form>
+                                            </td>
+                                          )}
 
-                                      {
-                                        (user.crudAccess.compteurs.dlt && user.function === "Employer") &&
-                                        <td>
-                                          <form
-                                            onSubmit={(e) =>
-                                              handleDeleteCompteur(e, compteur)
-                                            }
-                                          >
-                                            <button className="btn btn-danger" title="Supprimer">
-                                              <i className="bi bi-trash3-fill"></i>
-                                            </button>
-                                          </form>
-                                        </td>
-                                      }
+                                      {user.function === "Employer"
+                                        ? user.crudAccess.compteurs.dlt && (
+                                            <td>
+                                              <form
+                                                onSubmit={(e) =>
+                                                  handleDeleteCompteur(
+                                                    e,
+                                                    compteur
+                                                  )
+                                                }
+                                              >
+                                                <button
+                                                  className="btn btn-danger"
+                                                  title="Supprimer"
+                                                >
+                                                  <i className="bi bi-trash3-fill"></i>
+                                                </button>
+                                              </form>
+                                            </td>
+                                          )
+                                        : user.function === "Admin" && (
+                                            <td>
+                                              <form
+                                                onSubmit={(e) =>
+                                                  handleDeleteCompteur(
+                                                    e,
+                                                    compteur
+                                                  )
+                                                }
+                                              >
+                                                <button
+                                                  className="btn btn-danger"
+                                                  title="Supprimer"
+                                                >
+                                                  <i className="bi bi-trash3-fill"></i>
+                                                </button>
+                                              </form>
+                                            </td>
+                                          )}
                                     </tr>
                                   )
                                 )
                             )}
                           </tbody>
-                          {
-                            (user.crudAccess.compteurs.add && user.function === "Employer") &&
-                            <td colSpan={4} className="text-start">
-                              {compteurs.filter(
-                                (c) => c.numClient === client.numClient
-                              ).length < 5 && (
-                                <a
-                                  href={`/compteurs/add-compteur/${client.numClient}`}
-                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Ajouter un nouveau compteur
-                                </a>
+                          {user.function === "Employer"
+                            ? user.crudAccess.compteurs.add && (
+                                <td colSpan={4} className="text-start">
+                                  {compteurs.filter(
+                                    (c) => c.numClient === client.numClient
+                                  ).length < 5 && (
+                                    <a
+                                      href={`/compteurs/add-compteur/${client.numClient}`}
+                                      className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Ajouter un nouveau compteur
+                                    </a>
+                                  )}
+                                </td>
+                              )
+                            : user.function === "Admin" && (
+                                <td colSpan={4} className="text-start">
+                                  {compteurs.filter(
+                                    (c) => c.numClient === client.numClient
+                                  ).length < 5 && (
+                                    <a
+                                      href={`/compteurs/add-compteur/${client.numClient}`}
+                                      className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Ajouter un nouveau compteur
+                                    </a>
+                                  )}
+                                </td>
                               )}
-                            </td>
-                          }
                         </table>
                       </div>
                     </div>

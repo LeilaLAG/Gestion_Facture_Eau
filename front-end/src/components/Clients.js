@@ -153,16 +153,25 @@ export default function Clients() {
                     }
                   </span>
                 </div>
-                {
-                  (user.crudAccess.clients.add && user.function === "Employer") &&
-                  <a
-                    href="/clients/add-client"
-                    className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                    style={{ fontSize: "13px" }}
-                  >
-                    Ajouter un nouveau client
-                  </a>
-                }
+                {user.function === "Employer"
+                  ? user.crudAccess.clients.add && (
+                      <a
+                        href="/clients/add-client"
+                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
+                        style={{ fontSize: "13px" }}
+                      >
+                        Ajouter un nouveau client
+                      </a>
+                    )
+                  : user.function === "Admin" && (
+                      <a
+                        href="/clients/add-client"
+                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
+                        style={{ fontSize: "13px" }}
+                      >
+                        Ajouter un nouveau client
+                      </a>
+                    )}
               </div>
             </article>
             <table
@@ -230,40 +239,81 @@ export default function Clients() {
                           })}
                         </td>
                         <td>
-                            {!client.modified_at
-                              ? "-"
-                              : new Date(client.modified_at).toLocaleDateString(
-                                  "eu",
-                                  {
-                                    ...DateConfig,
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  }
-                                )}
+                          {!client.modified_at
+                            ? "-"
+                            : new Date(client.modified_at).toLocaleDateString(
+                                "eu",
+                                {
+                                  ...DateConfig,
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}
                         </td>
-                        {
-                          (user.crudAccess.clients.mod && user.function === "Employer") &&
-                          <td>
-                            <form
-                              method="put"
-                              action={`/clients/update-client/${client._id}`}
-                            >
-                              <button className="btn btn-primary" title="Modifier">
-                                <i className="bi bi-pencil-square"></i>
-                              </button>
-                            </form>
-                          </td>
-                        }
-                        {
-                          (user.crudAccess.clients.dlt && user.function === "Employer") &&
-                          <td>
-                            <form onSubmit={(e) => handleDeleteClient(e, client)}>
-                              <button className="btn btn-danger" title="Supprimer">
-                                <i className="bi bi-trash3-fill"></i>
-                              </button>
-                            </form>
-                          </td>
-                        }
+                        {user.function === "Employer"
+                          ? user.crudAccess.clients.mod && (
+                              <td>
+                                <form
+                                  method="put"
+                                  action={`/clients/update-client/${client._id}`}
+                                >
+                                  <button
+                                    className="btn btn-primary"
+                                    title="Modifier"
+                                  >
+                                    <i className="bi bi-pencil-square"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )
+                          : user.function === "Admin" && (
+                              <td>
+                                <form
+                                  method="put"
+                                  action={`/clients/update-client/${client._id}`}
+                                >
+                                  <button
+                                    className="btn btn-primary"
+                                    title="Modifier"
+                                  >
+                                    <i className="bi bi-pencil-square"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )}
+                        {user.function === "Employer"
+                          ? user.crudAccess.clients.dlt && (
+                              <td>
+                                <form
+                                  onSubmit={(e) =>
+                                    handleDeleteClient(e, client)
+                                  }
+                                >
+                                  <button
+                                    className="btn btn-danger"
+                                    title="Supprimer"
+                                  >
+                                    <i className="bi bi-trash3-fill"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )
+                          : user.function === "Admin" && (
+                              <td>
+                                <form
+                                  onSubmit={(e) =>
+                                    handleDeleteClient(e, client)
+                                  }
+                                >
+                                  <button
+                                    className="btn btn-danger"
+                                    title="Supprimer"
+                                  >
+                                    <i className="bi bi-trash3-fill"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )}
                       </tr>
                     )
                   )
