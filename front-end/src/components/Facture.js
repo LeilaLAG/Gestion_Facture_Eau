@@ -234,7 +234,7 @@ export default function Facture() {
                                 </td>
                                 <td>
                                   <a
-                                    href={`/facture/update-fact/${fact._id}`}
+                                    href={`/facture/update-facture/${fact.numFacture}`}
                                     className="btn btn-primary"
                                     title="Modifier"
                                   >

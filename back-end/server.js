@@ -20,7 +20,7 @@ const {
   updateUser,
   resetPassword,
   ModifyPassword,
-  updateEmployeePrivileges
+  updateEmployeePrivileges,
 } = require("./controllers/userController");
 const {
   getClients,
@@ -35,7 +35,7 @@ const {
   createCompteur,
   deleteCompteur,
   updateCompteur,
-  deleteClientCompteurs
+  deleteClientCompteurs,
 } = require("./controllers/compteurController");
 const {
   getFactures,
@@ -78,8 +78,8 @@ app.post("/api/addAdmin", createUser);
 app.get("/api/companies", getCompanies);
 
 // password reset
-app.post("/api/ResetPassword" , resetPassword)
-app.put("/api/modify_password/:email" , ModifyPassword)
+app.post("/api/ResetPassword", resetPassword);
+app.put("/api/modify_password/:email", ModifyPassword);
 
 // authentication middleware
 app.use("/api", authenticate);
@@ -128,7 +128,7 @@ app.delete("/api/deleteClientCompteurs/:clientId", deleteClientCompteurs);
 
 // Facture
 app.get("/api/factures/:companyId", getFactures);
-app.get("/api/facture/factureId/:companyId", getOneFacture);
+app.get("/api/factures/:factureId/:companyId", getOneFacture);
 app.post("/api/addFacture", createFacture);
 app.put("/api/updateFacture/:factureId", updateFacture);
 app.delete("/api/deleteFacture/:factureId", deleteFacture);

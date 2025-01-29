@@ -9,6 +9,7 @@ import AddClient from "./crufForm/AddClient";
 import AddCompteur from "./crufForm/AddCompteur";
 import GetClients from "../hooks/GetClients";
 import { useParams } from "react-router-dom";
+import AddFacture from "./crufForm/AddFacture";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -37,6 +38,17 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addCompteur";
+  } else if (page === "facture") {
+    dataObject = {
+      dateFacture: "",
+      datePainement: "",
+      numCompteur: "",
+      valeurCompteurPreleve: "",
+      painementStatus: "",
+      totalFacture: "",
+      companyId: user.companyId,
+    };
+    endPoint = "addFacture";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -86,10 +98,40 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkFactureInfo() {
+    if (dataToAdd.dateFacture === "") {
+      toast.error("choisir la date de facture");
+      return false;
+    } else if (dataToAdd.numCompteur === "") {
+      toast.error("choisir un compteur");
+      return false;
+    } else if (dataToAdd.valeurCompteurPreleve === "") {
+      toast.error("Entrer la valeur preleve du compteur");
+      return false;
+    } else if (isNaN(dataToAdd.valeurCompteurPreleve)) {
+      toast.error("la valeur preleve du compteur doit etre numerique");
+      return false;
+    } else if (dataToAdd.painementStatus === "") {
+      toast.error("Entrer la situation du paiment");
+      return false;
+    } else if (dataToAdd.datePainement === "") {
+      toast.error("Entrer la date du paiment");
+      return false;
+    } else if (dataToAdd.totalFacture === "") {
+      toast.error("Entrer le total facture");
+      return false;
+    } else if (isNaN(dataToAdd.totalFacture)) {
+      toast.error("le total doit etre numerique");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
-    if (checkClientInfo() || checkCompteurInfo()) {
+    if (checkClientInfo() || checkCompteurInfo() || checkFactureInfo()) {
       setLoading(true);
       axios
         .post(
@@ -104,14 +146,13 @@ export default function AddForm({ page }) {
             toast.error("Cette CIN exist deja!");
             setLoading(false);
             return;
-          }
-          else if (page === "compteur" && res.data.maxCompteurs) {
+          } else if (page === "compteur" && res.data.maxCompteurs) {
             toast.error(`${res.data.error}!`);
             setLoading(false);
             return;
           }
           toast.success(`${page} a été ajouter avec succée`);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
@@ -154,6 +195,10 @@ export default function AddForm({ page }) {
                 onChangeInfo={(e) => handleAddInfo(e)}
                 numClient={dataObject.numClient}
               />
+            )}
+
+            {page === "facture" && (
+              <AddFacture onChangeInfo={(e) => handleAddInfo(e)} />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">
               <button
