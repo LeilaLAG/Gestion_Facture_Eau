@@ -16,6 +16,7 @@ import Facture from "./components/Facture";
 import Home from "./components/Home";
 import Employees from "./components/Employees";
 import AddEmployee from "./components/AddEmployee";
+import AddFacture from "./components/crufForm/AddFacture";
 
 function App() {
   return (
@@ -121,6 +122,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Facture />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/facture/add-facture"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"facture"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/facture/update-facture/:factureId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"facture"} />
             </ProtectedRoute>
           }
         />

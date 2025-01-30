@@ -9,11 +9,13 @@ import { useParams } from "react-router-dom";
 import GetClients from "../hooks/GetClients";
 import ModClient from "./crufForm/ModClient";
 import ModCompteur from "./crufForm/ModCompteur";
+import ModFacture from "./crufForm/ModFacture";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
   const { clientId } = useParams();
   const { compteurId } = useParams();
+  const { factureId } = useParams();
   const clients = GetClients();
 
   let dataObject = {};
@@ -39,6 +41,17 @@ export default function ModForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "updateCompteur";
+  } else if (page === "facture") {
+    dataObject = {
+      dateFacture: "",
+      datePainement: "",
+      numCompteur: "",
+      valeurCompteurPreleve: "",
+      painementStatus: "",
+      totalFacture: "",
+      companyId: user.companyId,
+    };
+    endPoint = "updateFacture";
   }
 
   const [dataToMod, setDataToMod] = useState(dataObject);
@@ -65,8 +78,18 @@ export default function ModForm({ page }) {
         )
         .then((res) => setDataToMod(res.data.compteur))
         .catch((err) => toast.error("Un problem est servenue!"));
+    } else if (factureId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/factures/${factureId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.facture))
+        .catch((err) => toast.error("Un problem est servenue!"));
     }
-  }, [clientId, compteurId, user.companyId]);
+  }, [clientId, compteurId, factureId, user.companyId]);
 
   function handleModInfo(e) {
     e.preventDefault();
@@ -100,11 +123,10 @@ export default function ModForm({ page }) {
 
   function checkCompteurInfo() {
     if (page === "compteur") {
-      if(dataToMod.startPoint > 99999){
+      if (dataToMod.startPoint > 99999) {
         toast.error("La valeur du compteur ne doit pas depasser 99999!");
         return false;
-      }
-      else if (dataToMod.useDate === "") {
+      } else if (dataToMod.useDate === "") {
         toast.error("Saisir la date d'utilisation du compteur");
         return false;
       } else if (dataToMod.numClient === "") {
@@ -116,21 +138,52 @@ export default function ModForm({ page }) {
     }
   }
 
+  function checkFactureInfo() {
+    if (dataToMod.dateFacture === "") {
+      toast.error("choisir la date de facture");
+      return false;
+    } else if (dataToMod.numCompteur === "") {
+      toast.error("choisir un compteur");
+      return false;
+    } else if (dataToMod.valeurCompteurPreleve === "") {
+      toast.error("Entrer la valeur preleve du compteur");
+      return false;
+    } else if (isNaN(dataToMod.valeurCompteurPreleve)) {
+      toast.error("la valeur preleve du compteur doit etre numerique");
+      return false;
+    } else if (dataToMod.painementStatus === "") {
+      toast.error("Entrer la situation du paiment");
+      return false;
+    } else if (dataToMod.datePainement === "") {
+      toast.error("Entrer la date du paiment");
+      return false;
+    } else if (dataToMod.totalFacture === "") {
+      toast.error("Entrer le total facture");
+      return false;
+    } else if (isNaN(dataToMod.totalFacture)) {
+      toast.error("le total doit etre numerique");
+      return false;
+    } else {
+      return true;
+    }
+  }
   function handleModData(e) {
     e.preventDefault();
 
-    if (checkClientInfo() || checkCompteurInfo()) {
+    if (checkClientInfo() || checkCompteurInfo() || checkFactureInfo()) {
       setLoading(true);
       axios
         .put(
-          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/${endPoint}/${clientId || compteurId}`,
+          `${process.env.REACT_APP_HOST}:${
+            process.env.REACT_APP_PORT
+          }/api/${endPoint}/${clientId || compteurId || factureId}`,
           dataToMod,
           {
             withCredentials: true,
           }
         )
         .then((res) => {
-          if(page === 'client' && res.data.isClientexisting){
+          if (page === "client" && res.data.isClientexisting) {
             toast.error("Cette CIN exist deja!");
             setLoading(false);
             return;
@@ -170,11 +223,25 @@ export default function ModForm({ page }) {
             ></div>
             <h3 className="text-center mb-4">{`Modifier ${page}`}</h3>
             {page === "client" && (
-              <ModClient onChangeModInfo={e=>handleModInfo(e)} dataToMod={dataToMod} />
+              <ModClient
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
             )}
 
             {page === "compteur" && (
-              <ModCompteur onChangeModInfo={e=>handleModInfo(e)} dataToMod={dataToMod} clients={clients} />
+              <ModCompteur
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+                clients={clients}
+              />
+            )}
+
+            {page === "facture" && (
+              <ModFacture
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">
               <button

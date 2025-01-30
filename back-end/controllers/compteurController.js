@@ -27,10 +27,16 @@ const createCompteur = async (req, res) => {
   const { companyId } = req.body;
 
   try {
-    const compteursNumber = (await Compteur.find({numClient : req.body.numClient})).length
+    const compteursNumber = (
+      await Compteur.find({ numClient: req.body.numClient })
+    ).length;
 
-    if(compteursNumber >= 5){
-      return res.status(200).json({ maxCompteurs : "5 est le max nombre des compteurs pour un client" });
+    if (compteursNumber >= 5) {
+      return res
+        .status(200)
+        .json({
+          maxCompteurs: "5 est le max nombre des compteurs pour un client",
+        });
     }
     const maxNumCompteur = await Compteur.findOne({
       companyId: companyId,
@@ -44,7 +50,7 @@ const createCompteur = async (req, res) => {
     });
     return res.status(200).json({ addedCompteur });
   } catch (err) {
-    return res.status(400).json({ error: "Server Error creatiing client" });
+    return res.status(400).json({ error: "Server Error creating client" });
   }
 };
 
@@ -94,5 +100,5 @@ module.exports = {
   createCompteur,
   updateCompteur,
   deleteCompteur,
-  deleteClientCompteurs
+  deleteClientCompteurs,
 };
