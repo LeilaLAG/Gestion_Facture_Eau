@@ -16,7 +16,6 @@ import Facture from "./components/Facture";
 import Home from "./components/Home";
 import Employees from "./components/Employees";
 import AddEmployee from "./components/AddEmployee";
-import AddFacture from "./components/crufForm/AddFacture";
 
 function App() {
   return (
@@ -116,6 +115,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
         {/* facture --------------------------------------------------- */}
         <Route
           path="/factures"
@@ -126,7 +126,7 @@ function App() {
           }
         />
         <Route
-          path="/facture/add-facture"
+          path="/facture/add-facture/:numClient"
           element={
             <ProtectedRoute>
               <AddForm page={"facture"} />

@@ -43,6 +43,7 @@ export default function AddForm({ page }) {
       dateFacture: "",
       datePainement: "",
       numCompteur: "",
+      numClient: parseInt(numClient) || 0,
       valeurCompteurPreleve: "",
       painementStatus: "",
       totalFacture: "",

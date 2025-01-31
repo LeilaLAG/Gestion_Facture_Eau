@@ -94,7 +94,7 @@ export default function SignUp() {
           toast.success("Votre profile a été creer");
           setTimeout(() => {
             window.location.reload()
-          }, 3000);
+          }, 1000);
         })
         .catch((err) => {
           setSignupLoading(false);

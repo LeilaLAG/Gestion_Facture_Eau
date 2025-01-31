@@ -207,7 +207,6 @@ export default function Compteurs() {
                               <th>Point De Depart</th>
                               <th>Date d'utilisation</th>
                               <th>Credit</th>
-                              {/* <th>Nom Client</th> */}
                               <th>Date de modification</th>
                               <th colSpan={2}>Actions</th>
                             </tr>

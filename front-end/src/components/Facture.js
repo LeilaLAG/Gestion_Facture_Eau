@@ -10,6 +10,7 @@ import FilterData from "./FilterData";
 import GetFactures from "../hooks/GetFactures";
 import GetClients from "../hooks/GetClients";
 import { useUser } from "../Auth/ProtectedRoute";
+import GetCompteurs from "../hooks/GetCompteurs";
 
 export default function Facture() {
   const DateConfig = {
@@ -19,15 +20,20 @@ export default function Facture() {
   };
 
   let factureData = GetFactures();
-  const clients = GetClients();
+  const clientData = GetClients();
+  const compteurData = GetCompteurs();
   const { user } = useUser();
 
   const [facture, setFacture] = useState([]);
+  const [clients, setClients] = useState([]);
+  // const [compteur, setCompteur] = useState([]);
   const [filterParams, setFilterParams] = useState({ numFacture: "" });
 
   useEffect(() => {
     setFacture(factureData);
-  }, [factureData]);
+    setClients(clientData);
+    // setCompteur(compteurData);
+  }, [factureData, clientData, compteurData]);
 
   function handleDeletefact(e, factToDlt) {
     e.preventDefault();
@@ -69,12 +75,15 @@ export default function Facture() {
   function handleSubmitFilter(e) {
     e.preventDefault();
 
-    const { numFacture } = filterParams;
+    setClients(clientData);
 
-    if (numFacture !== "") {
-      setFacture(factureData.filter((fact) => fact.numFacture === numFacture));
-    } else {
-      setFacture(factureData);
+    const { nameClient } = filterParams;
+
+    if (nameClient !== "") {
+      setClients((prev) =>
+        prev.filter((client) => client.nameClient === nameClient)
+      );
+      return;
     }
   }
 
@@ -110,25 +119,6 @@ export default function Facture() {
                   />
                   <span className="fw-bold">{facture.length}</span>
                 </div>
-                {user.function === "Employer"
-                  ? user.crudAccess.factures.add && (
-                      <a
-                        href="/facture/add-facture"
-                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                        style={{ fontSize: "13px" }}
-                      >
-                        Ajouter une nouvelle facture
-                      </a>
-                    )
-                  : user.function === "Admin" && (
-                      <a
-                        href="/facture/add-facture"
-                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                        style={{ fontSize: "13px" }}
-                      >
-                        Ajouter une nouvelle facture
-                      </a>
-                    )}
               </div>
             </article>
 
@@ -164,6 +154,21 @@ export default function Facture() {
                         <span className="m-3 mt-0 mb-0">
                           {client.nameClient}
                         </span>
+                        <div className="d-flex align-items-center m-3 mt-0 mb-0">
+                          <img
+                            src="/Assets/bill.png"
+                            alt="facture count"
+                            width={20}
+                            title="Nombre totale de compteurs"
+                          />
+                          <span className="m-2 mt-0 mb-0">
+                            {
+                              facture.filter(
+                                (c) => c.numClient === client.numClient
+                              ).length
+                            }
+                          </span>
+                        </div>
                       </div>
                     </button>
                   </h2>
@@ -174,7 +179,7 @@ export default function Facture() {
                   >
                     <div className="accordion-body p-2">
                       <table
-                        className="table table-bordered text-center w-100"
+                        className="table table-bordered text-center w-100 mt-2 mb-0"
                         style={{ verticalAlign: "middle" }}
                       >
                         <thead>
@@ -191,7 +196,7 @@ export default function Facture() {
                           </tr>
                         </thead>
                         <tbody>
-                          {facture.length <= 0 ? (
+                          {facture.filter(f=>f.numClient === client.numClient).length <= 0 ? (
                             <tr className="border border-0">
                               <td colSpan={10} className="border border-0 pt-4">
                                 <ErrorMsg
@@ -206,7 +211,9 @@ export default function Facture() {
                               </td>
                             </tr>
                           ) : (
-                            facture.map((fact, index) => (
+                            facture
+                            .filter(f=>f.numClient === client.numClient)
+                            .map((fact, index) => (
                               <tr key={index}>
                                 <td>{fact.numFacture}</td>
                                 <td>
@@ -226,11 +233,7 @@ export default function Facture() {
                                 <td>
                                   {new Date(
                                     fact.dateGenerationFacture
-                                  ).toLocaleDateString("eu", {
-                                    ...DateConfig,
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
+                                  ).toLocaleDateString("eu", DateConfig)}
                                 </td>
                                 <td>
                                   <a
@@ -254,6 +257,29 @@ export default function Facture() {
                             ))
                           )}
                         </tbody>
+                        {user.function === "Employer"
+                          ? user.crudAccess.factures.add && (
+                              <td colSpan={8} className="text-start">
+                                <a
+                                  href={`/facture/add-facture/${client.numClient}`}
+                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                  style={{ fontSize: "13px" }}
+                                >
+                                  Générer une nouvelle facture
+                                </a>
+                              </td>
+                            )
+                          : user.function === "Admin" && (
+                              <td colSpan={8} className="text-start">
+                                <a
+                                  href={`/facture/add-facture/${client.numClient}`}
+                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                                  style={{ fontSize: "13px" }}
+                                >
+                                  Générer une nouvelle facture
+                                </a>
+                              </td>
+                            )}
                       </table>
                     </div>
                   </div>

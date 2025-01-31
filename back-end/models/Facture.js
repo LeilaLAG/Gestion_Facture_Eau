@@ -17,6 +17,10 @@ const FactureSchema = new mongoose.Schema({
         type : Number,
         required : true
     },
+    numClient : {
+        type : Number,
+        // required : true
+    },
     valeurCompteurPreleve : {
         type : Number,
         required : true

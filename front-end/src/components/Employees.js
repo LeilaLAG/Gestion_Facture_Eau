@@ -32,17 +32,33 @@ export default function Employees() {
 
       setCrudAccessCheck(
         uniqueEmps.map((emp) => ({
-          clients: emp.crudAccess?.clients || { add: false, mod: false, dlt: false },
-          compteurs: emp.crudAccess?.compteurs || { add: false, mod: false, dlt: false },
-          factures: emp.crudAccess?.factures || { add: false, mod: false, dlt: false },
-          tranches: emp.crudAccess?.tranches || { add: false, mod: false, dlt: false },
+          clients: emp.crudAccess?.clients || {
+            add: false,
+            mod: false,
+            dlt: false,
+          },
+          compteurs: emp.crudAccess?.compteurs || {
+            add: false,
+            mod: false,
+            dlt: false,
+          },
+          factures: emp.crudAccess?.factures || {
+            add: false,
+            mod: false,
+            dlt: false,
+          },
+          tranches: emp.crudAccess?.tranches || {
+            add: false,
+            mod: false,
+            dlt: false,
+          },
           empID: emp._id,
         }))
-      )
+      );
     }
   }, [employers]);
 
-  console.log(crudAccessCheck)
+  console.log(crudAccessCheck);
 
   function handleChangePrivileges(e, index) {
     const { checked, name } = e.target;
@@ -56,10 +72,10 @@ export default function Employees() {
       return updated;
     });
   }
-  
+
   const handleChangeCrudAccess = (e, index, category) => {
     const { value, checked } = e.target;
-  
+
     setCrudAccessCheck((prev) =>
       prev.map((item, i) =>
         i === index
@@ -78,7 +94,7 @@ export default function Employees() {
     axios
       .put(
         `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/updateEmployeePrivileges/`,
-        { privileges: privilegesCheck , crudAccess : crudAccessCheck },
+        { privileges: privilegesCheck, crudAccess: crudAccessCheck },
         { withCredentials: true }
       )
       .then((res) => {
@@ -167,11 +183,19 @@ export default function Employees() {
                             <td>{emp.fullName}</td>
                             <td>{emp.role}</td>
                             <td>
-                              <div className="border border-1 centerDiv gap-2 bg-body-secondary" style={{cursor : "help"}} title="Gérer l'accée aux rubriques pour les employers">
+                              <div
+                                className="border border-1 centerDiv gap-2 bg-body-secondary"
+                                style={{ cursor: "help" }}
+                                title="Gérer l'accée aux rubriques pour les employers"
+                              >
                                 Accée
                                 <i class="bi bi-universal-access-circle"></i>
                               </div>
-                              <div className="border border-1 centerDiv gap-3 mt-2 bg-light" style={{cursor : "help"}} title="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers">
+                              <div
+                                className="border border-1 centerDiv gap-3 mt-2 bg-light"
+                                style={{ cursor: "help" }}
+                                title="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers"
+                              >
                                 <div>
                                   operations
                                   <div>
@@ -198,10 +222,15 @@ export default function Employees() {
                                     name="add-clients"
                                     value="add"
                                     checked={crudAccessCheck[i].clients.add}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "clients")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "clients")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-plus-circle" title="Ajout"></i>
+                                    <i
+                                      class="bi bi-plus-circle"
+                                      title="Ajout"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -210,10 +239,15 @@ export default function Employees() {
                                     name="mod-clients"
                                     value="mod"
                                     checked={crudAccessCheck[i].clients.mod}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "clients")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "clients")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-pen" title="Modification"></i>
+                                    <i
+                                      class="bi bi-pen"
+                                      title="Modification"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -222,10 +256,15 @@ export default function Employees() {
                                     name="dlt-clients"
                                     value="dlt"
                                     checked={crudAccessCheck[i].clients.dlt}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "clients")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "clients")
+                                    }
                                   />
                                   <div>
-                                    <i className="bi bi-trash3-fill" title="Suppression"></i>
+                                    <i
+                                      className="bi bi-trash3-fill"
+                                      title="Suppression"
+                                    ></i>
                                   </div>
                                 </div>
                               </div>
@@ -247,10 +286,15 @@ export default function Employees() {
                                     name="add-compteurs"
                                     value="add"
                                     checked={crudAccessCheck[i].compteurs.add}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "compteurs")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "compteurs")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-plus-circle" title="Ajout"></i>
+                                    <i
+                                      class="bi bi-plus-circle"
+                                      title="Ajout"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -259,10 +303,15 @@ export default function Employees() {
                                     name="mod-compteurs"
                                     value="mod"
                                     checked={crudAccessCheck[i].compteurs.mod}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "compteurs")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "compteurs")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-pen" title="Modification"></i>
+                                    <i
+                                      class="bi bi-pen"
+                                      title="Modification"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -271,10 +320,15 @@ export default function Employees() {
                                     name="dlt-compteurs"
                                     value="dlt"
                                     checked={crudAccessCheck[i].compteurs.dlt}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "compteurs")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "compteurs")
+                                    }
                                   />
                                   <div>
-                                    <i className="bi bi-trash3-fill" title="Suppression"></i>
+                                    <i
+                                      className="bi bi-trash3-fill"
+                                      title="Suppression"
+                                    ></i>
                                   </div>
                                 </div>
                               </div>
@@ -296,10 +350,15 @@ export default function Employees() {
                                     name="add-factures"
                                     value="add"
                                     checked={crudAccessCheck[i].factures.add}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "factures")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "factures")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-plus-circle" title="Ajout"></i>
+                                    <i
+                                      class="bi bi-plus-circle"
+                                      title="Ajout"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -308,10 +367,15 @@ export default function Employees() {
                                     name="mod-factures"
                                     value="mod"
                                     checked={crudAccessCheck[i].factures.mod}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "factures")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "factures")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-pen" title="Modification"></i>
+                                    <i
+                                      class="bi bi-pen"
+                                      title="Modification"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -320,10 +384,15 @@ export default function Employees() {
                                     name="dlt-factures"
                                     value="dlt"
                                     checked={crudAccessCheck[i].factures.dlt}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "factures")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "factures")
+                                    }
                                   />
                                   <div>
-                                    <i className="bi bi-trash3-fill" title="Suppression"></i>
+                                    <i
+                                      className="bi bi-trash3-fill"
+                                      title="Suppression"
+                                    ></i>
                                   </div>
                                 </div>
                               </div>
@@ -345,10 +414,15 @@ export default function Employees() {
                                     name="add-tranches"
                                     value="add"
                                     checked={crudAccessCheck[i].tranches.add}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "tranches")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "tranches")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-plus-circle" title="Ajout"></i>
+                                    <i
+                                      class="bi bi-plus-circle"
+                                      title="Ajout"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -357,10 +431,15 @@ export default function Employees() {
                                     name="mod-tranches"
                                     value="mod"
                                     checked={crudAccessCheck[i].tranches.mod}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "tranches")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "tranches")
+                                    }
                                   />
                                   <div>
-                                    <i class="bi bi-pen" title="Modification"></i>
+                                    <i
+                                      class="bi bi-pen"
+                                      title="Modification"
+                                    ></i>
                                   </div>
                                 </div>
                                 <div>
@@ -369,10 +448,15 @@ export default function Employees() {
                                     name="dlt-tranches"
                                     value="dlt"
                                     checked={crudAccessCheck[i].tranches.dlt}
-                                    onChange={(e) => handleChangeCrudAccess(e, i , "tranches")}
+                                    onChange={(e) =>
+                                      handleChangeCrudAccess(e, i, "tranches")
+                                    }
                                   />
                                   <div>
-                                    <i className="bi bi-trash3-fill" title="Suppression"></i>
+                                    <i
+                                      className="bi bi-trash3-fill"
+                                      title="Suppression"
+                                    ></i>
                                   </div>
                                 </div>
                               </div>
@@ -396,7 +480,10 @@ export default function Employees() {
                                   className="btn btn-danger"
                                   title="Supprimer employer"
                                 >
-                                  <i className="bi bi-trash3-fill" title="Suppression"></i>
+                                  <i
+                                    className="bi bi-trash3-fill"
+                                    title="Suppression"
+                                  ></i>
                                 </button>
                               </form>
                             </td>
@@ -406,17 +493,19 @@ export default function Employees() {
                   )}
                 </tbody>
               </table>
-              <div>
-                <form method="put" onSubmit={(e) => grantPrivileges(e)}>
-                  <button
-                    className="btn btn-success p-3 pb-1 pt-1 fw-bold"
-                    style={{ fontSize: "13px" }}
-                    title="Enregistrer"
-                  >
-                    Sauvegarder les changements
-                  </button>
-                </form>
-              </div>
+              {employers.length > 0 && (
+                <div>
+                  <form method="put" onSubmit={(e) => grantPrivileges(e)}>
+                    <button
+                      className="btn btn-success p-3 pb-1 pt-1 fw-bold"
+                      style={{ fontSize: "13px" }}
+                      title="Enregistrer"
+                    >
+                      Sauvegarder les changements
+                    </button>
+                  </form>
+                </div>
+              )}
             </div>
           )}
         </div>
