@@ -10,11 +10,16 @@ import AddCompteur from "./crufForm/AddCompteur";
 import GetClients from "../hooks/GetClients";
 import { useParams } from "react-router-dom";
 import AddFacture from "./crufForm/AddFacture";
+import Swal from "sweetalert2";
+// import GetCompteurs from "../hooks/GetCompteurs";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
-  const clients = GetClients();
   const { numClient } = useParams();
+
+  const clients = GetClients();
+  // const compteurs = GetCompteurs();
+
   let dataObject = {};
   let endPoint = "";
 
@@ -42,11 +47,11 @@ export default function AddForm({ page }) {
     dataObject = {
       dateFacture: "",
       datePainement: "",
-      numCompteur: "",
+      numCompteur: 0,
       numClient: parseInt(numClient) || 0,
-      valeurCompteurPreleve: "",
-      painementStatus: "",
-      totalFacture: "",
+      valeurCompteurPreleve: 0,
+      painementStatus: "Non payée",
+      totalFacture: 0.0,
       companyId: user.companyId,
     };
     endPoint = "addFacture";
@@ -101,28 +106,13 @@ export default function AddForm({ page }) {
 
   function checkFactureInfo() {
     if (dataToAdd.dateFacture === "") {
-      toast.error("choisir la date de facture");
+      toast.error("choisir la date de consomation");
       return false;
-    } else if (dataToAdd.numCompteur === "") {
+    } else if (dataToAdd.numCompteur === 0) {
       toast.error("choisir un compteur");
-      return false;
-    } else if (dataToAdd.valeurCompteurPreleve === "") {
-      toast.error("Entrer la valeur preleve du compteur");
       return false;
     } else if (isNaN(dataToAdd.valeurCompteurPreleve)) {
       toast.error("la valeur preleve du compteur doit etre numerique");
-      return false;
-    } else if (dataToAdd.painementStatus === "") {
-      toast.error("Entrer la situation du paiment");
-      return false;
-    } else if (dataToAdd.datePainement === "") {
-      toast.error("Entrer la date du paiment");
-      return false;
-    } else if (dataToAdd.totalFacture === "") {
-      toast.error("Entrer le total facture");
-      return false;
-    } else if (isNaN(dataToAdd.totalFacture)) {
-      toast.error("le total doit etre numerique");
       return false;
     } else {
       return true;
@@ -148,15 +138,54 @@ export default function AddForm({ page }) {
             setLoading(false);
             return;
           } else if (page === "compteur" && res.data.maxCompteurs) {
-            toast.error(`${res.data.error}!`);
+            toast.error(`${res.data.maxCompteurs}!`);
             setLoading(false);
             return;
+          } else if (page === "facture" && res.data.invalidData) {
+            Swal.fire({
+              title: `<img src="/Assets/warning.gif" alt="delete" width="50" />`,
+              text: `${res.data.invalidData}`,
+              showCancelButton: true,
+              confirmButtonColor: "#1c37cd",
+              confirmButtonText: "Oui",
+              cancelButtonText: "Annuler",
+              padding: "10px",
+            }).then((res) => {
+              if (res.isConfirmed) {
+                axios
+                  .post(
+                    `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/${endPoint}?confirmed=true`,
+                    dataToAdd,
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    toast.success(`${page} a été ajouter avec succée`);
+                    setLoading(false);
+                    return;
+                  })
+                  .catch((err) => {
+                    toast.error("Un problème est survenu");
+                    console.error(err.response.data.error);
+                    setLoading(false);
+                  });
+              }
+              else{
+                setLoading(false);
+              }
+            });
+            // toast.error(`${res.data.invalidData}`);
+            // setLoading(false);
+            return;
           }
+
           toast.success(`${page} a été ajouter avec succée`);
           setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
+          console.log(err.response.data.error);
           toast.error("Un problem est servenu lors de l'ajout!");
         });
     }
@@ -199,7 +228,10 @@ export default function AddForm({ page }) {
             )}
 
             {page === "facture" && (
-              <AddFacture onChangeInfo={(e) => handleAddInfo(e)} />
+              <AddFacture
+                onChangeInfo={(e) => handleAddInfo(e)}
+                client={numClient}
+              />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">
               <button

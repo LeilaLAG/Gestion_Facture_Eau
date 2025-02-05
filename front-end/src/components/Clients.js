@@ -40,7 +40,7 @@ export default function Clients() {
       text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}? tous les données (compteurs et factures) vont etre supprimer aussi`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer",
+      confirmButtonText: "Oui",
       cancelButtonText: "Annuler",
       padding: "10px",
     }).then((res) => {
@@ -125,8 +125,9 @@ export default function Clients() {
                 onSubmitFilter={(e) => handleSubmitFilter(e)}
                 onChangeFilter={(e) => handleFilterParams(e)}
               />
-              <div className="d-flex align-items-center gap-4 p-2 pb-0">
+              <div className="d-flex align-items-center gap-4 pt-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
+                  <span className="fw-bold">Nombre totale des clients :</span>
                   <img
                     src="/Assets/clients.png"
                     alt="client count"
@@ -135,7 +136,7 @@ export default function Clients() {
                   />
                   <span className="fw-bold">{clients.length}</span>
                 </div>
-                <hr width={40} />
+                {/* <hr width={40} />
                 <div className="d-flex align-items-center gap-2">
                   <img
                     src="/Assets/clientEdit.png"
@@ -152,7 +153,7 @@ export default function Clients() {
                       ).length
                     }
                   </span>
-                </div>
+                </div> */}
                 {user.function === "Employer"
                   ? user.crudAccess.clients.add && (
                       <a

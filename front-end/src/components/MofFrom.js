@@ -154,15 +154,6 @@ export default function ModForm({ page }) {
     } else if (dataToMod.painementStatus === "") {
       toast.error("Entrer la situation du paiment");
       return false;
-    } else if (dataToMod.datePainement === "") {
-      toast.error("Entrer la date du paiment");
-      return false;
-    } else if (dataToMod.totalFacture === "") {
-      toast.error("Entrer le total facture");
-      return false;
-    } else if (isNaN(dataToMod.totalFacture)) {
-      toast.error("le total doit etre numerique");
-      return false;
     } else {
       return true;
     }
@@ -188,6 +179,11 @@ export default function ModForm({ page }) {
             setLoading(false);
             return;
           }
+          // if (page === "facture" && res.data.invalidData) {
+          //   toast.error(res.data.invalidData);
+          //   setLoading(false);
+          //   return;
+          // }
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
         })

@@ -22,17 +22,22 @@ export default function Facture() {
   let factureData = GetFactures();
   const clientData = GetClients();
   const compteurData = GetCompteurs();
+
   const { user } = useUser();
 
   const [facture, setFacture] = useState([]);
   const [clients, setClients] = useState([]);
-  // const [compteur, setCompteur] = useState([]);
+  const [compteurs, setCompteurs] = useState([]);
+
   const [filterParams, setFilterParams] = useState({ numFacture: "" });
+
+  const [filterByDateFacture, setFilterByDateFacture] = useState("");
+  const [filterByNumCompteur, setFilterByNumCompteur] = useState(0);
 
   useEffect(() => {
     setFacture(factureData);
     setClients(clientData);
-    // setCompteur(compteurData);
+    setCompteurs(compteurData);
   }, [factureData, clientData, compteurData]);
 
   function handleDeletefact(e, factToDlt) {
@@ -44,10 +49,10 @@ export default function Facture() {
 
     Swal.fire({
       title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
-      text: `Êtes-vous sûr de supprimer la facture n° ${factToDlt.numFacture} ?`,
+      text: `Êtes-vous sûr de supprimer la facture ${factToDlt._id}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer",
+      confirmButtonText: "Oui",
       cancelButtonText: "Annuler",
       padding: "10px",
     }).then((res) => {
@@ -83,8 +88,67 @@ export default function Facture() {
       setClients((prev) =>
         prev.filter((client) => client.nameClient === nameClient)
       );
+      setFacture((prev) =>
+        prev.filter((f) => f.numClient === clients[0].numClient)
+      );
       return;
     }
+  }
+
+  function filterFacture(e, client) {
+    e.preventDefault();
+    const filter_date = new Date(filterByDateFacture).getFullYear();
+
+    setFacture(factureData);
+
+    if (filterByDateFacture !== "") {
+      setFacture((prev) =>
+        prev.filter(
+          (f) =>
+            new Date(f.dateFacture).getFullYear() === filter_date &&
+            f.numClient === client
+        )
+      );
+    }
+    if (filterByNumCompteur !== 0) {
+      setFacture((prev) =>
+        prev.filter(
+          (f) => parseInt(f.numCompteur) === parseInt(filterByNumCompteur)
+        )
+      );
+    }
+  }
+
+  function handlePaiedFacture(e, factureId) {
+    e.preventDefault();
+
+    Swal.fire({
+      title: `<img src="Assets/paid.gif" alt="delete" width="50" />`,
+      text: `Êtes-vous sûr que cette facture ${factureId} a été payer ?`,
+      showCancelButton: true,
+      confirmButtonColor: "#6fac0d",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+      // cancelButtonColor : "#d33",
+      padding: "10px",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axios
+          .put(
+            `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/updateFacturePainementStatus/${factureId}`,
+            { painementStatus: "Payée" },
+            { withCredentials: true }
+          )
+          .then(() => {
+            window.location.reload();
+          })
+          .catch(() =>
+            toast.error(
+              "Un problème est survenu lors de la modification de status du paiement !"
+            )
+          );
+      }
+    });
   }
 
   return (
@@ -100,7 +164,7 @@ export default function Facture() {
         ) : (
           <>
             <article
-              style={{ position: "sticky", top: "0%" }}
+              style={{ position: "sticky", top: "0%", zIndex: 10 }}
               className="pt-2 pb-2 bg-white accordion"
               id="accordionExample"
             >
@@ -109,8 +173,9 @@ export default function Facture() {
                 onSubmitFilter={handleSubmitFilter}
                 onChangeFilter={handleFilterParams}
               />
-              <div className="d-flex align-items-center gap-4 p-2 pb-0">
+              <div className="d-flex align-items-center gap-4 pt-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
+                  <span className="fw-bold">Nombre totale des factures :</span>
                   <img
                     src="/Assets/bill.png"
                     alt="fact count"
@@ -159,7 +224,6 @@ export default function Facture() {
                             src="/Assets/bill.png"
                             alt="facture count"
                             width={20}
-                            title="Nombre totale de compteurs"
                           />
                           <span className="m-2 mt-0 mb-0">
                             {
@@ -178,6 +242,42 @@ export default function Facture() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body p-2">
+                      <form
+                        onSubmit={function (e) {
+                          filterFacture(e, client.numClient);
+                        }}
+                        className="d-flex align-items-center gap-3"
+                      >
+                        <label className="fw-bold">Filter par:</label>
+                        <input
+                          type="text"
+                          placeholder="Année des factures"
+                          onChange={(e) =>
+                            setFilterByDateFacture(e.target.value)
+                          }
+                          className="form-control pb-1 pt-1 w-25"
+                        />
+                        <select
+                          className="form-control pb-1 pt-1 w-25"
+                          onChange={(e) =>
+                            setFilterByNumCompteur(e.target.value)
+                          }
+                        >
+                          <option>Numéro de compteur</option>
+                          {compteurs !== "loading" &&
+                            compteurs
+                              .filter((c) => c.numClient === client.numClient)
+                              .map((clientComp, i) => (
+                                <option key={i} value={clientComp.numCompteur}>
+                                  N°-{clientComp.numCompteur}
+                                </option>
+                              ))}
+                        </select>
+
+                        <button className="btn btn-info p-4 pb-1 pt-1 fw-bold">
+                          Filter
+                        </button>
+                      </form>
                       <table
                         className="table table-bordered text-center w-100 mt-2 mb-0"
                         style={{ verticalAlign: "middle" }}
@@ -185,18 +285,20 @@ export default function Facture() {
                         <thead>
                           <tr>
                             <th>N°</th>
-                            <th>Date facture</th>
+                            <th>Date de consomation</th>
                             <th>Date de paiement</th>
                             <th>N° compteur</th>
-                            <th>Valeur compteur prélève</th>
+                            <th title="Valeur compteur prélève">V.C.P</th>
                             <th>Statut de paiement</th>
-                            <th>Total Facture</th>
+                            <th>Total de Facture</th>
                             <th>Date de génération</th>
-                            <th colSpan={2}>Actions</th>
+                            <th colSpan={4}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {facture.filter(f=>f.numClient === client.numClient).length <= 0 ? (
+                          {facture.filter(
+                            (f) => f.numClient === client.numClient
+                          ).length <= 0 ? (
                             <tr className="border border-0">
                               <td colSpan={10} className="border border-0 pt-4">
                                 <ErrorMsg
@@ -212,49 +314,168 @@ export default function Facture() {
                             </tr>
                           ) : (
                             facture
-                            .filter(f=>f.numClient === client.numClient)
-                            .map((fact, index) => (
-                              <tr key={index}>
-                                <td>{fact.numFacture}</td>
-                                <td>
-                                  {new Date(
-                                    fact.dateFacture
-                                  ).toLocaleDateString("eu", DateConfig)}
-                                </td>
-                                <td>
-                                  {new Date(
-                                    fact.datePainement
-                                  ).toLocaleDateString("eu", DateConfig)}
-                                </td>
-                                <td>{fact.numCompteur}</td>
-                                <td>{fact.valeurCompteurPreleve}</td>
-                                <td>{fact.painementStatus}</td>
-                                <td>{fact.totalFacture}</td>
-                                <td>
-                                  {new Date(
-                                    fact.dateGenerationFacture
-                                  ).toLocaleDateString("eu", DateConfig)}
-                                </td>
-                                <td>
-                                  <a
-                                    href={`/facture/update-facture/${fact.numFacture}`}
-                                    className="btn btn-primary"
-                                    title="Modifier"
-                                  >
-                                    <i className="bi bi-pencil-square"></i>
-                                  </a>
-                                </td>
-                                <td>
-                                  <button
-                                    className="btn btn-danger"
-                                    onClick={(e) => handleDeletefact(e, fact)}
-                                    title="Supprimer"
-                                  >
-                                    <i className="bi bi-trash3-fill"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            ))
+                              .filter((f) => f.numClient === client.numClient)
+                              .sort(
+                                (a, b) =>
+                                  new Date(b.dateFacture) -
+                                  new Date(a.dateFacture)
+                              )
+                              .map((fact, index) => (
+                                <tr key={index}>
+                                  <td title={fact._id}>
+                                    <span
+                                      style={{
+                                        display: "inline-block",
+                                        width: "70px",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                    >
+                                      {fact._id}
+                                    </span>
+                                  </td>
+                                  <td>
+                                    {new Date(
+                                      fact.dateFacture
+                                    ).toLocaleDateString("eu", DateConfig)}
+                                  </td>
+                                  <td>
+                                    {fact.datePainement
+                                      ? new Date(
+                                          fact.datePainement
+                                        ).toLocaleDateString("eu", DateConfig)
+                                      : "-"}
+                                  </td>
+                                  <td>N°-{fact.numCompteur}</td>
+                                  <td>{fact.valeurCompteurPreleve}</td>
+                                  <td style={{fontWeight:"bold"}} className={fact.painementStatus === "Payée" ? "text-success" : "text-danger"}>{fact.painementStatus}</td>
+                                  <td>{fact.totalFacture}</td>
+                                  <td>
+                                    {new Date(
+                                      fact.dateGenerationFacture
+                                    ).toLocaleDateString("eu", DateConfig)}
+                                  </td>
+                                  <td>
+                                    <a
+                                      href={`/facture/print-facture/${fact._id}`}
+                                      className="btn btn-dark"
+                                      title="Imprimer"
+                                    >
+                                      <i class="bi bi-printer"></i>
+                                    </a>
+                                  </td>
+                                  {user.function === "Employer"
+                                    ? user.crudAccess.factures.mod && (
+                                        <div className="centerDiv gap-1">
+                                          <td>
+                                            <form
+                                              onSubmit={(e) =>
+                                                handlePaiedFacture(e, fact._id)
+                                              }
+                                            >
+                                              <button
+                                                className="btn btn-success"
+                                                title="Payée"
+                                                disabled={
+                                                  fact.painementStatus ===
+                                                  "Payée"
+                                                    ? true
+                                                    : false
+                                                }
+                                              >
+                                                <i class="bi bi-cash-stack"></i>
+                                              </button>
+                                            </form>
+                                          </td>
+                                          <td>
+                                            <form
+                                              method="put"
+                                              action={`/facture/update-facture/${fact._id}`}
+                                            >
+                                              <button
+                                                className="btn btn-primary"
+                                                title="Modifier"
+                                              >
+                                                <i className="bi bi-pencil-square"></i>
+                                              </button>
+                                            </form>
+                                          </td>
+                                        </div>
+                                      )
+                                    : user.function === "Admin" && (
+                                        <div className="centerDiv gap-1">
+                                          <td>
+                                            <form
+                                              onSubmit={(e) =>
+                                                handlePaiedFacture(e, fact._id)
+                                              }
+                                            >
+                                              <button
+                                                className="btn btn-success"
+                                                title="Payée"
+                                                disabled={
+                                                  fact.painementStatus ===
+                                                  "Payée"
+                                                    ? true
+                                                    : false
+                                                }
+                                              >
+                                                <i class="bi bi-cash-stack"></i>
+                                              </button>
+                                            </form>
+                                          </td>
+                                          <hr/>
+                                          <td>
+                                            <form
+                                              method="put"
+                                              action={`/facture/update-facture/${fact._id}`}
+                                            >
+                                              <button
+                                                className="btn btn-primary"
+                                                title="Modifier"
+                                              >
+                                                <i className="bi bi-pencil-square"></i>
+                                              </button>
+                                            </form>
+                                          </td>
+                                        </div>
+                                      )}
+
+                                  {user.function === "Employer"
+                                    ? user.crudAccess.factures.dlt && (
+                                        <td>
+                                          <form
+                                            onSubmit={(e) =>
+                                              handleDeletefact(e, fact)
+                                            }
+                                          >
+                                            <button
+                                              className="btn btn-danger"
+                                              title="Supprimer"
+                                            >
+                                              <i className="bi bi-trash3-fill"></i>
+                                            </button>
+                                          </form>
+                                        </td>
+                                      )
+                                    : user.function === "Admin" && (
+                                        <td>
+                                          <form
+                                            onSubmit={(e) =>
+                                              handleDeletefact(e, fact)
+                                            }
+                                          >
+                                            <button
+                                              className="btn btn-danger"
+                                              title="Supprimer"
+                                            >
+                                              <i className="bi bi-trash3-fill"></i>
+                                            </button>
+                                          </form>
+                                        </td>
+                                      )}
+                                </tr>
+                              ))
                           )}
                         </tbody>
                         {user.function === "Employer"

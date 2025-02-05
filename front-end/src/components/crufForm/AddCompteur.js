@@ -9,12 +9,12 @@ export default function AddCompteur({ onChangeInfo, clients, numClient }) {
           type="number"
           name="startPoint"
           className="form-control"
-          placeholder="Saisir le point de depart"
+          placeholder="Saisir le point de depart (0 par defaut)"
           onChange={onChangeInfo}
         />
       </div>
       <div className="mb-3">
-        <label className="d-block">Date D'utilisation</label>
+        <label className="d-block">Date d'utilisation</label>
         <input
           type="date"
           name="useDate"
@@ -28,6 +28,7 @@ export default function AddCompteur({ onChangeInfo, clients, numClient }) {
         <input
           type="number"
           name="credit"
+          placeholder="0 par defaut"
           className="form-control"
           onChange={onChangeInfo}
         />

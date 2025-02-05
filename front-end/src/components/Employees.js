@@ -114,7 +114,7 @@ export default function Employees() {
       text: `Etes vous sure de supprimer l'employer ${emp.fullName}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer",
+      confirmButtonText: "Oui",
       cancelButtonText: "Annuler",
       padding: "10px",
     }).then((res) => {
@@ -158,7 +158,7 @@ export default function Employees() {
                     <th>Clients</th>
                     <th>Compteurs</th>
                     <th>Factures</th>
-                    <th>Tranches</th>
+                    {/* <th>Tranches</th> */}
                     <th colSpan={3}>Action</th>
                   </tr>
                 </thead>
@@ -397,7 +397,7 @@ export default function Employees() {
                                 </div>
                               </div>
                             </td>
-                            <td>
+                            {/* <td>
                               <div className="border border-1 bg-body-secondary">
                                 <input
                                   type="checkbox"
@@ -460,7 +460,7 @@ export default function Employees() {
                                   </div>
                                 </div>
                               </div>
-                            </td>
+                            </td> */}
                             <td>
                               <form
                                 method="put"

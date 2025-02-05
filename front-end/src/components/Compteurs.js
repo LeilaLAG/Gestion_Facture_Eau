@@ -45,7 +45,7 @@ export default function Compteurs() {
       text: `Etes vous sure de supprimer le compteur N°${compteurToDlt.numCompteur}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer",
+      confirmButtonText: "Oui",
       cancelButtonText: "Annuler",
       padding: "10px",
     }).then((res) => {
@@ -88,6 +88,11 @@ export default function Compteurs() {
       setClients((prev) =>
         prev.filter((client) => client.nameClient === nameClient)
       );
+      setCompteurs((prev) =>
+        prev.filter(
+          (f) => f.numClient === clients[0].numClient
+        ))
+      return
     }
   }
 
@@ -112,8 +117,9 @@ export default function Compteurs() {
                 onSubmitFilter={(e) => handleSubmitFilter(e)}
                 onChangeFilter={(e) => handleFilterParams(e)}
               />
-              <div className="d-flex align-items-center gap-4 p-2 pb-0">
+              <div className="d-flex align-items-center gap-4 pt-2 pb-0">
                 <div className="d-flex align-items-center gap-2">
+                  <span className="fw-bold">Nombre totale des compteurs :</span>
                   <img
                     src="/Assets/counter.png"
                     alt="compteur count"
@@ -121,24 +127,6 @@ export default function Compteurs() {
                     title="Nombre totale de compteurs"
                   />
                   <span className="fw-bold">{compteurs.length}</span>
-                </div>
-                <hr width={40} />
-                <div className="d-flex align-items-center gap-2">
-                  <img
-                    src="/Assets/counterEdit.png"
-                    alt="modified compteurs"
-                    width={22}
-                    title="Nombre de compteurs modifier"
-                  />
-                  <span className="fw-bold">
-                    {
-                      compteurs.filter(
-                        (compteur) =>
-                          compteur.modified_at &&
-                          compteur.companyId === user.companyId
-                      ).length
-                    }
-                  </span>
                 </div>
               </div>
             </article>
@@ -178,7 +166,6 @@ export default function Compteurs() {
                               src="/Assets/counter.png"
                               alt="compteur count"
                               width={20}
-                              title="Nombre totale de compteurs"
                             />
                             <span className="m-2 mt-0 mb-0">
                               {
@@ -204,7 +191,7 @@ export default function Compteurs() {
                           <thead>
                             <tr>
                               <th>N°</th>
-                              <th>Point De Depart</th>
+                              <th>Point De depart</th>
                               <th>Date d'utilisation</th>
                               <th>Credit</th>
                               <th>Date de modification</th>
@@ -261,7 +248,6 @@ export default function Compteurs() {
                                         ).toLocaleDateString("eu", DateConfig)}
                                       </td>
                                       <td>{compteur.credit}</td>
-                                      {/* <td>{client.nameClient}</td> */}
                                       <td>
                                         {!compteur.modified_at
                                           ? "-"

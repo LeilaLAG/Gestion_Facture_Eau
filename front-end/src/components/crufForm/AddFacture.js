@@ -1,13 +1,13 @@
 import React from "react";
 import GetCompteurs from "../../hooks/GetCompteurs";
 
-function AddFacture({ onChangeInfo }) {
+function AddFacture({ onChangeInfo, client }) {
   const compteurs = GetCompteurs();
 
   return (
     <div className="mt-2">
       <div className="mb-3">
-        <label className="d-block">Date Facture</label>
+        <label className="d-block">Date de consomation</label>
         <input
           type="date"
           name="dateFacture"
@@ -17,64 +17,41 @@ function AddFacture({ onChangeInfo }) {
         />
       </div>
       <div className="mb-3">
-        <label className="d-block">Num Compteur</label>
+        <label className="d-block">Numéro de compteur</label>
         <select
           name="numCompteur"
           className="form-control"
           onChange={onChangeInfo}
         >
-          <option>Choisir un compteur</option>
-          {compteurs.length <= 0 ? (
-            <option>aucun compteur</option>
-          ) : (
-            compteurs !== "loading" &&
-            compteurs.map((comp, i) =>
-              comp.error ? (
-                <option key={i}>Un erreur est servenu</option>
-              ) : (
-                <option key={i} value={comp.numCompteur}>
-                  {comp.numCompteur}
-                </option>
-              )
-            )
-          )}
+          <option>Choisir le compteur</option>
+          {compteurs !== "loading" &&
+            (compteurs.filter((c) => c.numClient === parseInt(client)).length <= 0 ? (
+              <option>Aucun compteur</option>
+            ) : (
+              compteurs
+                .filter((comp) => comp.numClient === parseInt(client))
+                .map((comp, i) =>
+                  comp.error ? (
+                    <option key={i}>Un erreur est servenu!</option>
+                  ) : (
+                    <option key={i} value={comp.numCompteur}>
+                      N°-{comp.numCompteur}
+                    </option>
+                  )
+                )
+            ))}
         </select>
       </div>
       <div className="mb-3">
-        <label className="d-block">Valeur Compteur Prélevé</label>
+        <label className="d-block">Valeur de compteur prélevé</label>
         <input
           type="number"
+          placeholder="0 par defaut"
           name="valeurCompteurPreleve"
           className="form-control"
           onChange={onChangeInfo}
         />
-      </div>
-      <div className="mb-3">
-        <label className="d-block">Situation Paiment</label>
-        <input
-          type="text"
-          name="painementStatus"
-          className="form-control"
-          onChange={onChangeInfo}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="d-block">Date Paiment</label>
-        <input
-          type="date"
-          name="datePainement"
-          className="form-control"
-          onChange={onChangeInfo}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="d-block">Total Facture</label>
-        <input
-          type="number"
-          name="totalFacture"
-          className="form-control"
-          onChange={onChangeInfo}
-        />
+        
       </div>
     </div>
   );

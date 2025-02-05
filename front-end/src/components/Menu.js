@@ -3,32 +3,11 @@ import "../style/menu.css";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 import { useLocation } from "react-router-dom";
-// import GetCompanies from "../hooks/GetCompanies";
-// import toast from "react-hot-toast";
 
 export default function Menu() {
   const { user } = useUser();
 
-  // const comapnies = GetCompanies();
-
   const currentUrl = useLocation();
-
-  // function obtainSignUpId() {
-  //   const signUpId = comapnies.find(
-  //     (comapnie) => comapnie.companyName === user.companyId
-  //   )._id;
-
-  //   const tempInput = document.createElement("textarea");
-  //   tempInput.value = signUpId;
-  //   document.body.appendChild(tempInput);
-
-  //   tempInput.select();
-  //   document.execCommand("copy");
-
-  //   document.body.removeChild(tempInput);
-
-  //   toast.success("L'ID de votre société a été copié");
-  // }
 
   return (
     <div className="Menu shadow">
@@ -54,10 +33,7 @@ export default function Menu() {
             {user.function === "Admin" && (
               <div>
                 <hr className="m-0 mt-1 mb-1" />
-                <li
-                  className="d-flex align-items-center gap-2 dropdown-item"
-                  // onClick={obtainSignUpId}
-                >
+                <li className="d-flex align-items-center gap-2 dropdown-item">
                   <img src="/Assets/signup.png" alt="companuId" width={20} />
                   <a
                     className="text-dark"
@@ -76,6 +52,17 @@ export default function Menu() {
                     href="/employees"
                   >
                     Vos employers
+                  </a>
+                </li>
+                <hr className="m-0 mt-1 mb-1" />
+                <li className="d-flex align-items-center gap-2 dropdown-item">
+                  <img src="/Assets/tranche.png" alt="tranche" width={20} />
+                  <a
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                    href="/tranches"
+                  >
+                    Tranches
                   </a>
                 </li>
               </div>
@@ -163,7 +150,7 @@ export default function Menu() {
               }
             >
               <img src="/Assets/counter.png" alt="compteur" width={20} />
-              <a href="/compteurs">Compteur</a>
+              <a href="/compteurs">Compteurs</a>
             </li>
             <li
               className={
@@ -171,17 +158,17 @@ export default function Menu() {
               }
             >
               <img src="/Assets/bill.png" alt="facture" width={20} />
-              <a href="/factures">Facture</a>
+              <a href="/factures">Factures</a>
             </li>
 
-            <li
+            {/* <li
               className={
                 currentUrl.pathname === "/tranches" ? "activeLink" : ""
               }
             >
               <img src="/Assets/tranche.png" alt="tranche" width={20} />
               <a href="/tranches">Tranche</a>
-            </li>
+            </li> */}
           </ul>
         )}
 
@@ -205,7 +192,7 @@ export default function Menu() {
                 }
               >
                 <img src="/Assets/counter.png" alt="compteur" width={20} />
-                <a href="/compteurs">Compteur</a>
+                <a href="/compteurs">Compteurs</a>
               </li>
             )}
 
@@ -216,11 +203,11 @@ export default function Menu() {
                 }
               >
                 <img src="/Assets/bill.png" alt="facture" width={20} />
-                <a href="/factures">Facture</a>
+                <a href="/factures">Factures</a>
               </li>
             )}
 
-            {user.privileges.tranches && (
+            {/* {user.privileges.tranches && (
               <li
                 className={
                   currentUrl.pathname === "/tranches" ? "activeLink" : ""
@@ -229,7 +216,7 @@ export default function Menu() {
                 <img src="/Assets/tranche.png" alt="tranche" width={20} />
                 <a href="/tranches">Tranche</a>
               </li>
-            )}
+            )} */}
           </ul>
         )}
       </nav>

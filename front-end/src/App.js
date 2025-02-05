@@ -16,6 +16,7 @@ import Facture from "./components/Facture";
 import Home from "./components/Home";
 import Employees from "./components/Employees";
 import AddEmployee from "./components/AddEmployee";
+import PrintFacture from "./components/PrintFacture";
 
 function App() {
   return (
@@ -138,6 +139,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ModForm page={"facture"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/facture/print-facture/:factureId"
+          element={
+            <ProtectedRoute>
+              <PrintFacture />
             </ProtectedRoute>
           }
         />

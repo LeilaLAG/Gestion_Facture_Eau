@@ -1,17 +1,12 @@
 const mongoose = require('mongoose');
 
 const FactureSchema = new mongoose.Schema({
-    numFacture : {
-        type : String,
-        required : true,
-    },
     dateFacture : {
         type : Date,
         required : true,
     },
     datePainement : {
         type : Date,
-        required : true
     },
     numCompteur : {
         type : Number,
@@ -19,7 +14,6 @@ const FactureSchema = new mongoose.Schema({
     },
     numClient : {
         type : Number,
-        // required : true
     },
     valeurCompteurPreleve : {
         type : Number,

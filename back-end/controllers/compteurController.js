@@ -58,13 +58,23 @@ const updateCompteur = async (req, res) => {
   try {
     const { compteurId } = req.params;
 
-    const compteurToUpdate = await Compteur.findOneAndUpdate(
-      { _id: compteurId },
-      { ...req.body, modified_at: new Date() }
-    );
-    return res.status(200).json({ compteurToUpdate });
+    
+    if(req.body.updateStartPointFromFacture){
+      const compteurToUpdate = await Compteur.findOneAndUpdate(
+        { _id: compteurId },
+        {startPoint : req.body.updateStartPointFromFacture, modified_at: new Date() }
+      );
+      return res.status(200).json({ compteurToUpdate });
+    }
+    else{
+      const compteurToUpdate = await Compteur.findOneAndUpdate(
+        { _id: compteurId },
+        { ...req.body, modified_at: new Date() }
+      );
+      return res.status(200).json({ compteurToUpdate });
+    }
   } catch (err) {
-    return res.status(400).json({ error: "Server Error updating client" });
+    return res.status(400).json({ error: err });
   }
 };
 

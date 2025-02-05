@@ -43,6 +43,7 @@ const {
   createFacture,
   deleteFacture,
   updateFacture,
+  updateFacturePainementStatus
 } = require("./controllers/factureController");
 const {
   getTranches,
@@ -131,6 +132,7 @@ app.get("/api/factures/:companyId", getFactures);
 app.get("/api/factures/:factureId/:companyId", getOneFacture);
 app.post("/api/addFacture", createFacture);
 app.put("/api/updateFacture/:factureId", updateFacture);
+app.put("/api/updateFacturePainementStatus/:factureId", updateFacturePainementStatus);
 app.delete("/api/deleteFacture/:factureId", deleteFacture);
 
 // Tranche
