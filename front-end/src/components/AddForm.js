@@ -18,7 +18,6 @@ export default function AddForm({ page }) {
   const { numClient } = useParams();
 
   const clients = GetClients();
-  // const compteurs = GetCompteurs();
 
   let dataObject = {};
   let endPoint = "";
@@ -29,6 +28,7 @@ export default function AddForm({ page }) {
       cin: "",
       birthDate: "",
       tele: "",
+      adresse: "",
       dateRegisterClient: new Date().toISOString(),
       companyId: user.companyId,
     };
@@ -81,6 +81,9 @@ export default function AddForm({ page }) {
       } else if (!dataToAdd.tele.trim().match(/[0-9]{10}/)) {
         toast.error("Saisir un numero de telephone valide!");
         return false;
+      } else if (dataToAdd.adresse.trim().length < 10) {
+        toast.error("L'adresse du client doit contien 10 caracteres minimum!");
+        return false;
       } else {
         return true;
       }
@@ -105,17 +108,16 @@ export default function AddForm({ page }) {
   }
 
   function checkFactureInfo() {
-    if (dataToAdd.dateFacture === "") {
-      toast.error("choisir la date de consomation");
-      return false;
-    } else if (dataToAdd.numCompteur === 0) {
-      toast.error("choisir un compteur");
-      return false;
-    } else if (isNaN(dataToAdd.valeurCompteurPreleve)) {
-      toast.error("la valeur preleve du compteur doit etre numerique");
-      return false;
-    } else {
-      return true;
+    if (page === "facture") {
+      if (dataToAdd.dateFacture === "") {
+        toast.error("choisir la date de consomation");
+        return false;
+      } else if (dataToAdd.numCompteur === 0) {
+        toast.error("choisir un compteur");
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
@@ -170,13 +172,10 @@ export default function AddForm({ page }) {
                     console.error(err.response.data.error);
                     setLoading(false);
                   });
-              }
-              else{
+              } else {
                 setLoading(false);
               }
             });
-            // toast.error(`${res.data.invalidData}`);
-            // setLoading(false);
             return;
           }
 

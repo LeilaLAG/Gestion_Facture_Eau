@@ -28,20 +28,26 @@ export default function Home() {
                         style={{ textDecoration: "none" }}
                       >
                         clients
-                      <div className="centerDiv gap-2">
-                        {user.crudAccess.clients.add && (
-                          <i class="bi bi-plus-circle" title="Ajout"></i>
-                        )}
-                        {user.crudAccess.clients.mod && (
-                          <i class="bi bi-pen" title="Modification"></i>
-                        )}
-                        {user.crudAccess.clients.dlt && (
-                          <i
-                            className="bi bi-trash3-fill"
-                            title="Suppression"
-                          ></i>
-                        )}
-                      </div>
+                        <div className="centerDiv gap-2 mt-1">
+                          {user.crudAccess.clients.add && (
+                            <div className="btn btn-success p-2 pb-0 pt-0">
+                              <i class="bi bi-plus-circle" title="Ajout"></i>
+                            </div>
+                          )}
+                          {user.crudAccess.clients.mod && (
+                            <div className="btn btn-primary p-2 pb-0 pt-0">
+                              <i class="bi bi-pen" title="Modification"></i>
+                            </div>
+                          )}
+                          {user.crudAccess.clients.dlt && (
+                            <div className="btn btn-primary p-2 pb-0 pt-0">
+                              <i
+                                className="bi bi-trash3-fill"
+                                title="Suppression"
+                              ></i>
+                            </div>
+                          )}
+                        </div>
                       </a>
                     </div>
                   )}
@@ -54,18 +60,24 @@ export default function Home() {
                       >
                         compteurs
                       </a>
-                      <div className="centerDiv gap-2">
+                      <div className="centerDiv gap-2 mt-1">
                         {user.crudAccess.compteurs.add && (
-                          <i class="bi bi-plus-circle" title="Ajout"></i>
+                          <div className="btn btn-success p-2 pb-0 pt-0">
+                            <i class="bi bi-plus-circle" title="Ajout"></i>
+                          </div>
                         )}
                         {user.crudAccess.compteurs.mod && (
-                          <i class="bi bi-pen" title="Modification"></i>
+                          <div className="btn btn-primary p-2 pb-0 pt-0">
+                            <i class="bi bi-pen" title="Modification"></i>
+                          </div>
                         )}
                         {user.crudAccess.compteurs.dlt && (
-                          <i
-                            className="bi bi-trash3-fill"
-                            title="Suppression"
-                          ></i>
+                          <div className="btn btn-primary p-2 pb-0 pt-0">
+                            <i
+                              className="bi bi-trash3-fill"
+                              title="Suppression"
+                            ></i>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -79,43 +91,24 @@ export default function Home() {
                       >
                         factures
                       </a>
-                      <div className="centerDiv gap-2">
+                      <div className="centerDiv gap-2 mt-1">
                         {user.crudAccess.factures.add && (
-                          <i class="bi bi-plus-circle" title="Ajout"></i>
+                          <div className="btn btn-success p-2 pb-0 pt-0">
+                            <i class="bi bi-plus-circle" title="Ajout"></i>
+                          </div>
                         )}
                         {user.crudAccess.factures.mod && (
-                          <i class="bi bi-pen" title="Modification"></i>
+                          <div className="btn btn-primary p-2 pb-0 pt-0">
+                            <i class="bi bi-pen" title="Modification"></i>
+                          </div>
                         )}
                         {user.crudAccess.factures.dlt && (
-                          <i
-                            className="bi bi-trash3-fill"
-                            title="Suppression"
-                          ></i>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {user.privileges.tranches && (
-                    <div>
-                      <a
-                        href="/tranches"
-                        className="centerDiv d-flex gap-4 fw-bold text-dark btn btn-info p-4 pb-1 pt-1"
-                        style={{ textDecoration: "none" }}
-                      >
-                        tranches
-                      </a>
-                      <div className="centerDiv gap-2">
-                        {user.crudAccess.tranches.add && (
-                          <i class="bi bi-plus-circle" title="Ajout"></i>
-                        )}
-                        {user.crudAccess.tranches.mod && (
-                          <i class="bi bi-pen" title="Modification"></i>
-                        )}
-                        {user.crudAccess.tranches.dlt && (
-                          <i
-                            className="bi bi-trash3-fill"
-                            title="Suppression"
-                          ></i>
+                          <div className="btn btn-primary p-2 pb-0 pt-0">
+                            <i
+                              className="bi bi-trash3-fill"
+                              title="Suppression"
+                            ></i>
+                          </div>
                         )}
                       </div>
                     </div>

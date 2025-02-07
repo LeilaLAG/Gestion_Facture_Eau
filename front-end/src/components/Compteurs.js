@@ -88,10 +88,6 @@ export default function Compteurs() {
       setClients((prev) =>
         prev.filter((client) => client.nameClient === nameClient)
       );
-      setCompteurs((prev) =>
-        prev.filter(
-          (f) => f.numClient === clients[0].numClient
-        ))
       return
     }
   }

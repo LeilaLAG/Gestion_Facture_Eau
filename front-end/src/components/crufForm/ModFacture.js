@@ -26,7 +26,7 @@ function ModFacture({ onChangeModInfo, dataToMod }) {
           onChange={onChangeModInfo}
         />
       </div>
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <label className="d-block">Valeur Compteur Prélevé</label>
         <input
           type="number"
@@ -35,7 +35,7 @@ function ModFacture({ onChangeModInfo, dataToMod }) {
           value={dataToMod.valeurCompteurPreleve}
           onChange={onChangeModInfo}
         />
-      </div>
+      </div> */}
       <div className="mb-3">
         <label className="d-block">Situation Paiment</label>
         <select

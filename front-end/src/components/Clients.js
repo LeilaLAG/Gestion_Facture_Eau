@@ -186,6 +186,7 @@ export default function Clients() {
                   <th>CIN</th>
                   <th>Date de naissance</th>
                   <th>Telephone</th>
+                  <th>Adresse</th>
                   <th>Date d'enregistrement</th>
                   <th>Date de modification</th>
                   <th colSpan={2}>Actions</th>
@@ -230,6 +231,19 @@ export default function Clients() {
                           )}
                         </td>
                         <td>{client.tele}</td>
+                        <td title={client.adresse}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "70px",
+                              overflow: "hidden",
+                              whiteSpace:"nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {client.adresse}
+                          </span>
+                        </td>
                         <td>
                           {new Date(
                             client.dateRegisterClient

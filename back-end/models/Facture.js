@@ -19,6 +19,9 @@ const FactureSchema = new mongoose.Schema({
         type : Number,
         required : true
     },
+    lastCompteurPrelevement : {
+        type : Number,
+    },
     painementStatus : {
         type : String
     },

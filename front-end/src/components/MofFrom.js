@@ -27,6 +27,7 @@ export default function ModForm({ page }) {
       cin: "",
       birthDate: "",
       tele: "",
+      adresse : "",
       dateRegisterClient: "",
       companyId: user.companyId,
     };
@@ -45,10 +46,10 @@ export default function ModForm({ page }) {
     dataObject = {
       dateFacture: "",
       datePainement: "",
-      numCompteur: "",
-      valeurCompteurPreleve: "",
+      numCompteur: 0,
+      valeurCompteurPreleve: 0,
       painementStatus: "",
-      totalFacture: "",
+      totalFacture: 0.0,
       companyId: user.companyId,
     };
     endPoint = "updateFacture";
@@ -115,6 +116,9 @@ export default function ModForm({ page }) {
       } else if (!dataToMod.tele.trim().match(/[0-9]{10}/)) {
         toast.error("Saisir un numero de telephone valide!");
         return false;
+      } else if (dataToMod.adresse.trim().length < 10) {
+        toast.error("L'adresse du client doit contien 10 caracteres minimum!");
+        return false;
       } else {
         return true;
       }
@@ -139,23 +143,22 @@ export default function ModForm({ page }) {
   }
 
   function checkFactureInfo() {
-    if (dataToMod.dateFacture === "") {
-      toast.error("choisir la date de facture");
-      return false;
-    } else if (dataToMod.numCompteur === "") {
-      toast.error("choisir un compteur");
-      return false;
-    } else if (dataToMod.valeurCompteurPreleve === "") {
-      toast.error("Entrer la valeur preleve du compteur");
-      return false;
-    } else if (isNaN(dataToMod.valeurCompteurPreleve)) {
-      toast.error("la valeur preleve du compteur doit etre numerique");
-      return false;
-    } else if (dataToMod.painementStatus === "") {
-      toast.error("Entrer la situation du paiment");
-      return false;
-    } else {
-      return true;
+    if(page === "facture"){
+      if (dataToMod.dateFacture === "") {
+        toast.error("choisir la date de facture");
+        return false;
+      } else if (dataToMod.valeurCompteurPreleve === 0) {
+        toast.error("Entrer la valeur preleve du compteur");
+        return false;
+      } else if (isNaN(dataToMod.valeurCompteurPreleve)) {
+        toast.error("la valeur preleve du compteur doit etre numerique");
+        return false;
+      } else if (dataToMod.painementStatus === "") {
+        toast.error("Entrer la situation du paiment");
+        return false;
+      } else {
+        return true;
+      }
     }
   }
   function handleModData(e) {
@@ -179,11 +182,7 @@ export default function ModForm({ page }) {
             setLoading(false);
             return;
           }
-          // if (page === "facture" && res.data.invalidData) {
-          //   toast.error(res.data.invalidData);
-          //   setLoading(false);
-          //   return;
-          // }
+          
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
         })

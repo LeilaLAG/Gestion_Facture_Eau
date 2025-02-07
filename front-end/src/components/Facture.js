@@ -88,9 +88,6 @@ export default function Facture() {
       setClients((prev) =>
         prev.filter((client) => client.nameClient === nameClient)
       );
-      setFacture((prev) =>
-        prev.filter((f) => f.numClient === clients[0].numClient)
-      );
       return;
     }
   }
@@ -278,6 +275,25 @@ export default function Facture() {
                           Filter
                         </button>
                       </form>
+                      {user.function === "Employer"
+                        ? user.crudAccess.factures.add && (
+                            <a
+                              href={`/facture/add-facture/${client.numClient}`}
+                              className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                              style={{ fontSize: "13px" }}
+                            >
+                              Générer une nouvelle facture
+                            </a>
+                          )
+                        : user.function === "Admin" && (
+                            <a
+                              href={`/facture/add-facture/${client.numClient}`}
+                              className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
+                              style={{ fontSize: "13px" }}
+                            >
+                              Générer une nouvelle facture
+                            </a>
+                          )}
                       <table
                         className="table table-bordered text-center w-100 mt-2 mb-0"
                         style={{ verticalAlign: "middle" }}
@@ -328,6 +344,7 @@ export default function Facture() {
                                         display: "inline-block",
                                         width: "70px",
                                         overflow: "hidden",
+                                        whiteSpace:"nowrap",
                                         textOverflow: "ellipsis",
                                       }}
                                     >
@@ -348,7 +365,16 @@ export default function Facture() {
                                   </td>
                                   <td>N°-{fact.numCompteur}</td>
                                   <td>{fact.valeurCompteurPreleve}</td>
-                                  <td style={{fontWeight:"bold"}} className={fact.painementStatus === "Payée" ? "text-success" : "text-danger"}>{fact.painementStatus}</td>
+                                  <td
+                                    style={{ fontWeight: "bold" }}
+                                    className={
+                                      fact.painementStatus === "Payée"
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }
+                                  >
+                                    {fact.painementStatus}
+                                  </td>
                                   <td>{fact.totalFacture}</td>
                                   <td>
                                     {new Date(
@@ -424,7 +450,7 @@ export default function Facture() {
                                               </button>
                                             </form>
                                           </td>
-                                          <hr/>
+                                          <hr />
                                           <td>
                                             <form
                                               method="put"
@@ -478,29 +504,6 @@ export default function Facture() {
                               ))
                           )}
                         </tbody>
-                        {user.function === "Employer"
-                          ? user.crudAccess.factures.add && (
-                              <td colSpan={8} className="text-start">
-                                <a
-                                  href={`/facture/add-facture/${client.numClient}`}
-                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Générer une nouvelle facture
-                                </a>
-                              </td>
-                            )
-                          : user.function === "Admin" && (
-                              <td colSpan={8} className="text-start">
-                                <a
-                                  href={`/facture/add-facture/${client.numClient}`}
-                                  className="btn btn-success pt-1 pb-1 p-3 fw-bold mt-2"
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Générer une nouvelle facture
-                                </a>
-                              </td>
-                            )}
                       </table>
                     </div>
                   </div>

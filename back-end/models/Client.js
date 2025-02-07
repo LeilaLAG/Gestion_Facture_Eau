@@ -22,6 +22,9 @@ const ClientSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    adresse : {
+        type : String,
+    },
     dateRegisterClient : {
         type : Date,
         default : new Date(),

@@ -42,6 +42,16 @@ export default function AddClient({onChangeInfo}) {
           onChange={onChangeInfo}
         />
       </div>
+      <div className="mb-3">
+        <label className="d-block">Adresse</label>
+        <input
+          type="text"
+          name="adresse"
+          className="form-control"
+          placeholder="Saisir l'adresse du client"
+          onChange={onChangeInfo}
+        />
+      </div>
     </div>
   )
 }

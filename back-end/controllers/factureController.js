@@ -15,9 +15,14 @@ const getFactures = async (req, res) => {
 const getOneFacture = async (req, res) => {
   try {
     const { factureId, companyId } = req.params;
+
     const facture = await Facture.findOne({ _id: factureId, companyId });
+
     const client = await Client.findOne({companyId , numClient : facture.numClient})
-    return res.status(200).json({ facture , client});
+
+    const lastSixBills = await Facture.find({companyId , numClient : facture.numClient , dateFacture: { $lte: facture.dateFacture }}).sort({dateFacture : -1}).limit(6)
+
+    return res.status(200).json({ facture , client , lastSixBills});
   } catch (error) {
     return res.status(400).json({ error: "Server Error getting facture" });
   }
@@ -54,6 +59,7 @@ const createFacture = async (req, res) => {
 
     const addedFacture = await Facture.create({
       ...req.body,
+      lastCompteurPrelevement : lastCompteurPrelevement,
       totalFacture : total
     });
     return res.status(200).json({ addedFacture });

@@ -65,4 +65,7 @@
   .noPrin {
     display: none;
   }
+  .billToPrint {
+    width: 100% !important;
+  }
 }

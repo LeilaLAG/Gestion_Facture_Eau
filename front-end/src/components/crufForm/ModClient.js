@@ -54,6 +54,17 @@ export default function ModClient({ onChangeModInfo, dataToMod }) {
           onChange={onChangeModInfo}
         />
       </div>
+      <div className="mb-3">
+        <label className="d-block">Adresse</label>
+        <input
+          type="text"
+          name="adresse"
+          className="form-control"
+          placeholder="Saisir l'adresse du client"
+          value={dataToMod.adresse}
+          onChange={onChangeModInfo}
+        />
+      </div>
     </div>
   );
 }
