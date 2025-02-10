@@ -110,7 +110,10 @@ export default function AddForm({ page }) {
   function checkFactureInfo() {
     if (page === "facture") {
       if (dataToAdd.dateFacture === "") {
-        toast.error("choisir la date de consomation");
+        toast.error("Saisir la date de consomation");
+        return false;
+      }else if (new Date(dataToAdd.dateFacture).getFullYear() < new Date().getFullYear() || new Date(dataToAdd.dateFacture).getMonth()+1 < new Date().getMonth()+1) {
+        toast.error(`Saisir une date valide supérieur ou égale la date d'aujourdhui ${new Date().getMonth()+1}/${new Date().getFullYear()}`);
         return false;
       } else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
@@ -213,7 +216,7 @@ export default function AddForm({ page }) {
               }}
               className="bg-success"
             ></div>
-            <h3 className="text-center mb-4">{`Ajouter un ${page}`}</h3>
+            <h3 className="text-center mb-4">{`Ajouter données ${page}`}</h3>
             {page === "client" && (
               <AddClient onChangeInfo={(e) => handleAddInfo(e)} />
             )}

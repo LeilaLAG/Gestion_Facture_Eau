@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 
-export default function GetFactures() {
-  const [Facture, setFacture] = useState(null);
+export default function GetFactures(year , month) {
+  const [Facture, setFacture] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
@@ -11,7 +11,7 @@ export default function GetFactures() {
   useEffect(() => {
     async function fetchFactureData() {
       await axios
-        .get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/factures/${user.companyId}/`, {
+        .get(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/factures/${user.companyId}/?year=${year}&month=${month}`, {
           withCredentials: true,
         })
         .then((res) => {
@@ -25,6 +25,6 @@ export default function GetFactures() {
     }
 
     fetchFactureData();
-  }, [user.companyId]);
+  }, [user.companyId , year , month]);
   return loading ? "loading" : Facture;
 }

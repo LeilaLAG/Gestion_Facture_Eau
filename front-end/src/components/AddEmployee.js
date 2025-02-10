@@ -111,13 +111,13 @@ export default function AddEmployee() {
               }}
               className="bg-warning"
             ></div>
-            <h3 className="text-center mb-4">Ajouter un employer</h3>
+            <h3 className="text-center mb-4">Ajouter un employé</h3>
             <div className="LoginPasswordInput">
               <input
                 type="email"
                 name="email"
                 className="form-control mt-3"
-                placeholder="Saisir votre adresse email"
+                placeholder="Saisir l'adresse email de votre employé"
                 onChange={(e) => {
                   handleChangeEmployeeInfo(e);
                 }}
@@ -147,7 +147,7 @@ export default function AddEmployee() {
                 type="text"
                 name="fullName"
                 className="form-control mt-3"
-                placeholder="Saisir le nom de votre nom complet"
+                placeholder="Saisir le nom de votre emplyé"
                 onChange={(e) => {
                   handleChangeEmployeeInfo(e);
                 }}
@@ -158,7 +158,7 @@ export default function AddEmployee() {
                 type="text"
                 name="role"
                 className="form-control mt-3"
-                placeholder="Saisir le nom de votre role"
+                placeholder="Saisir le role de votre employé"
                 onChange={(e) => {
                   handleChangeEmployeeInfo(e);
                 }}

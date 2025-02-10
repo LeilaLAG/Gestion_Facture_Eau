@@ -18,8 +18,14 @@ export default function Facture() {
     month: "2-digit",
     day: "2-digit",
   };
+  const [filterParams, setFilterParams] = useState({
+    numClient: "",
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+  });
 
-  let factureData = GetFactures();
+  let factureData = GetFactures(filterParams.year, filterParams.month);
+
   const clientData = GetClients();
   const compteurData = GetCompteurs();
 
@@ -29,9 +35,7 @@ export default function Facture() {
   const [clients, setClients] = useState([]);
   const [compteurs, setCompteurs] = useState([]);
 
-  const [filterParams, setFilterParams] = useState({ numFacture: "" });
-
-  const [filterByDateFacture, setFilterByDateFacture] = useState("");
+  // const [filterByDateFacture, setFilterByDateFacture] = useState("");
   const [filterByNumCompteur, setFilterByNumCompteur] = useState(0);
 
   useEffect(() => {
@@ -92,21 +96,21 @@ export default function Facture() {
     }
   }
 
-  function filterFacture(e, client) {
+  function filterFacture(e) {
     e.preventDefault();
-    const filter_date = new Date(filterByDateFacture).getFullYear();
+    // const filter_date = new Date(filterByDateFacture).getFullYear();
 
     setFacture(factureData);
 
-    if (filterByDateFacture !== "") {
-      setFacture((prev) =>
-        prev.filter(
-          (f) =>
-            new Date(f.dateFacture).getFullYear() === filter_date &&
-            f.numClient === client
-        )
-      );
-    }
+    // if (filterByDateFacture !== "") {
+    //   setFacture((prev) =>
+    //     prev.filter(
+    //       (f) =>
+    //         new Date(f.dateFacture).getFullYear() === filter_date &&
+    //         f.numClient === client
+    //     )
+    //   );
+    // }
     if (filterByNumCompteur !== 0) {
       setFacture((prev) =>
         prev.filter(
@@ -180,6 +184,7 @@ export default function Facture() {
                     title="Nombre total de factures"
                   />
                   <span className="fw-bold">{facture.length}</span>
+                  <span style={{fontSize : "13px"}}>{`( Données ${filterParams.month}/${filterParams.year} )`}</span>
                 </div>
               </div>
             </article>
@@ -241,19 +246,19 @@ export default function Facture() {
                     <div className="accordion-body p-2">
                       <form
                         onSubmit={function (e) {
-                          filterFacture(e, client.numClient);
+                          filterFacture(e);
                         }}
                         className="d-flex align-items-center gap-3"
                       >
-                        <label className="fw-bold">Filter par:</label>
-                        <input
+                        <label className="fw-bold">Filtrer par:</label>
+                        {/* <input
                           type="text"
                           placeholder="Année des factures"
                           onChange={(e) =>
                             setFilterByDateFacture(e.target.value)
                           }
                           className="form-control pb-1 pt-1 w-25"
-                        />
+                        /> */}
                         <select
                           className="form-control pb-1 pt-1 w-25"
                           onChange={(e) =>

@@ -147,13 +147,10 @@ export default function ModForm({ page }) {
       if (dataToMod.dateFacture === "") {
         toast.error("choisir la date de facture");
         return false;
-      } else if (dataToMod.valeurCompteurPreleve === 0) {
-        toast.error("Entrer la valeur preleve du compteur");
+      } else if (new Date(dataToMod.dateFacture).getFullYear() < new Date().getFullYear() || new Date(dataToMod.dateFacture).getMonth()+1 < new Date().getMonth()+1) {
+        toast.error(`Saisir une date valide supérieur ou égale la date d'aujourdhui ${new Date().getMonth()+1}/${new Date().getFullYear()}`);
         return false;
-      } else if (isNaN(dataToMod.valeurCompteurPreleve)) {
-        toast.error("la valeur preleve du compteur doit etre numerique");
-        return false;
-      } else if (dataToMod.painementStatus === "") {
+      }else if (dataToMod.painementStatus === "") {
         toast.error("Entrer la situation du paiment");
         return false;
       } else {

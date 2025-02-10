@@ -62,12 +62,30 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
                 Filtrer
               </button>
             </form>
-            {/* <div className="d-flex align-items-center gap-3 mt-2">
-              <img src="/Assets/sort.png" alt="filter" width={20} />
-              <hr width={20} />
-              <input type="text" />
-              <input type="text" />
-            </div> */}
+            {page === "facture" && (
+              <form className="d-flex align-items-center gap-3 mt-2">
+                <img src="/Assets/calendar.png" alt="filter" width={20} />
+                <hr width={20} />
+                <div className="d-flex align-items-center gap-3">
+                  <input
+                    type="text"
+                    style={{ fontSize: "15px", padding: "2px 5px" }}
+                    placeholder={`Année (par defaut ${new Date().getFullYear()})`}
+                    name="year"
+                    onChange={onChangeFilter}
+                  />
+                  <input
+                    type="text"
+                    style={{ fontSize: "15px", padding: "2px 5px" }}
+                    placeholder={`Mois (par defaut ${
+                      new Date().getMonth() + 1
+                    })`}
+                    name="month"
+                    onChange={onChangeFilter}
+                  />
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>

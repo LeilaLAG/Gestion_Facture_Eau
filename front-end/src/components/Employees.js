@@ -146,6 +146,19 @@ export default function Employees() {
           ) : (
             <div className="w-100">
               <h3 className="fw-bold mb-4">Liste des employers:</h3>
+              {employers.length > 0 && (
+                <div className="mb-2">
+                  <form method="put" onSubmit={(e) => grantPrivileges(e)}>
+                    <button
+                      className="btn btn-success p-3 pb-1 pt-1 fw-bold"
+                      style={{ fontSize: "13px" }}
+                      title="Enregistrer"
+                    >
+                      Sauvegarder les changements
+                    </button>
+                  </form>
+                </div>
+              )}
               <table
                 className="table table-bordered text-center w-100"
                 style={{ verticalAlign: "middle" }}
@@ -167,7 +180,7 @@ export default function Employees() {
                     <tr className="border border-0">
                       <td colSpan={7} className="border border-0 pt-4">
                         <ErrorMsg
-                          msg={"Vous n'avez aucun employers"}
+                          msg={"Vous n'avez aucun employé"}
                           errorIconWidth={20}
                           coleur={"red"}
                           boldness="bold"
@@ -493,19 +506,7 @@ export default function Employees() {
                   )}
                 </tbody>
               </table>
-              {employers.length > 0 && (
-                <div>
-                  <form method="put" onSubmit={(e) => grantPrivileges(e)}>
-                    <button
-                      className="btn btn-success p-3 pb-1 pt-1 fw-bold"
-                      style={{ fontSize: "13px" }}
-                      title="Enregistrer"
-                    >
-                      Sauvegarder les changements
-                    </button>
-                  </form>
-                </div>
-              )}
+              
             </div>
           )}
         </div>

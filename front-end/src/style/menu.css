@@ -49,7 +49,7 @@
 .navLinks>ul {
     list-style-type: none;
     padding: 0;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .navLinks>ul>li {
@@ -94,6 +94,7 @@
 
 .activeLink , .navLinks>ul>li:hover {
     background-color: #00aad9;
+    font-weight: bold;
 }
 .activeSubLink , .subNavLinks>li:hover {
     background-color: #0077bb;

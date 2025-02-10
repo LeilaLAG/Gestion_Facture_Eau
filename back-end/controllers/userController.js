@@ -189,7 +189,7 @@ const resetPassword = async (req, res) => {
             <br>
             <div style="font-family: Arial, sans-serif; color: #333;">
                 <img src="/Assets/logo.png" width="50">
-                <h4 style="margin-top:5px; margin-bottom:5px; font-size: 12px; color: #fdd85a;">
+                <h4 style="margin-top:5px; margin-bottom:5px; font-size: 12px; color:rgb(55, 122, 231);">
                     <span style="padding:5px; background-color:#463300; border-top-left-radius:10px; border-bottom-right-radius:10px;">No-Reply</span>
                 </h4>
                 <p style="margin: 0; font-size: 10px;">

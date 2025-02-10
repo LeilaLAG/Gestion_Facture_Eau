@@ -17,7 +17,8 @@ export default function Menu() {
             className="btn btn-dark p-3 pt-1 pb-1 dropdown-toggle"
             data-bs-toggle="dropdown"
           >
-            Options
+            <img src="/Assets/options.png"  alt="options" width={17}/>
+            <span style={{marginLeft : "10px"}}>Options</span>
           </button>
           <ul className="dropdown-menu shadow">
             <li className="d-flex align-items-center gap-2 dropdown-item">
@@ -40,7 +41,7 @@ export default function Menu() {
                     style={{ textDecoration: "none" }}
                     href="/users/add-employee"
                   >
-                    Ajouter un employer
+                    Ajouter un employé
                   </a>
                 </li>
                 <hr className="m-0 mt-1 mb-1" />
@@ -51,7 +52,7 @@ export default function Menu() {
                     style={{ textDecoration: "none" }}
                     href="/employees"
                   >
-                    Vos employers
+                    Vos employés
                   </a>
                 </li>
                 <hr className="m-0 mt-1 mb-1" />
@@ -104,10 +105,15 @@ export default function Menu() {
         </div>
       </div>
       <div className="UserInfoSegment">
-        <div>
-          <img src="/Assets/profile.png" alt="user" width={80} />
-        </div>
 
+        <div className="p-2 pb-1">
+          {
+            user.function === "Admin" ?
+            <img src="/Assets/adminProfile.png" alt="Admin" width={70} />
+            :
+            <img src="/Assets/employeProfile.png" alt="Employe" width={70} />
+          }
+        </div>
         <div className="">
           <div className="w-100">
             <div className="d-flex align-items-center gap-2">

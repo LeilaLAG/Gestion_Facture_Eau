@@ -5,12 +5,30 @@ const Client = require("../models/Client");
 const getFactures = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const factures = await Facture.find({ companyId });
+    const { year, month } = req.query;
+
+    const filter = { companyId };
+
+    if (year) {
+      filter.$expr = { $eq: [{ $year: "$dateFacture" }, parseInt(year)] };
+    }
+
+    if (month) {
+      filter.$expr = {
+        $and: [
+          { $eq: [{ $year: "$dateFacture" }, parseInt(year)] }, // Ensure year matches
+          { $lte: [{ $month: "$dateFacture" }, parseInt(month)] } // Ensure month matches
+        ]
+      };
+    }
+
+    const factures = await Facture.find(filter);
     return res.status(200).json({ factures });
   } catch (error) {
-    return res.status(400).json({ error: "Server Error getting all factures" });
+    return res.status(500).json({ error: "Server Error getting all factures" });
   }
 };
+
 
 const getOneFacture = async (req, res) => {
   try {

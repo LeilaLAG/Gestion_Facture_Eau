@@ -89,7 +89,7 @@ export default function SignUp() {
           await axios.post(
             `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addCompany`,
             { companyName: company }
-          );
+          )
 
           toast.success("Votre profile a été creer");
           setTimeout(() => {
@@ -99,7 +99,7 @@ export default function SignUp() {
         .catch((err) => {
           setSignupLoading(false);
           setIsDisabled(false);
-          toast.error(err.response.data.error);
+          toast.error("Un erreur est servenue lors de l'enregistrement !");
         });
     }
   }
