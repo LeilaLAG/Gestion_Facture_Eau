@@ -10,12 +10,14 @@ import GetClients from "../hooks/GetClients";
 import ModClient from "./crufForm/ModClient";
 import ModCompteur from "./crufForm/ModCompteur";
 import ModFacture from "./crufForm/ModFacture";
+import ModTranche from "./crufForm/ModTranche";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
   const { clientId } = useParams();
   const { compteurId } = useParams();
   const { factureId } = useParams();
+  const { trancheId } = useParams();
   const clients = GetClients();
 
   let dataObject = {};
@@ -27,7 +29,7 @@ export default function ModForm({ page }) {
       cin: "",
       birthDate: "",
       tele: "",
-      adresse : "",
+      adresse: "",
       dateRegisterClient: "",
       companyId: user.companyId,
     };
@@ -53,6 +55,15 @@ export default function ModForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "updateFacture";
+  } else if (page === "tranche") {
+    dataObject = {
+      nameTranche: "",
+      prix: 0.0,
+      maxTonnage: 0,
+      isActive: false,
+      companyId: user.companyId,
+    };
+    endPoint = "updateTranche";
   }
 
   const [dataToMod, setDataToMod] = useState(dataObject);
@@ -89,12 +100,26 @@ export default function ModForm({ page }) {
         )
         .then((res) => setDataToMod(res.data.facture))
         .catch((err) => toast.error("Un problem est servenue!"));
+    } else if (trancheId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/tranches/${trancheId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.tranche))
+        .catch((err) => toast.error("Un problem est servenue!"));
     }
-  }, [clientId, compteurId, factureId, user.companyId]);
+  }, [clientId, compteurId, factureId, trancheId, user.companyId]);
 
   function handleModInfo(e) {
     e.preventDefault();
-    setDataToMod({ ...dataToMod, [e.target.name]: e.target.value });
+    setDataToMod({
+      ...dataToMod,
+      [e.target.name]:
+        e.target.name === "isActive" ? Boolean(e.target.value) : e.target.value,
+    });
   }
 
   function checkClientInfo() {
@@ -143,14 +168,23 @@ export default function ModForm({ page }) {
   }
 
   function checkFactureInfo() {
-    if(page === "facture"){
+    if (page === "facture") {
       if (dataToMod.dateFacture === "") {
         toast.error("choisir la date de facture");
         return false;
-      } else if (new Date(dataToMod.dateFacture).getFullYear() < new Date().getFullYear() || new Date(dataToMod.dateFacture).getMonth()+1 < new Date().getMonth()+1) {
-        toast.error(`Saisir une date valide supérieur ou égale la date d'aujourdhui ${new Date().getMonth()+1}/${new Date().getFullYear()}`);
+      } else if (
+        new Date(dataToMod.dateFacture).getFullYear() <
+          new Date().getFullYear() ||
+        new Date(dataToMod.dateFacture).getMonth() + 1 <
+          new Date().getMonth() + 1
+      ) {
+        toast.error(
+          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
+            new Date().getMonth() + 1
+          }/${new Date().getFullYear()}`
+        );
         return false;
-      }else if (dataToMod.painementStatus === "") {
+      } else if (dataToMod.painementStatus === "") {
         toast.error("Entrer la situation du paiment");
         return false;
       } else {
@@ -158,16 +192,44 @@ export default function ModForm({ page }) {
       }
     }
   }
+
+  function checkTrancheInfo() {
+    if (page === "tranche") {
+      if (dataToMod.nameTranche === "") {
+        toast.error("saisir le nom de tranche");
+        return false;
+      } else if (dataToMod.prix === "") {
+        toast.error("entrer le prix");
+        return false;
+      } else if (isNaN(dataToMod.prix)) {
+        toast.error("le prix doit etre un nombre decimal");
+        return false;
+      } else if (dataToMod.maxTonnage === 0) {
+        toast.error("entrer le tonnage maximal");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleModData(e) {
     e.preventDefault();
 
-    if (checkClientInfo() || checkCompteurInfo() || checkFactureInfo()) {
+    if (
+      checkClientInfo() ||
+      checkCompteurInfo() ||
+      checkFactureInfo() ||
+      checkTrancheInfo()
+    ) {
       setLoading(true);
       axios
         .put(
           `${process.env.REACT_APP_HOST}:${
             process.env.REACT_APP_PORT
-          }/api/${endPoint}/${clientId || compteurId || factureId}`,
+          }/api/${endPoint}/${
+            clientId || compteurId || factureId || trancheId
+          }`,
           dataToMod,
           {
             withCredentials: true,
@@ -179,7 +241,7 @@ export default function ModForm({ page }) {
             setLoading(false);
             return;
           }
-          
+
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
         })
@@ -231,6 +293,13 @@ export default function ModForm({ page }) {
 
             {page === "facture" && (
               <ModFacture
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
+            )}
+
+            {page === "tranche" && (
+              <ModTranche
                 onChangeModInfo={(e) => handleModInfo(e)}
                 dataToMod={dataToMod}
               />
