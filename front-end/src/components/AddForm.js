@@ -11,7 +11,7 @@ import GetClients from "../hooks/GetClients";
 import { useParams } from "react-router-dom";
 import AddFacture from "./crufForm/AddFacture";
 import Swal from "sweetalert2";
-// import GetCompteurs from "../hooks/GetCompteurs";
+import AddTranche from "./crufForm/AddTranche";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -55,6 +55,15 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addFacture";
+  } else if (page === "tranche") {
+    dataObject = {
+      nameTranche: "",
+      prix: "",
+      maxTonnage: 0,
+      isActive: false,
+      companyId: user.companyId,
+    };
+    endPoint = "addTranche";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -112,8 +121,17 @@ export default function AddForm({ page }) {
       if (dataToAdd.dateFacture === "") {
         toast.error("Saisir la date de consomation");
         return false;
-      }else if (new Date(dataToAdd.dateFacture).getFullYear() < new Date().getFullYear() || new Date(dataToAdd.dateFacture).getMonth()+1 < new Date().getMonth()+1) {
-        toast.error(`Saisir une date valide supérieur ou égale la date d'aujourdhui ${new Date().getMonth()+1}/${new Date().getFullYear()}`);
+      } else if (
+        new Date(dataToAdd.dateFacture).getFullYear() <
+          new Date().getFullYear() ||
+        new Date(dataToAdd.dateFacture).getMonth() + 1 <
+          new Date().getMonth() + 1
+      ) {
+        toast.error(
+          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
+            new Date().getMonth() + 1
+          }/${new Date().getFullYear()}`
+        );
         return false;
       } else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
@@ -124,10 +142,35 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkTrancheInfo() {
+    if (page === "tranche") {
+      if (dataToAdd.nameTranche === "") {
+        toast.error("saisir le nom de tranche");
+        return false;
+      } else if (dataToAdd.prix === "") {
+        toast.error("entrer le prix");
+        return false;
+      } else if (isNaN(dataToAdd.prix)) {
+        toast.error("le prix doit etre un nombre decimal");
+        return false;
+      } else if (dataToAdd.maxTonnage === 0) {
+        toast.error("entrer le tonnage maximal");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
-    if (checkClientInfo() || checkCompteurInfo() || checkFactureInfo()) {
+    if (
+      checkClientInfo() ||
+      checkCompteurInfo() ||
+      checkFactureInfo() ||
+      checkTrancheInfo()
+    ) {
       setLoading(true);
       axios
         .post(
@@ -234,6 +277,10 @@ export default function AddForm({ page }) {
                 onChangeInfo={(e) => handleAddInfo(e)}
                 client={numClient}
               />
+            )}
+
+            {page === "tranche" && (
+              <AddTranche onChangeInfo={(e) => handleAddInfo(e)} />
             )}
             <div className="mt-4 d-flex justify-content-around w-100">
               <button

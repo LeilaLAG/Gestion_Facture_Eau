@@ -17,6 +17,7 @@ import Home from "./components/Home";
 import Employees from "./components/Employees";
 import AddEmployee from "./components/AddEmployee";
 import PrintFacture from "./components/PrintFacture";
+import Tranches from "./components/Tranches";
 
 function App() {
   return (
@@ -116,7 +117,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* facture --------------------------------------------------- */}
         <Route
           path="/factures"
@@ -147,6 +148,32 @@ function App() {
           element={
             <ProtectedRoute>
               <PrintFacture />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* tranches ---------------------------------------------------- */}
+        <Route
+          path="/tranches"
+          element={
+            <ProtectedRoute>
+              <Tranches />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tranches/add-tranche"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"tranche"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tranches/update-tranche/:trancheId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"tranche"} />
             </ProtectedRoute>
           }
         />
