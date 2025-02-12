@@ -145,16 +145,16 @@ export default function AddForm({ page }) {
   function checkTrancheInfo() {
     if (page === "tranche") {
       if (dataToAdd.nameTranche === "") {
-        toast.error("saisir le nom de tranche");
+        toast.error("saisir le nom du tranche");
         return false;
       } else if (dataToAdd.prix === "") {
-        toast.error("entrer le prix");
+        toast.error("Saisir le prix du tranche");
         return false;
       } else if (isNaN(dataToAdd.prix)) {
-        toast.error("le prix doit etre un nombre decimal");
+        toast.error("le prix doit etre un nombre");
         return false;
       } else if (dataToAdd.maxTonnage === 0) {
-        toast.error("entrer le tonnage maximal");
+        toast.error("Saisir le tonnage maximal du tranche");
         return false;
       } else {
         return true;

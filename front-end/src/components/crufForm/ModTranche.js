@@ -35,7 +35,7 @@ export default function ModTranche({ onChangeModInfo, dataToMod }) {
           onChange={onChangeModInfo}
         />
       </div>
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <label className="d-block">Activé</label>
         <div className="form-check form-check-inline">
           <label className="form-check-label">Yes</label>
@@ -57,7 +57,7 @@ export default function ModTranche({ onChangeModInfo, dataToMod }) {
             onChange={onChangeModInfo}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

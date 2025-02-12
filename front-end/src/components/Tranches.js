@@ -31,7 +31,7 @@ export default function Tranches() {
 
     Swal.fire({
       title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
-      text: `Etes vous sure de supprimer la tranche ${trancheToDlt.nametranche}?`,
+      text: `Etes vous sure de supprimer ${trancheToDlt.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
       confirmButtonText: "Oui",
@@ -56,8 +56,39 @@ export default function Tranches() {
       }
     });
   }
+  
+  // Active ---------------------------------------------------------
+  function handleActiveTranche(e,activitedTranche) {
+    e.preventDefault();
 
-  // filtring --------------------------------------------------------
+    Swal.fire({
+      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      text: `Etes vous sure d'activer ${activitedTranche.nameTranche}?`,
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+      padding: "10px",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axios
+          .put(
+            `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/updateTranche/${activitedTranche._id}?activate=true`,
+            {isActive : true},
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            window.location.reload()
+          })
+          .catch((err) =>
+            toast.error("Un problem est servenue lors de l'activation du tranche!")
+          );
+      }
+    });
+  }
+
 
   return (
     <div className="d-flex h-100">
@@ -119,7 +150,7 @@ export default function Tranches() {
                   <th>Prix</th>
                   <th>Tonnage Maximal</th>
                   <th>Active</th>
-                  <th colSpan={2}>Actions</th>
+                  <th colSpan={3}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -162,70 +193,45 @@ export default function Tranches() {
                             <img src="Assets/cancel.png" alt="No" width={20} />
                           )}
                         </td>
-                        {user.function === "Employer"
-                          ? user.crudAccess.tranches.mod && (
-                              <td>
-                                <form
-                                  method="put"
-                                  action={`/tranches/update-tranche/${tranche._id}`}
-                                >
-                                  <button
-                                    className="btn btn-primary"
-                                    title="Modifier"
-                                  >
-                                    <i className="bi bi-pencil-square"></i>
-                                  </button>
-                                </form>
-                              </td>
-                            )
-                          : user.function === "Admin" && (
-                              <td>
-                                <form
-                                  method="put"
-                                  action={`/tranches/update-tranche/${tranche._id}`}
-                                >
-                                  <button
-                                    className="btn btn-primary"
-                                    title="Modifier"
-                                  >
-                                    <i className="bi bi-pencil-square"></i>
-                                  </button>
-                                </form>
-                              </td>
-                            )}
-                        {user.function === "Employer"
-                          ? user.crudAccess.tranches.dlt && (
-                              <td>
-                                <form
-                                  onSubmit={(e) =>
-                                    handleDeletetranche(e, tranche)
-                                  }
-                                >
-                                  <button
-                                    className="btn btn-danger"
-                                    title="Supprimer"
-                                  >
-                                    <i className="bi bi-trash3-fill"></i>
-                                  </button>
-                                </form>
-                              </td>
-                            )
-                          : user.function === "Admin" && (
-                              <td>
-                                <form
-                                  onSubmit={(e) =>
-                                    handleDeletetranche(e, tranche)
-                                  }
-                                >
-                                  <button
-                                    className="btn btn-danger"
-                                    title="Supprimer"
-                                  >
-                                    <i className="bi bi-trash3-fill"></i>
-                                  </button>
-                                </form>
-                              </td>
-                            )}
+                        <td>
+                          <form
+                            onSubmit={(e)=>handleActiveTranche(e,tranche)}
+                          >
+                            <button
+                              className="btn btn-warning"
+                              title="Activer"
+                            >
+                              <i class="bi bi-check-circle"></i>
+                            </button>
+                          </form>
+                        </td>
+                        
+                        <td>
+                          <form
+                            method="put"
+                            action={`/tranches/update-tranche/${tranche._id}`}
+                          >
+                            <button
+                              className="btn btn-primary"
+                              title="Modifier"
+                            >
+                              <i className="bi bi-pencil-square"></i>
+                            </button>
+                          </form>
+                        </td>
+
+                        <td>
+                          <form
+                            onSubmit={(e) => handleDeletetranche(e, tranche)}
+                          >
+                            <button
+                              className="btn btn-danger"
+                              title="Supprimer"
+                            >
+                              <i className="bi bi-trash3-fill"></i>
+                            </button>
+                          </form>
+                        </td>
                       </tr>
                     )
                   )

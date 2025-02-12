@@ -32,12 +32,24 @@ const createTranche = async (req, res) => {
 const updateTranche = async (req, res) => {
   try {
     const { trancheId } = req.params;
+    const { activate } = req.query;
 
-    const trancheToUpdate = await Tranche.findOneAndUpdate(
-      { _id: trancheId },
-      req.body
-    );
-    res.status(200).json({ trancheToUpdate });
+    if(activate){
+      await Tranche.updateMany( {_id : {$ne : trancheId}} , {$set : {isActive : false}} )
+      const trancheToUpdate = await Tranche.findOneAndUpdate(
+        { _id: trancheId },
+        req.body
+      );
+      res.status(200).json({ trancheToUpdate });
+    }
+    else{
+      const trancheToUpdate = await Tranche.findOneAndUpdate(
+        { _id: trancheId },
+        req.body
+      );
+      res.status(200).json({ trancheToUpdate });
+    }
+
   } catch (error) {
     return res.status(400).json({ error: "Server Error updating tranche" });
   }

@@ -60,7 +60,7 @@ export default function ModForm({ page }) {
       nameTranche: "",
       prix: 0.0,
       maxTonnage: 0,
-      isActive: false,
+      // isActive: false,
       companyId: user.companyId,
     };
     endPoint = "updateTranche";
@@ -185,7 +185,7 @@ export default function ModForm({ page }) {
         );
         return false;
       } else if (dataToMod.painementStatus === "") {
-        toast.error("Entrer la situation du paiment");
+        toast.error("Saisir la situation du paiment");
         return false;
       } else {
         return true;
@@ -196,16 +196,16 @@ export default function ModForm({ page }) {
   function checkTrancheInfo() {
     if (page === "tranche") {
       if (dataToMod.nameTranche === "") {
-        toast.error("saisir le nom de tranche");
+        toast.error("saisir le nom du tranche");
         return false;
       } else if (dataToMod.prix === "") {
-        toast.error("entrer le prix");
+        toast.error("Saisir le prix du tranche");
         return false;
       } else if (isNaN(dataToMod.prix)) {
-        toast.error("le prix doit etre un nombre decimal");
+        toast.error("le prix doit etre un nombre");
         return false;
       } else if (dataToMod.maxTonnage === 0) {
-        toast.error("entrer le tonnage maximal");
+        toast.error("Saisir le tonnage maximal du tranche");
         return false;
       } else {
         return true;
