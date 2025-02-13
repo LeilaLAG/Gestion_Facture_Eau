@@ -6,11 +6,10 @@ import ErrorMsg from "../costumComponents/ErrorMsg";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import { useUser } from "../Auth/ProtectedRoute";
 import GetTranches from "../hooks/GetTranches";
+import Tooltip from "./Tooltip";
 
 export default function Tranches() {
-  const { user } = useUser();
   let tranchesData = GetTranches();
 
   // To enable realtime deletion simulating websockets
@@ -56,16 +55,16 @@ export default function Tranches() {
       }
     });
   }
-  
+
   // Active ---------------------------------------------------------
-  function handleActiveTranche(e,activitedTranche) {
+  function handleActiveTranche(e, activitedTranche) {
     e.preventDefault();
 
     Swal.fire({
       title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure d'activer ${activitedTranche.nameTranche}?`,
       showCancelButton: true,
-      confirmButtonColor: "#d33",
+      confirmButtonColor: "#cfcf2e",
       confirmButtonText: "Oui",
       cancelButtonText: "Annuler",
       padding: "10px",
@@ -74,22 +73,22 @@ export default function Tranches() {
         axios
           .put(
             `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/updateTranche/${activitedTranche._id}?activate=true`,
-            {isActive : true},
+            { isActive: true },
             {
               withCredentials: true,
             }
           )
           .then((res) => {
-            window.location.reload()
+            window.location.reload();
           })
           .catch((err) =>
-            toast.error("Un problem est servenue lors de l'activation du tranche!")
+            toast.error(
+              "Un problem est servenue lors de l'activation du tranche!"
+            )
           );
       }
     });
   }
-
-
   return (
     <div className="d-flex h-100">
       <Toaster position="top-right" />
@@ -102,7 +101,7 @@ export default function Tranches() {
           </div>
         ) : (
           <div className="pb-2">
-            <article
+            {/* <article
               style={{ position: "sticky", top: "0%" }}
               className="pt-2 pb-2 bg-white accordion"
               id="accordionExample"
@@ -118,29 +117,17 @@ export default function Tranches() {
                   />
                   <span className="fw-bold">{tranches.length}</span>
                 </div>
-                {user.function === "Employer"
-                  ? user.crudAccess.tranches.add && (
-                      <a
-                        href="/tranches/add-tranche"
-                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                        style={{ fontSize: "13px" }}
-                      >
-                        Ajouter une nouvelle tranche
-                      </a>
-                    )
-                  : user.function === "Admin" && (
-                      <a
-                        href="/tranches/add-tranche"
-                        className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                        style={{ fontSize: "13px" }}
-                      >
-                        Ajouter une nouvelle tranche
-                      </a>
-                    )}
+                <a
+                  href="/tranches/add-tranche"
+                  className="btn btn-success pt-1 pb-1 p-3 fw-bold"
+                  style={{ fontSize: "13px" }}
+                >
+                  Ajouter une nouvelle tranche
+                </a>
               </div>
-            </article>
+            </article> */}
             <table
-              className="table table-bordered text-center w-100"
+              className="table table-bordered text-center w-100 mb-1"
               style={{ verticalAlign: "middle" }}
             >
               <thead>
@@ -195,17 +182,14 @@ export default function Tranches() {
                         </td>
                         <td>
                           <form
-                            onSubmit={(e)=>handleActiveTranche(e,tranche)}
+                            onSubmit={(e) => handleActiveTranche(e, tranche)}
                           >
-                            <button
-                              className="btn btn-warning"
-                              title="Activer"
-                            >
+                            <button className="btn btn-warning" title="Activer">
                               <i class="bi bi-check-circle"></i>
                             </button>
                           </form>
                         </td>
-                        
+
                         <td>
                           <form
                             method="put"
@@ -238,6 +222,38 @@ export default function Tranches() {
                 )}
               </tbody>
             </table>
+            {tranches.length < 4 && (
+              <div
+                className="centerDiv p-2 rounded"
+                colSpan={8}
+                style={{
+                  border: "1px dashed lightgray",
+                  backgroundColor: "#f7f7f7",
+                }}
+              >
+                {/* <div className="text-center">
+                </div> */}
+                <a
+                  href="/tranches/add-tranche"
+                  className="centerDiv gap-2 fs-5 text-success"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                  <p
+                    className="m-0 text-dark centerDiv gap-2"
+                    style={{ opacity: ".7", fontSize: "13px" }}
+                  >
+                    <span>Ajouter une nouvelle tranche</span>
+                    <Tooltip
+                      text={`${
+                        4 - tranches.length
+                      } tranche(s) restant possible de creer`}
+                    >
+                      <i class="bi bi-info-circle"></i>
+                    </Tooltip>
+                  </p>
+                </a>
+              </div>
+            )}
           </div>
         )}
       </Main>

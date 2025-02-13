@@ -29,6 +29,17 @@
     font-weight: 600;
 }
 
+.profileLogo {
+    text-transform: capitalize;
+    font-size: 30px;
+    font-weight: 600;
+    background-color: #0077bb;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
 .userFunction {
     text-transform: capitalize;
     font-size: 13px;

@@ -107,18 +107,23 @@ export default function Menu() {
       <div className="UserInfoSegment">
 
         <div className="p-2 pb-1">
-          {
+          {/* {
             user.function === "Admin" ?
             <img src="/Assets/adminProfile.png" alt="Admin" width={70} />
             :
             <img src="/Assets/employeProfile.png" alt="Employe" width={70} />
-          }
+          } */}
+          <div className="profileLogo centerDiv">
+            <span>
+              {user.fullName.charAt(0)}
+            </span>
+          </div>
         </div>
         <div className="">
           <div className="w-100">
             <div className="d-flex align-items-center gap-2">
               <p className="userFullName">{user.fullName}</p>
-              <p className="userFunction bg_blue_button p-2 pt-0 pb-0">
+              <p className="userFunction bg_blue_button badge rounded-pill">
                 {user.role}
               </p>
             </div>

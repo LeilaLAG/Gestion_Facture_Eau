@@ -7,6 +7,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import ErrorMsg from "../costumComponents/ErrorMsg";
+import Tooltip from "./Tooltip";
 
 export default function Employees() {
   const employers = GetEmployers();
@@ -199,22 +200,22 @@ export default function Employees() {
                               <div
                                 className="border border-1 centerDiv gap-2 bg-body-secondary"
                                 style={{ cursor: "help" }}
-                                title="Gérer l'accée aux rubriques pour les employers"
+                                // title="Gérer l'accée aux rubriques pour les employers"
                               >
                                 Accée
-                                <i class="bi bi-universal-access-circle"></i>
+                                <Tooltip text="Gérer l'accée aux rubriques pour les employers">
+                                  <i class="bi bi-universal-access-circle"></i>
+                                </Tooltip>
                               </div>
                               <div
                                 className="border border-1 centerDiv gap-3 mt-2 bg-light"
                                 style={{ cursor: "help" }}
-                                title="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers"
+                                // title="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers"
                               >
-                                <div>
                                   operations
-                                  <div>
+                                  <Tooltip text="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers">
                                     <i class="bi bi-bezier"></i>
-                                  </div>
-                                </div>
+                                  </Tooltip>
                               </div>
                             </td>
 
@@ -506,7 +507,6 @@ export default function Employees() {
                   )}
                 </tbody>
               </table>
-              
             </div>
           )}
         </div>
