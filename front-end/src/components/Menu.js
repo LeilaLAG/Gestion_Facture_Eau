@@ -342,13 +342,14 @@ export default function Menu() {
         </div>
       ) : (
         <nav className="shrinkNavLinks mt-5">
+          <img src="/Assets/aquamanageicon.png" className="mb-3" alt="aquamanageicon" width={30} />
           {user.function === "Admin" && (
             <ul>
               <li
                 className={currentUrl.pathname === "/home" ? "activeLink" : ""}
               >
                 <a href="/home">
-                  <img src="/Assets/accueil.png" alt="accueil" width={20} />
+                  <img src="/Assets/accueil.png" alt="homr" width={20} />
                 </a>
               </li>
               <li

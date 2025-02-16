@@ -258,7 +258,7 @@ export default function ModForm({ page }) {
           <form
             method="POST"
             onSubmit={(e) => handleModData(e)}
-            className="shadow p-5 pt-4 pb-4 rounded w-50"
+            className="shadow p-5 pt-4 pb-4 rounded AddModForms"
             style={{ position: "relative" }}
           >
             <div
@@ -301,14 +301,14 @@ export default function ModForm({ page }) {
                 dataToMod={dataToMod}
               />
             )}
-            <div className="mt-4 d-flex justify-content-around w-100">
+            <div className="mt-4 d-flex gap-3">
               <button
-                className="btn btn-primary w-25 fw-bold"
+                className="btn btn-primary fw-bold"
                 disabled={loading}
               >
                 {loading ? <ActionLoading /> : "Modifier"}
               </button>
-              <a href={`/${page}s`} className="btn btn-danger w-25 fw-bold">
+              <a href={`/${page}s`} className="btn btn-danger fw-bold">
                 Retour
               </a>
             </div>

@@ -91,19 +91,19 @@ const updateTranche = async (req, res) => {
   
       if(trancheBefore){
         if(trancheBefore.prix >= prix){
-          return res.status(200).json({ errorMsg : `Prix doit etre superieur au prix du tranche précedant ( >${trancheBefore.prix })` });
+          return res.status(200).json({ errorMsg : `Prix doit etre superieur au prix du tranche précedant ( > ${trancheBefore.prix } Dh )` });
         }
         else if(trancheBefore.maxTonnage >= maxTonnage){
-          return res.status(200).json({ errorMsg : `Max tonnage doit etre superieur au max tonnage du tranche précedant ( >${trancheBefore.maxTonnage })` });
+          return res.status(200).json({ errorMsg : `Max tonnage doit etre superieur au max tonnage du tranche précedant ( > ${trancheBefore.maxTonnage } m³ )` });
         }
       }
 
       if(trancheAfter){
         if(trancheAfter.prix <= prix){
-          return res.status(200).json({ errorMsg : `Prix doit etre inférieur au prix du tranche aprés ( <${trancheAfter.prix })` });
+          return res.status(200).json({ errorMsg : `Prix doit etre inférieur au prix du tranche aprés ( < ${trancheAfter.prix } Dh )` });
         }
         else if(trancheAfter.maxTonnage <= maxTonnage){
-          return res.status(200).json({ errorMsg : `Max tonnage doit etre inférieur au max tonnage du tranche aprés ( <${trancheAfter.maxTonnage })` });
+          return res.status(200).json({ errorMsg : `Max tonnage doit etre inférieur au max tonnage du tranche aprés ( < ${trancheAfter.maxTonnage } m³ )` });
         }
       }
 

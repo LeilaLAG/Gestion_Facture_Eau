@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../style/signUp.css";
+import "../style/login.css";
 import "../style/customCompStyle.css";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -89,11 +89,11 @@ export default function SignUp() {
           await axios.post(
             `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/addCompany`,
             { companyName: company }
-          )
+          );
 
           toast.success("Votre profile a été creer");
           setTimeout(() => {
-            window.location.reload()
+            window.location.reload();
           }, 1000);
         })
         .catch((err) => {
@@ -111,100 +111,91 @@ export default function SignUp() {
         <div>
           <img src="Assets/loginImg.jpg" alt="" />
         </div>
-        <div className="LoginFrom shadow">
+        <form
+          method="POST"
+          onSubmit={(e) => {
+            handleSubmitAdmin(e);
+          }}
+          className="LoginFrom shadow"
+        >
           <div>
-            <div className="centerDiv mb-5">
-              <img src="Assets/waterLogo.png" alt="logo" width={40} />
-              <div className="d-flex flex-column">
-                <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>
-                  G-F-E
-                </h1>
-                <span style={{ fontSize: "12px" }}>
-                  Gestion des Facture d'Eau
-                </span>
+            <div>
+              <div className="centerDiv mb-5">
+                <img src="/Assets/aquamanage.svg" alt="logo" width={150} />
               </div>
+              <h2 className="mb-3 text-center">Creer profile Admin</h2>
             </div>
-            <h2 className="mb-3 text-center">Creer profile Admin</h2>
-            <form
-              method="POST"
-              onSubmit={(e) => {
-                handleSubmitAdmin(e);
-              }}
+            <div className="LoginPasswordInput">
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                placeholder="Saisir l'adresse email"
+                onChange={(e) => {
+                  handleChangeAdminInfo(e);
+                }}
+              />
+            </div>
+            <div className="LoginPasswordInput">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                className="form-control mt-3"
+                placeholder="Saisir le mot de passe"
+                onChange={(e) => {
+                  handleChangeAdminInfo(e);
+                }}
+              />
+              <img
+                src="Assets/show.png"
+                alt="show"
+                width={20}
+                className="showPasswordIcon"
+                style={{ bottom: "20%" }}
+                onClick={() => setShowPassword((prev) => !prev)}
+              />
+            </div>
+            <div className="LoginPasswordInput">
+              <input
+                type="text"
+                name="fullName"
+                className="form-control mt-3"
+                placeholder="Saisir le nom complet"
+                onChange={(e) => {
+                  handleChangeAdminInfo(e);
+                }}
+              />
+            </div>
+            <div className="LoginPasswordInput">
+              <input
+                type="text"
+                name="role"
+                className="form-control mt-3"
+                placeholder="Saisir le role"
+                onChange={(e) => {
+                  handleChangeAdminInfo(e);
+                }}
+              />
+            </div>
+            <div className="LoginPasswordInput">
+              <input
+                type="text"
+                name="company"
+                className="form-control mt-3"
+                placeholder="Saisir le nom de société"
+                onChange={(e) => {
+                  setCompany(e.target.value);
+                }}
+              />
+            </div>
+            <button
+              className="btn btn-primary w-100 mt-3 fw-bold"
+              disabled={isDisabled}
             >
-              <div>
-                <div className="LoginPasswordInput">
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Saisir l'adresse email"
-                    onChange={(e) => {
-                      handleChangeAdminInfo(e);
-                    }}
-                  />
-                </div>
-                <div className="LoginPasswordInput">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="form-control mt-3"
-                    placeholder="Saisir le mot de passe"
-                    onChange={(e) => {
-                      handleChangeAdminInfo(e);
-                    }}
-                  />
-                  <img
-                    src="Assets/show.png"
-                    alt="show"
-                    width={20}
-                    className="showPasswordIcon"
-                    style={{ bottom: "20%" }}
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  />
-                </div>
-                <div className="LoginPasswordInput">
-                  <input
-                    type="text"
-                    name="fullName"
-                    className="form-control mt-3"
-                    placeholder="Saisir le nom complet"
-                    onChange={(e) => {
-                      handleChangeAdminInfo(e);
-                    }}
-                  />
-                </div>
-                <div className="LoginPasswordInput">
-                  <input
-                    type="text"
-                    name="role"
-                    className="form-control mt-3"
-                    placeholder="Saisir le role"
-                    onChange={(e) => {
-                      handleChangeAdminInfo(e);
-                    }}
-                  />
-                </div>
-                <div className="LoginPasswordInput">
-                  <input
-                    type="text"
-                    name="company"
-                    className="form-control mt-3"
-                    placeholder="Saisir le nom de société"
-                    onChange={(e) => {
-                      setCompany(e.target.value);
-                    }}
-                  />
-                </div>
-                <button
-                  className="btn btn-primary w-100 mt-3 fw-bold"
-                  disabled={isDisabled}
-                >
-                  {signupLoading ? <ActionLoading /> : "Crerer"}
-                </button>
-              </div>
-            </form>
+              {signupLoading ? <ActionLoading /> : "Crerer"}
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

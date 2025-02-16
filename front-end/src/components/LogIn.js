@@ -63,11 +63,7 @@ export default function LogIn() {
         >
           <div>
             <div className="centerDiv mb-5">
-              <img src="Assets/waterLogo.png" alt="logo" width={40}/>
-              <div className="d-flex flex-column">
-                <h1 className="fw-bold m-0" style={{ fontSize: "30px" }}>G-F-E</h1>
-                <span style={{fontSize : "12px"}}>Gestion des Facture d'Eau</span>
-              </div>
+              <img src="/Assets/aquamanage.svg" alt="logo" width={150}/>
             </div>
             <h1 className="mb-5 text-center">Authentifier</h1>
             <input

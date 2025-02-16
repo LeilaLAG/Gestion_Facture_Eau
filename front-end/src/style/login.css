@@ -30,3 +30,23 @@
     cursor: pointer;
     opacity: .7;
 }
+
+@media screen and (max-width : 1100px) {
+    .LoginFormCOntainer>div{
+        display: none;
+    }
+    .LoginFrom {
+        width: 80% !important;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none !important;
+    }
+    .LoginFrom>div {
+        width: 80% !important;
+    }
+}
+@media screen and (max-width : 700px) {
+    .LoginFrom , .LoginFrom>div{
+        width: 100% !important;
+    }
+}

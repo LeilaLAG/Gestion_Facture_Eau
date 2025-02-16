@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import "../style/signUp.css";
-import "../style/customCompStyle.css";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import ActionLoading from "../costumComponents/ActionLoading";
@@ -93,11 +91,11 @@ export default function AddEmployee() {
       <Toaster position="top-right" />
       <Menu />
       <Main>
-        <div className="centerDiv h-100">
+        <div className="centerDiv h-100 ">
           <form
             method="post"
             onSubmit={(e) => handleSubmitEmployeeEmployer(e)}
-            className="shadow p-5 pt-4 pb-4 rounded w-50"
+            className="shadow p-5 pt-4 pb-4 rounded AddModForms"
             style={{ position: "relative" }}
           >
             <div
@@ -164,14 +162,14 @@ export default function AddEmployee() {
                 }}
               />
             </div>
-            <div className="mt-4 d-flex justify-content-around w-100">
+            <div className="mt-4 d-flex gap-3">
               <button
-                className="btn btn-warning w-25 fw-bold"
+                className="btn btn-warning fw-bold"
                 disabled={isDisabled}
               >
                 {signupLoading ? <ActionLoading /> : "Créer"}
               </button>
-              <a href="/employees" className="btn btn-danger w-25 fw-bold">
+              <a href="/employees" className="btn btn-danger fw-bold">
                 Retour
               </a>
             </div>

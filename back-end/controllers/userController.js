@@ -246,7 +246,6 @@ const resetPassword = async (req, res) => {
           <div class="container">
               <!-- Header Section -->
               <div class="header">
-                  <img src="https://chronoflare.com/Assets/logo.png" alt="Company Logo">
                   <h1>Reinitialiser votre mot de passe</h1>
               </div>
 
@@ -273,7 +272,7 @@ const resetPassword = async (req, res) => {
 
     // Mail options
     const mailOptions = {
-      from: '"GFE Support" <no-reply@chronoflare.com>', // Sender name and email
+      from: '"Aqua Manage Support" <anas@m5tech.ma>', // Sender name and email
       to: email, // Recipient email
       subject: "RECUPERATION DE MOT DE PASSE",
       html: emailBody, // HTML body
