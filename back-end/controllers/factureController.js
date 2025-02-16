@@ -1,6 +1,7 @@
 const Facture = require("../models/Facture");
 const Compteur = require("../models/Compteur");
 const Client = require("../models/Client");
+const Tranche = require("../models/Tranche");
 
 const getFactures = async (req, res) => {
   try {
@@ -53,6 +54,7 @@ const createFacture = async (req, res) => {
     const lastFacture = await Facture.findOne({companyId , numCompteur , numClient}).sort({ dateFacture:-1 })
     let lastCompteurPrelevement = 0
     let total = 0
+    let consomation = 0
 
     if(!lastFacture){
       const CompteurStartPoint = await Compteur.findOne({companyId , numCompteur})
@@ -72,8 +74,63 @@ const createFacture = async (req, res) => {
         await Compteur.findOneAndUpdate({numCompteur} , {startPoint : parseFloat(valeurCompteurPreleve)})
       }
     }
-    
-    total = (valeurCompteurPreleve - lastCompteurPrelevement)*12 //12 is just an example until we work on tranche
+
+    const trancheActive = await Tranche.findOne({companyId , isActive : true})
+
+    if(!trancheActive) {
+      return res.status(200).json({ activeTranche : "If faut activer une tranche pour calculer le totale facture"});
+    }
+
+    consomation = (valeurCompteurPreleve - lastCompteurPrelevement)
+
+    const tranches = await Tranche.find({companyId , created_at : {$lte : trancheActive.created_at}})
+
+    // tranches.map(tranche=>{
+    //   total = (consomation-tranche.maxTonnage)*tranche.prix
+    // })
+
+    if(tranches.length === 1){
+      total = consomation * tranches[0].prix
+    }
+    else if(tranches.length === 2){
+      if(consomation <= tranches[0].maxTonnage){
+        total = consomation * tranches[0].prix
+      }
+      else{
+        total = (tranches[0].maxTonnage * tranches[0].prix) + (consomation-tranches[0].maxTonnage) * tranches[1].prix
+      }
+    }
+    else if(tranches.length === 3){
+      if(consomation <= tranches[0].maxTonnage){
+        total = consomation * tranches[0].prix
+      }
+      else{
+        total = tranches[0].maxTonnage * tranches[0].prix
+        if((consomation-tranches[0].maxTonnage) <= tranches[1].maxTonnage){
+          total += (consomation-tranches[0].maxTonnage) * tranches[1].prix
+        }
+        else{
+          total += (tranches[1].maxTonnage * tranches[1].prix) + (consomation-(tranches[0].maxTonnage+tranches[1].maxTonnage)) * tranches[2].prix
+        }
+      }
+    }
+    // else if(tranches.length === 4){
+    //   if(consomation <= tranches[0].maxTonnage){
+    //     total = consomation * tranches[0].prix
+    //   }
+    //   else{
+    //     total = tranches[0].maxTonnage * tranches[0].prix
+    //     if((consomation-tranches[0].maxTonnage) <= tranches[1].maxTonnage){
+    //       total += (consomation-tranches[0].maxTonnage) * tranches[1].prix
+    //     }
+    //     else if((consomation-tranches[1].maxTonnage) <= tranches[2].maxTonnage){
+    //       total += (tranches[1].maxTonnage * tranches[1].prix) + (consomation-(tranches[0].maxTonnage+tranches[1].maxTonnage)) * tranches[2].prix
+    //     }
+    //     else {
+    //       total += (tranches[2].maxTonnage * tranches[3].prix) + (consomation-tranches[3].maxTonnage) * tranches[3].prix
+    //     }
+    //   }
+    // }    
 
     const addedFacture = await Facture.create({
       ...req.body,
@@ -89,19 +146,12 @@ const createFacture = async (req, res) => {
 const updateFacture = async (req, res) => {
   const { factureId } = req.params;
 
-  const {valeurCompteurPreleve , companyId , numCompteur , numClient , totalFacture , painementStatus , datePainement} = req.body;
-
-  let total = 0
-  const lastFacture = await Facture.findOne({companyId , numCompteur , numClient}).sort({ dateFacture:-1 })
-  let lastCompteurPrelevement = lastFacture.valeurCompteurPreleve
-  
-  total = (valeurCompteurPreleve - lastCompteurPrelevement)*12 //12 is just an example until we work on tranche
+  const {painementStatus , datePainement} = req.body;
 
   try {
     const factureToUpdate = await Facture.findOneAndUpdate(
       { _id: factureId },
       {...req.body , 
-        totalFacture : totalFacture + total,
         datePainement : painementStatus === "Non payée" ? null : datePainement
       }
     );

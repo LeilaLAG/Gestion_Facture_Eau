@@ -11,6 +11,11 @@ import Tooltip from "./Tooltip";
 
 export default function Tranches() {
   let tranchesData = GetTranches();
+  const DateConfig = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
 
   // To enable realtime deletion simulating websockets
   const [tranches, setTranches] = useState([]);
@@ -61,7 +66,7 @@ export default function Tranches() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="Assets/activate.gif" alt="delete" width="50" />`,
       text: `Etes vous sure d'activer ${activitedTranche.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#cfcf2e",
@@ -101,31 +106,6 @@ export default function Tranches() {
           </div>
         ) : (
           <div className="pb-2">
-            {/* <article
-              style={{ position: "sticky", top: "0%" }}
-              className="pt-2 pb-2 bg-white accordion"
-              id="accordionExample"
-            >
-              <div className="d-flex align-items-center gap-4 pt-2 pb-0">
-                <div className="d-flex align-items-center gap-2">
-                  <span className="fw-bold">Nombre totale des tranches :</span>
-                  <img
-                    src="/Assets/tranche.png"
-                    alt="tranche count"
-                    width={20}
-                    title="Nombre totale des tranches"
-                  />
-                  <span className="fw-bold">{tranches.length}</span>
-                </div>
-                <a
-                  href="/tranches/add-tranche"
-                  className="btn btn-success pt-1 pb-1 p-3 fw-bold"
-                  style={{ fontSize: "13px" }}
-                >
-                  Ajouter une nouvelle tranche
-                </a>
-              </div>
-            </article> */}
             <table
               className="table table-bordered text-center w-100 mb-1"
               style={{ verticalAlign: "middle" }}
@@ -134,8 +114,9 @@ export default function Tranches() {
                 <tr>
                   <th>N°</th>
                   <th>Nom tranche</th>
-                  <th>Prix</th>
-                  <th>Tonnage Maximal</th>
+                  <th>Prix en Dh</th>
+                  <th>Tonnage en m³</th>
+                  <th>Date création</th>
                   <th>Active</th>
                   <th colSpan={3}>Actions</th>
                 </tr>
@@ -169,15 +150,26 @@ export default function Tranches() {
                       </tr>
                     ) : (
                       <tr key={i}>
-                        <td>{tranche._id}</td>
+                        <td title={tranche._id}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "70px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {tranche._id}
+                          </span>
+                        </td>
                         <td>{tranche.nameTranche}</td>
-                        <td>{tranche.prix}</td>
-                        <td>{tranche.maxTonnage}</td>
+                        <td>{tranche.prix} Dh</td>
+                        <td>{i-1 < 0 ? 0 : tranches[i-1].maxTonnage }m³ à {tranche.maxTonnage}m³</td>
+                        <td>{new Date(tranche.created_at).toLocaleDateString('eu' , {...DateConfig , hour : '2-digit' , minute : "2-digit"})}</td>
                         <td>
-                          {tranche.isActive ? (
+                          {tranche.isActive && (
                             <img src="Assets/check.png" alt="Yes" width={20} />
-                          ) : (
-                            <img src="Assets/cancel.png" alt="No" width={20} />
                           )}
                         </td>
                         <td>
@@ -222,7 +214,7 @@ export default function Tranches() {
                 )}
               </tbody>
             </table>
-            {tranches.length < 4 && (
+            {tranches.length < 3 && (
               <div
                 className="centerDiv p-2 rounded"
                 colSpan={8}
@@ -231,8 +223,6 @@ export default function Tranches() {
                   backgroundColor: "#f7f7f7",
                 }}
               >
-                {/* <div className="text-center">
-                </div> */}
                 <a
                   href="/tranches/add-tranche"
                   className="centerDiv gap-2 fs-5 text-success"
@@ -245,7 +235,7 @@ export default function Tranches() {
                     <span>Ajouter une nouvelle tranche</span>
                     <Tooltip
                       text={`${
-                        4 - tranches.length
+                        3 - tranches.length
                       } tranche(s) restant possible de creer`}
                     >
                       <i class="bi bi-info-circle"></i>

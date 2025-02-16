@@ -199,8 +199,6 @@ export default function Employees() {
                             <td>
                               <div
                                 className="border border-1 centerDiv gap-2 bg-body-secondary"
-                                style={{ cursor: "help" }}
-                                // title="Gérer l'accée aux rubriques pour les employers"
                               >
                                 Accée
                                 <Tooltip text="Gérer l'accée aux rubriques pour les employers">
@@ -209,11 +207,9 @@ export default function Employees() {
                               </div>
                               <div
                                 className="border border-1 centerDiv gap-3 mt-2 bg-light"
-                                style={{ cursor: "help" }}
-                                // title="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers"
                               >
                                   operations
-                                  <Tooltip text="Gérer l'accée aux operations (ajout , modification , suppresion) pour les employers">
+                                  <Tooltip text="Gérer l'accée aux operations ( ajout, modification, suppresion ) pour les employers">
                                     <i class="bi bi-bezier"></i>
                                   </Tooltip>
                               </div>
@@ -411,70 +407,6 @@ export default function Employees() {
                                 </div>
                               </div>
                             </td>
-                            {/* <td>
-                              <div className="border border-1 bg-body-secondary">
-                                <input
-                                  type="checkbox"
-                                  name="tranches"
-                                  checked={privilegesCheck[i].tranches}
-                                  value={"tranches"}
-                                  onChange={(e) => handleChangePrivileges(e, i)}
-                                />
-                              </div>
-                              <div className="border border-1 centerDiv gap-3 mt-2 bg-light">
-                                <div>
-                                  <input
-                                    type="checkbox"
-                                    name="add-tranches"
-                                    value="add"
-                                    checked={crudAccessCheck[i].tranches.add}
-                                    onChange={(e) =>
-                                      handleChangeCrudAccess(e, i, "tranches")
-                                    }
-                                  />
-                                  <div>
-                                    <i
-                                      class="bi bi-plus-circle"
-                                      title="Ajout"
-                                    ></i>
-                                  </div>
-                                </div>
-                                <div>
-                                  <input
-                                    type="checkbox"
-                                    name="mod-tranches"
-                                    value="mod"
-                                    checked={crudAccessCheck[i].tranches.mod}
-                                    onChange={(e) =>
-                                      handleChangeCrudAccess(e, i, "tranches")
-                                    }
-                                  />
-                                  <div>
-                                    <i
-                                      class="bi bi-pen"
-                                      title="Modification"
-                                    ></i>
-                                  </div>
-                                </div>
-                                <div>
-                                  <input
-                                    type="checkbox"
-                                    name="dlt-tranches"
-                                    value="dlt"
-                                    checked={crudAccessCheck[i].tranches.dlt}
-                                    onChange={(e) =>
-                                      handleChangeCrudAccess(e, i, "tranches")
-                                    }
-                                  />
-                                  <div>
-                                    <i
-                                      className="bi bi-trash3-fill"
-                                      title="Suppression"
-                                    ></i>
-                                  </div>
-                                </div>
-                              </div>
-                            </td> */}
                             <td>
                               <form
                                 method="put"

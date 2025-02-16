@@ -198,16 +198,8 @@ export default function ModForm({ page }) {
       if (dataToMod.nameTranche === "") {
         toast.error("saisir le nom du tranche");
         return false;
-      } else if (dataToMod.prix === "") {
-        toast.error("Saisir le prix du tranche");
-        return false;
-      } else if (isNaN(dataToMod.prix)) {
-        toast.error("le prix doit etre un nombre");
-        return false;
-      } else if (dataToMod.maxTonnage === 0) {
-        toast.error("Saisir le tonnage maximal du tranche");
-        return false;
-      } else {
+      } 
+      else {
         return true;
       }
     }
@@ -238,6 +230,11 @@ export default function ModForm({ page }) {
         .then((res) => {
           if (page === "client" && res.data.isClientexisting) {
             toast.error("Cette CIN exist deja!");
+            setLoading(false);
+            return;
+          }
+          else if (page === "tranche" && res.data.errorMsg) {
+            toast.error(res.data.errorMsg);
             setLoading(false);
             return;
           }

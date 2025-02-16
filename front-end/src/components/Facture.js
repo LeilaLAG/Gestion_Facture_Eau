@@ -243,7 +243,7 @@ export default function Facture() {
                     className="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body p-2">
+                    <div className="accordion-body p-2 "  style={{overflowX : "scroll"}}>
                       <form
                         onSubmit={function (e) {
                           filterFacture(e);
@@ -251,14 +251,6 @@ export default function Facture() {
                         className="d-flex align-items-center gap-3"
                       >
                         <label className="fw-bold">Filtrer par:</label>
-                        {/* <input
-                          type="text"
-                          placeholder="Année des factures"
-                          onChange={(e) =>
-                            setFilterByDateFacture(e.target.value)
-                          }
-                          className="form-control pb-1 pt-1 w-25"
-                        /> */}
                         <select
                           className="form-control pb-1 pt-1 w-25"
                           onChange={(e) =>
@@ -380,7 +372,7 @@ export default function Facture() {
                                   >
                                     {fact.painementStatus}
                                   </td>
-                                  <td>{fact.totalFacture}</td>
+                                  <td>{fact.totalFacture} Dh</td>
                                   <td>
                                     {new Date(
                                       fact.dateGenerationFacture

@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const TrancheSchema = new mongoose.Schema({
-  // numTranche : {
-  //     type : Number,
-  //     required : true,
-  // },
   nameTranche: {
     type: String,
     required: true,
@@ -20,6 +16,10 @@ const TrancheSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: false,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
   },
   companyId: {
     type: String,

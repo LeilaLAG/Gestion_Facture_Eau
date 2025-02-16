@@ -20,7 +20,7 @@ export default function ModTranche({ onChangeModInfo, dataToMod }) {
           type="text"
           name="prix"
           className="form-control"
-          placeholder="Saisir le prix"
+          placeholder="Saisir le prix en Dh"
           value={dataToMod.prix}
           onChange={onChangeModInfo}
         />
@@ -31,6 +31,7 @@ export default function ModTranche({ onChangeModInfo, dataToMod }) {
           type="number"
           name="maxTonnage"
           className="form-control"
+          placeholder="Saisir le tonnage maxiamle en m³"
           value={dataToMod.maxTonnage}
           onChange={onChangeModInfo}
         />

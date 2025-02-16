@@ -224,6 +224,16 @@ export default function AddForm({ page }) {
             });
             return;
           }
+          else if(page === "facture" && res.data.activeTranche){
+            toast.error(`${res.data.activeTranche}!`);
+            setLoading(false);
+            return;
+          }
+          else if(page === "tranche" && res.data.errorMsg){
+            toast.error(`${res.data.errorMsg}!`);
+            setLoading(false);
+            return;
+          }
 
           toast.success(`${page} a été ajouter avec succée`);
           setLoading(false);

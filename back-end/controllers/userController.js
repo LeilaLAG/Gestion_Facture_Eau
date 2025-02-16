@@ -181,25 +181,95 @@ const resetPassword = async (req, res) => {
 
     // HTML email body
     const emailBody = `
-            <p>Votre code vérification est: <strong>${verification_code}</strong></p>
-            <div style="font-weight:900; color:#fdd85a; -webkit-text-stroke: 2px black;">
-            </div>
-            <br>
-            <h2 style="color:#fdd85a;">------------------------------------------</h2>
-            <br>
-            <div style="font-family: Arial, sans-serif; color: #333;">
-                <img src="/Assets/logo.png" width="50">
-                <h4 style="margin-top:5px; margin-bottom:5px; font-size: 12px; color:rgb(55, 122, 231);">
-                    <span style="padding:5px; background-color:#463300; border-top-left-radius:10px; border-bottom-right-radius:10px;">No-Reply</span>
-                </h4>
-                <p style="margin: 0; font-size: 10px;">
-                    <a href="mailto:support@chronoflare.com" style="font-size: 10px; text-decoration: none; color: #333; font-weight: bold;">support@chronoflare.com</a><br>
-                    <span style="font-size: 10px;">+212 645-350405 | +212 524-012688</span><br>
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Verification Code</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  margin: 0;
+                  padding: 0;
+              }
+              .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  background: #ffffff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+              }
+              .header {
+                  text-align: center;
+                  padding-bottom: 20px;
+                  border-bottom: 2px solid #fdd85a;
+              }
+              .header img {
+                  max-width: 120px;
+              }
+              .header h2 {
+                  color: #463300;
+                  margin: 10px 0;
+              }
+              .content {
+                  text-align: center;
+                  padding: 20px 0;
+              }
+              .code {
+                  font-size: 22px;
+                  font-weight: bold;
+                  color: #fdd85a;
+                  padding: 10px;
+                  background: #333;
+                  display: inline-block;
+                  border-radius: 5px;
+                  margin: 10px 0;
+              }
+              .footer {
+                  text-align: center;
+                  font-size: 12px;
+                  color: #555;
+                  padding-top: 20px;
+                  border-top: 1px solid #ddd;
+              }
+              .footer a {
+                  color: #463300;
+                  text-decoration: none;
+                  font-weight: bold;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <!-- Header Section -->
+              <div class="header">
+                  <img src="https://chronoflare.com/Assets/logo.png" alt="Company Logo">
+                  <h1>Reinitialiser votre mot de passe</h1>
+              </div>
 
-                    <a href="https://chronoflare.com" style="color: #463300; text-decoration: none;">chronoflare.com</a>
-                </p>
-            </div>
-        `;
+              <!-- Email Content -->
+              <div class="content">
+                  <p>Bonjour,</p>
+                  <p>Votre code de verification est:</p>
+                  <div class="code">${verification_code}</div>
+                  <p>Veuillez saisir ce code dans le formulaire de verification.</p>
+                  <p>Si vous ne demandez pas la reinitialiser de votre mot de passe ignorez cet Email.</p>
+              </div>
+
+              <!-- Footer Section -->
+              <div class="footer">
+                  <p>Pour plus d'information Contactez-nous:</p>
+                  <p>
+                      <a href="mailto:support@chronoflare.com">support@chronoflare.com</a>
+                  </p>
+                  <p>&copy; 2025. Tous les droits sont réservés.</p>
+              </div>
+          </div>
+      </body>
+      </html>`.replace("${verification_code}", verification_code);
 
     // Mail options
     const mailOptions = {

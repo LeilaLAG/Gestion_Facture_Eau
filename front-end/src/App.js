@@ -176,15 +176,8 @@ function App() {
               <ModForm page={"tranche"} />
             </ProtectedRoute>
           }
-          />
-            <Route
-          path="/"
-          element={
-            <Accueil/>
-            
-            
-          }
         />
+        <Route path="/" element={<Accueil />} />
       </Routes>
     </div>
   );

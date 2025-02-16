@@ -31,7 +31,7 @@ const FactureSchema = new mongoose.Schema({
     },
     dateGenerationFacture : {
         type : Date,
-        default : new Date(),
+        default : Date.now,
     },
     companyId : {
         type : String,

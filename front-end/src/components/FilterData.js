@@ -19,7 +19,7 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
         className="accordion-collapse collapse show"
         data-bs-parent="#accordionExample"
       >
-        <div className="accordion-body p-2 mt-2 mb-2">
+        <div className="accordion-body p-2 mt-2" style={{overflowX : "scroll"}}>
           <div className="">
             <form
               className="d-flex align-items-center gap-3"
@@ -84,6 +84,13 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
                     onChange={onChangeFilter}
                   />
                 </div>
+                <button
+                  className="btn btn-danger p-3 pb-1 pt-1 fw-bold"
+                  style={{ fontSize: "15px" }}
+                  onClick={()=>window.location.reload()}
+                >
+                  Initialiser
+                </button>
               </form>
             )}
           </div>

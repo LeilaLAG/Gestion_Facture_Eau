@@ -25,7 +25,9 @@ export default function Home() {
                 !user.privileges.factures ? (
                   <div className="centerDiv">
                     <ErrorMsg
-                      msg={"Vous n'avez aucun privillege, contactez votre Admin"}
+                      msg={
+                        "Vous n'avez aucun privillege, contactez votre Admin"
+                      }
                       errorIconWidth={20}
                       coleur={"red"}
                       boldness="bold"
@@ -42,27 +44,27 @@ export default function Home() {
                           style={{ textDecoration: "none" }}
                         >
                           clients
-                          <div className="centerDiv gap-2">
-                            {user.crudAccess.clients.add && (
-                              <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i class="bi bi-plus-circle" title="Ajout"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.clients.mod && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i class="bi bi-pen" title="Modification"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.clients.dlt && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i
-                                  className="bi bi-trash3-fill"
-                                  title="Suppression"
-                                ></i>
-                              </div>
-                            )}
-                          </div>
                         </a>
+                        <div className="centerDiv gap-2 mt-1">
+                          {user.crudAccess.clients.add && (
+                            <div className="btn btn-success p-2 pb-0 pt-0">
+                              <i class="bi bi-plus-circle" title="Ajout"></i>
+                            </div>
+                          )}
+                          {user.crudAccess.clients.mod && (
+                            <div className="btn btn-primary p-2 pb-0 pt-0">
+                              <i class="bi bi-pen" title="Modification"></i>
+                            </div>
+                          )}
+                          {user.crudAccess.clients.dlt && (
+                            <div className="btn btn-primary p-2 pb-0 pt-0">
+                              <i
+                                className="bi bi-trash3-fill"
+                                title="Suppression"
+                              ></i>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
                     {user.privileges.compteurs && (
@@ -74,7 +76,7 @@ export default function Home() {
                         >
                           compteurs
                         </a>
-                        <div className="centerDiv gap-2">
+                        <div className="centerDiv gap-2 mt-1">
                           {user.crudAccess.compteurs.add && (
                             <div className="btn btn-success p-2 pb-0 pt-0">
                               <i class="bi bi-plus-circle" title="Ajout"></i>
@@ -105,7 +107,7 @@ export default function Home() {
                         >
                           factures
                         </a>
-                        <div className="centerDiv gap-2">
+                        <div className="centerDiv gap-2 mt-1">
                           {user.crudAccess.factures.add && (
                             <div className="btn btn-success p-2 pb-0 pt-0">
                               <i class="bi bi-plus-circle" title="Ajout"></i>

@@ -7,12 +7,12 @@ const Tooltip = ({ text, children }) => {
   return (
     <div className="position-relative d-inline-block">
         {visible && (
-        <div style={{whiteSpace:"nowrap" , fontSize : "13px"}} className="position-absolute start-50 translate-middle-x bottom-100 mb-1 bg-dark text-white text-sm px-3 py-1 rounded shadow-lg fade show">
+        <div style={{fontSize : "13px" , whiteSpace : "nowrap"}} className="position-absolute start-50 translate-middle-x bottom-100 mb-1 bg-dark text-white text-sm px-3 py-1 rounded shadow-lg fade show">
           {text}
         </div>
       )}
       <div
-        className="cursor-pointer"
+        style={{cursor : 'pointer'}}
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
       >

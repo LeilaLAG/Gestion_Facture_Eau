@@ -27,7 +27,7 @@ const ClientSchema = new mongoose.Schema({
     },
     dateRegisterClient : {
         type : Date,
-        default : new Date(),
+        default : Date.now,
     },
     companyId : {
         type : String,

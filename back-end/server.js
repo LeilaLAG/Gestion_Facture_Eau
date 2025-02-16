@@ -48,6 +48,7 @@ const {
 const {
   getTranches,
   getOneTranche,
+  getActiveTranche,
   createTranche,
   deleteTranche,
   updateTranche,
@@ -141,6 +142,7 @@ app.delete("/api/deleteFacture/:factureId", deleteFacture);
 // Tranche
 app.get("/api/tranches/:companyId", getTranches);
 app.get("/api/tranches/:trancheId/:companyId", getOneTranche);
+app.get("/api/activeTranche/:companyId", getActiveTranche);
 app.post("/api/addTranche", createTranche);
 app.put("/api/updateTranche/:trancheId", updateTranche);
 app.delete("/api/deleteTranche/:trancheId", deleteTranche);

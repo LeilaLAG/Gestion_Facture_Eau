@@ -19,7 +19,7 @@ export default function AddTranche({ onChangeInfo }) {
           type="text"
           name="prix"
           className="form-control"
-          placeholder="Saisir le prix"
+          placeholder="Saisir le prix en Dh"
           onChange={onChangeInfo}
         />
       </div>
@@ -28,6 +28,7 @@ export default function AddTranche({ onChangeInfo }) {
         <input
           type="number"
           name="maxTonnage"
+          placeholder="Saisir le tonnage maxiamle en m³"
           className="form-control"
           onChange={onChangeInfo}
         />

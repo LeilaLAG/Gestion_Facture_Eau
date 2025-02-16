@@ -1,4 +1,6 @@
 const Client = require("../models/Client");
+const Compteur = require("../models/Compteur");
+const Facture = require("../models/Facture");
 
 const getClients = async (req, res) => {
   try {
@@ -73,6 +75,9 @@ const deleteClient = async (req, res) => {
     const { clientId } = req.params;
 
     const clientToDelete = await Client.findOneAndDelete({ _id: clientId });
+    await Compteur.deleteMany({ numClient: clientToDelete.numClient });
+    await Facture.deleteMany({ numClient: clientToDelete.numClient });
+
     return res.status(200).json({ clientToDelete });
   } catch (err) {
     return res.status(400).json({ error: "Server Error deletting client" });
