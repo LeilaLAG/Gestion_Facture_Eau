@@ -179,7 +179,7 @@ export default function Compteurs() {
                       className="accordion-collapse collapse show"
                       data-bs-parent="#accordionExample"
                     >
-                      <div className="accordion-body p-2" style={{overflowX : "scroll"}}>
+                      <div className="accordion-body p-2" style={{overflowX : "auto"}}>
                         <table
                           className="table table-bordered text-center w-100 mt-2 mb-0"
                           style={{ verticalAlign: "middle" }}

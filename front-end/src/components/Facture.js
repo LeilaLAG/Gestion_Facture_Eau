@@ -243,7 +243,7 @@ export default function Facture() {
                     className="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body p-2 "  style={{overflowX : "scroll"}}>
+                    <div className="accordion-body p-2 "  style={{overflowX : "auto"}}>
                       <form
                         onSubmit={function (e) {
                           filterFacture(e);

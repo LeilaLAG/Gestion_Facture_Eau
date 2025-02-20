@@ -105,14 +105,14 @@ export default function Tranches() {
             <Loading />
           </div>
         ) : (
-          <div className="pb-2">
+          <div className="pb-2" style={{overflowX : "auto"}}>
             <table
               className="table table-bordered text-center w-100 mb-1"
               style={{ verticalAlign: "middle" }}
             >
               <thead>
                 <tr>
-                  <th>N°</th>
+                  {/* <th>N°</th> */}
                   <th>Nom tranche</th>
                   <th>Prix en Dh</th>
                   <th>Tonnage en m³</th>
@@ -150,7 +150,7 @@ export default function Tranches() {
                       </tr>
                     ) : (
                       <tr key={i}>
-                        <td title={tranche._id}>
+                        {/* <td title={tranche._id}>
                           <span
                             style={{
                               display: "inline-block",
@@ -162,7 +162,7 @@ export default function Tranches() {
                           >
                             {tranche._id}
                           </span>
-                        </td>
+                        </td> */}
                         <td>{tranche.nameTranche}</td>
                         <td>{tranche.prix} Dh</td>
                         <td>{i-1 < 0 ? 0 : tranches[i-1].maxTonnage }m³ à {tranche.maxTonnage}m³</td>

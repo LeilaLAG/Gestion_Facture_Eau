@@ -19,7 +19,7 @@ export default function FilterData({ page, onChangeFilter, onSubmitFilter }) {
         className="accordion-collapse collapse show"
         data-bs-parent="#accordionExample"
       >
-        <div className="accordion-body p-2 mt-2" style={{overflowX : "scroll"}}>
+        <div className="accordion-body p-2 mt-2" style={{overflowX : "auto"}}>
           <div className="">
             <form
               className="d-flex align-items-center gap-3"

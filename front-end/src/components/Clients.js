@@ -143,7 +143,7 @@ export default function Clients() {
                     )}
               </div>
             </article>
-            <div className="col-12" style={{overflowX : "scroll"}}>
+            <div className="col-12" style={{overflowX : "auto"}}>
               <table
                 className="table table-bordered text-center w-100"
                 style={{ verticalAlign: "middle" }}
