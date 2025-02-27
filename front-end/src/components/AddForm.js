@@ -124,11 +124,11 @@ export default function AddForm({ page }) {
       } else if (
         new Date(dataToAdd.dateFacture).getFullYear() <
           new Date().getFullYear() ||
-        new Date(dataToAdd.dateFacture).getMonth() + 1 <
+        new Date(dataToAdd.dateFacture).getMonth() + 1 !==
           new Date().getMonth() + 1
       ) {
         toast.error(
-          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
+          `Saisir une date de ce mois ${
             new Date().getMonth() + 1
           }/${new Date().getFullYear()}`
         );
@@ -223,13 +223,11 @@ export default function AddForm({ page }) {
               }
             });
             return;
-          }
-          else if(page === "facture" && res.data.activeTranche){
+          } else if (page === "facture" && res.data.activeTranche) {
             toast.error(`${res.data.activeTranche}!`);
             setLoading(false);
             return;
-          }
-          else if(page === "tranche" && res.data.errorMsg){
+          } else if (page === "tranche" && res.data.errorMsg) {
             toast.error(`${res.data.errorMsg}!`);
             setLoading(false);
             return;
@@ -293,10 +291,7 @@ export default function AddForm({ page }) {
               <AddTranche onChangeInfo={(e) => handleAddInfo(e)} />
             )}
             <div className="mt-4 d-flex gap-3">
-              <button
-                className="btn btn-success fw-bold"
-                disabled={loading}
-              >
+              <button className="btn btn-success fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Ajouter"}
               </button>
               <a href={`/${page}s`} className="btn btn-danger fw-bold">

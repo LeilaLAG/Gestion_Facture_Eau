@@ -342,59 +342,27 @@ export default function Menu() {
         </div>
       ) : (
         <nav className="shrinkNavLinks mt-5">
-          <img src="/Assets/aquamanageicon.png" className="mb-3" alt="aquamanageicon" width={30} />
+          {/* <img
+            src="/Assets/aquamanageicon.png"
+            className="mb-3"
+            alt="aquamanageicon"
+            width={30}
+          /> */}
           {user.function === "Admin" && (
             <ul>
-              <li
-                className={currentUrl.pathname === "/home" ? "activeLink" : ""}
-              >
-                <a href="/home">
-                  <img src="/Assets/accueil.png" alt="homr" width={20} />
-                </a>
-              </li>
-              <li
-                className={
-                  currentUrl.pathname === "/clients" ? "activeLink" : ""
-                }
-              >
-                <a href="/clients">
-                  <img src="/Assets/clients.png" alt="clients" width={20} />
-                </a>
-              </li>
-              <li
-                className={
-                  currentUrl.pathname === "/compteurs" ? "activeLink" : ""
-                }
-              >
-                <a href="/compteurs">
-                  <img src="/Assets/counter.png" alt="compteur" width={20} />
-                </a>
-              </li>
-              <li
-                className={
-                  currentUrl.pathname === "/factures" ? "activeLink" : ""
-                }
-              >
-                <a href="/factures">
-                  <img src="/Assets/bill.png" alt="facture" width={20} />
-                </a>
-              </li>
-
-              <li
-                className={
-                  currentUrl.pathname === "/caisse" ? "activeLink" : ""
-                }
-              >
-                <a href="/caisse">
-                  <img src="/Assets/money.png" alt="money" width={20} />
-                </a>
-              </li>
-            </ul>
-          )}
-
-          {user.function === "Employer" && (
-            <ul>
-              {user.privileges.clients && (
+              <div>
+                <li
+                  className={
+                    currentUrl.pathname === "/home" ? "activeLink" : ""
+                  }
+                >
+                  <a href="/home">
+                    <img src="/Assets/accueil.png" alt="homr" width={20} />
+                  </a>
+                </li>
+                <p>Accueil</p>
+              </div>
+              <div>
                 <li
                   className={
                     currentUrl.pathname === "/clients" ? "activeLink" : ""
@@ -404,9 +372,9 @@ export default function Menu() {
                     <img src="/Assets/clients.png" alt="clients" width={20} />
                   </a>
                 </li>
-              )}
-
-              {user.privileges.compteurs && (
+                <p>Clients</p>
+              </div>
+              <div>
                 <li
                   className={
                     currentUrl.pathname === "/compteurs" ? "activeLink" : ""
@@ -416,9 +384,9 @@ export default function Menu() {
                     <img src="/Assets/counter.png" alt="compteur" width={20} />
                   </a>
                 </li>
-              )}
-
-              {user.privileges.factures && (
+                <p>Compteurs</p>
+              </div>
+              <div>
                 <li
                   className={
                     currentUrl.pathname === "/factures" ? "activeLink" : ""
@@ -428,6 +396,84 @@ export default function Menu() {
                     <img src="/Assets/bill.png" alt="facture" width={20} />
                   </a>
                 </li>
+                <p>Factures</p>
+              </div>
+              <div>
+                <li
+                  className={
+                    currentUrl.pathname === "/caisse" ? "activeLink" : ""
+                  }
+                >
+                  <a href="/caisse">
+                    <img src="/Assets/money.png" alt="money" width={20} />
+                  </a>
+                </li>
+                <p>Caisse</p>
+              </div>
+            </ul>
+          )}
+
+          {user.function === "Employer" && (
+            <ul>
+              <div>
+                <li
+                  className={
+                    currentUrl.pathname === "/home" ? "activeLink" : ""
+                  }
+                >
+                  <a href="/home">
+                    <img src="/Assets/accueil.png" alt="homr" width={20} />
+                  </a>
+                </li>
+                <p>Accueil</p>
+              </div>
+              {user.privileges.clients && (
+                <div>
+                  <li
+                    className={
+                      currentUrl.pathname === "/clients" ? "activeLink" : ""
+                    }
+                  >
+                    <a href="/clients">
+                      <img src="/Assets/clients.png" alt="clients" width={20} />
+                    </a>
+                  </li>
+                  <p>Clients</p>
+                </div>
+              )}
+
+              {user.privileges.compteurs && (
+                <div>
+                  <li
+                    className={
+                      currentUrl.pathname === "/compteurs" ? "activeLink" : ""
+                    }
+                  >
+                    <a href="/compteurs">
+                      <img
+                        src="/Assets/counter.png"
+                        alt="compteur"
+                        width={20}
+                      />
+                    </a>
+                  </li>
+                  <p>Compteurs</p>
+                </div>
+              )}
+
+              {user.privileges.factures && (
+                <div>
+                  <li
+                    className={
+                      currentUrl.pathname === "/factures" ? "activeLink" : ""
+                    }
+                  >
+                    <a href="/factures">
+                      <img src="/Assets/bill.png" alt="facture" width={20} />
+                    </a>
+                  </li>
+                  <p>Factures</p>
+                </div>
               )}
 
               {/* {user.privileges.tranches && (
@@ -442,7 +488,7 @@ export default function Menu() {
               )} */}
             </ul>
           )}
-          <div className="dropdown" style={{ position: "absolute" }}>
+          <div className="dropdown">
             <button
               className="profileLogo centerDiv"
               data-bs-toggle="dropdown"
