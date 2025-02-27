@@ -23,7 +23,8 @@ function ModFacture({ onChangeModInfo, dataToMod }) {
           className="form-control"
           placeholder="Saisir la date de facture"
           value={convertDate(dataToMod.dateFacture)}
-          onChange={onChangeModInfo}
+          // onChange={onChangeModInfo}
+          readOnly
         />
       </div>
       {/* <div className="mb-3">

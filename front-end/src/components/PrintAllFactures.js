@@ -41,9 +41,9 @@ export default function PrintAllFactures() {
   }, [factureData, companyId]);
 
   return (
-    <div className="vh-100 m-3 d-flex justify-content-center">
+    <div className="vh-100 d-flex justify-content-center">
       <div className="">
-        <div className="noPrin centerDiv">
+        <div className="noPrin centerDiv mt-2">
           <button
             className="btn btn-dark p-4 pb-1 pt-1 fw-bold"
             onClick={() => window.print()}

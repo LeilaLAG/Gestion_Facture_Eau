@@ -46,7 +46,7 @@ export default function ModForm({ page }) {
     endPoint = "updateCompteur";
   } else if (page === "facture") {
     dataObject = {
-      dateFacture: "",
+      // dateFacture: "",
       datePainement: "",
       numCompteur: 0,
       valeurCompteurPreleve: 0,
@@ -171,18 +171,6 @@ export default function ModForm({ page }) {
     if (page === "facture") {
       if (dataToMod.dateFacture === "") {
         toast.error("choisir la date de facture");
-        return false;
-      } else if (
-        new Date(dataToMod.dateFacture).getFullYear() <
-          new Date().getFullYear() ||
-        new Date(dataToMod.dateFacture).getMonth() + 1 <
-          new Date().getMonth() + 1
-      ) {
-        toast.error(
-          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
-            new Date().getMonth() + 1
-          }/${new Date().getFullYear()}`
-        );
         return false;
       } else if (dataToMod.painementStatus === "") {
         toast.error("Saisir la situation du paiment");

@@ -122,18 +122,6 @@ export default function AddForm({ page }) {
         toast.error("Saisir la date de consomation");
         return false;
       }
-      // else if (
-      //   new Date(dataToAdd.dateFacture).getFullYear() <
-      //     new Date().getFullYear() ||
-      //   new Date(dataToAdd.dateFacture).getMonth() + 1 !==
-      //     new Date().getMonth() + 1
-      // ) {
-      //   toast.error(
-      //     `Saisir une date de ce mois ${
-      //       new Date().getMonth() + 1
-      //     }/${new Date().getFullYear()}`
-      //   );
-      //   return false;}
       else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
         return false;
