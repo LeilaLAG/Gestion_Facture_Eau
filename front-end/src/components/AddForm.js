@@ -121,19 +121,20 @@ export default function AddForm({ page }) {
       if (dataToAdd.dateFacture === "") {
         toast.error("Saisir la date de consomation");
         return false;
-      } else if (
-        new Date(dataToAdd.dateFacture).getFullYear() <
-          new Date().getFullYear() ||
-        new Date(dataToAdd.dateFacture).getMonth() + 1 !==
-          new Date().getMonth() + 1
-      ) {
-        toast.error(
-          `Saisir une date de ce mois ${
-            new Date().getMonth() + 1
-          }/${new Date().getFullYear()}`
-        );
-        return false;
-      } else if (dataToAdd.numCompteur === 0) {
+      }
+      // else if (
+      //   new Date(dataToAdd.dateFacture).getFullYear() <
+      //     new Date().getFullYear() ||
+      //   new Date(dataToAdd.dateFacture).getMonth() + 1 !==
+      //     new Date().getMonth() + 1
+      // ) {
+      //   toast.error(
+      //     `Saisir une date de ce mois ${
+      //       new Date().getMonth() + 1
+      //     }/${new Date().getFullYear()}`
+      //   );
+      //   return false;}
+      else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
         return false;
       } else {
@@ -227,6 +228,10 @@ export default function AddForm({ page }) {
             toast.error(`${res.data.activeTranche}!`);
             setLoading(false);
             return;
+          } else if (page === "facture" && res.data.invalidDateFacture) {
+            toast.error(`${res.data.invalidDateFacture}!`);
+            setLoading(false);
+            return;
           } else if (page === "tranche" && res.data.errorMsg) {
             toast.error(`${res.data.errorMsg}!`);
             setLoading(false);
@@ -239,7 +244,8 @@ export default function AddForm({ page }) {
         .catch((err) => {
           setLoading(false);
           console.log(err.response.data.error);
-          toast.error("Un problem est servenu lors de l'ajout!");
+          // toast.error("Un problem est servenu lors de l'ajout!");
+          console.log(err);
         });
     }
   }
