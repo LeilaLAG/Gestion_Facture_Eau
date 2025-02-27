@@ -24,7 +24,7 @@ export default function Facture() {
     month: new Date().getMonth() + 1,
   });
 
-  let factureData = GetFactures(filterParams.year, filterParams.month);
+  let factureData = GetFactures(filterParams.year, filterParams.month, "");
 
   const clientData = GetClients();
   const compteurData = GetCompteurs();
@@ -184,10 +184,19 @@ export default function Facture() {
                     title="Nombre total de factures"
                   />
                   <span className="fw-bold">{facture.length}</span>
-                  <span style={{fontSize : "13px"}}>{`( Données ${filterParams.month}/${filterParams.year} )`}</span>
+                  <span
+                    style={{ fontSize: "13px" }}
+                  >{`( Données ${filterParams.month}/${filterParams.year} )`}</span>
                 </div>
               </div>
             </article>
+            <a
+              className="btn btn-dark p-3 pt-1 pb-1 fw-bold mb-2 centerDiv"
+              href="/facture/print-all-factures"
+            >
+              <i className="bi bi-printer"></i>
+              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth() + "/" + new Date().getFullYear()}</span>
+            </a>
 
             {clients === "loading" ? (
               <Loading />
@@ -243,7 +252,10 @@ export default function Facture() {
                     className="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body p-2 "  style={{overflowX : "auto"}}>
+                    <div
+                      className="accordion-body p-2 "
+                      style={{ overflowX: "auto" }}
+                    >
                       <form
                         onSubmit={function (e) {
                           filterFacture(e);
@@ -341,7 +353,7 @@ export default function Facture() {
                                         display: "inline-block",
                                         width: "70px",
                                         overflow: "hidden",
-                                        whiteSpace:"nowrap",
+                                        whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
                                       }}
                                     >

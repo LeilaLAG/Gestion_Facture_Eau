@@ -19,6 +19,7 @@ import AddEmployee from "./components/AddEmployee";
 import PrintFacture from "./components/PrintFacture";
 import Tranches from "./components/Tranches";
 import Accueil from "./components/Accueil";
+import PrintAllFactures from "./components/PrintAllFactures";
 function App() {
   return (
     <div className="App">
@@ -148,6 +149,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PrintFacture />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/facture/print-all-factures"
+          element={
+            <ProtectedRoute>
+              <PrintAllFactures />
             </ProtectedRoute>
           }
         />

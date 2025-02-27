@@ -1,6 +1,6 @@
 .App {
   height: 100dvh;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0;
   padding: 0;
 }
@@ -80,7 +80,14 @@
   .noPrin {
     display: none;
   }
-  .billToPrint {
+  .billToPrint , .billsToPrint {
     width: 100% !important;
   }
+
+  .billsToPrint {
+    page-break-before: always; /* Start each bill on a new page */
+    break-before: page;
+    height: 70%;
+  }
+
 }

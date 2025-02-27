@@ -6,7 +6,7 @@ const Tranche = require("../models/Tranche");
 const getFactures = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const { year, month } = req.query;
+    const { year, month , printMonth } = req.query;
 
     const filter = { companyId };
 
@@ -19,6 +19,15 @@ const getFactures = async (req, res) => {
         $and: [
           { $eq: [{ $year: "$dateFacture" }, parseInt(year)] }, // Ensure year matches
           { $lte: [{ $month: "$dateFacture" }, parseInt(month)] } // Ensure month matches
+        ]
+      };
+    }
+    
+    if (printMonth) {
+      filter.$expr = {
+        $and: [
+          { $eq: [{ $year: "$dateFacture" }, parseInt(year)] }, // Ensure year matches
+          { $eq: [{ $month: "$dateFacture" }, parseInt(printMonth)] } // Ensure month matches
         ]
       };
     }
