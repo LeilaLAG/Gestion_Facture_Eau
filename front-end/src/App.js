@@ -20,6 +20,8 @@ import PrintFacture from "./components/PrintFacture";
 import Tranches from "./components/Tranches";
 import Accueil from "./components/Accueil";
 import PrintAllFactures from "./components/PrintAllFactures";
+import Charge from "./components/Charge";
+import Revenu from "./components/Revenu";
 function App() {
   return (
     <div className="App">
@@ -186,7 +188,61 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Accueil ---------------------------------------------------- */}
         <Route path="/" element={<Accueil />} />
+
+        {/* revenus ---------------------------------------------------- */}
+        <Route
+          path="/revenus"
+          element={
+            <ProtectedRoute>
+              <Revenu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenus/add-revenu"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"revenu"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenus/update-revenu/:revenuId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"revenu"} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* charges ---------------------------------------------------- */}
+        <Route
+          path="/charges"
+          element={
+            <ProtectedRoute>
+              <Charge />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/charges/add-charge"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"charge"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/charges/update-charge/:chargeId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"charge"} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

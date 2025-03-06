@@ -80,16 +80,108 @@ export default function Menu() {
       className="Menu shadow"
       style={{ minWidth: showMenu ? "25%" : "max-content" }}
     >
-      <button
-        className="btn btn-outline-dark p-2 pt-1 pb-1 showMenu"
-        onClick={() => setShowMenu((prev) => !prev)}
-        title="Réduire le menu"
-      >
-        {!showMenu ? <i class="bi bi-list"></i> : <i class="bi bi-x-lg"></i>}
-      </button>
+      <div className="centerDiv justify-content-between">
+        <button
+          className="btn btn-outline-dark p-2 pt-1 pb-1 showMenu"
+          onClick={() => setShowMenu((prev) => !prev)}
+          title="Réduire le menu"
+        >
+          {!showMenu ? <i class="bi bi-list"></i> : <i class="bi bi-x-lg"></i>}
+        </button>
+        <div className="userSetting text-end">
+          <div className="dropdown">
+            <button
+              className="btn btn-dark p-2 pt-1 pb-1"
+              data-bs-toggle="dropdown"
+              title="Vos options"
+            >
+              <img
+                src="/Assets/options.png"
+                alt="options"
+                width={20}
+                style={{ verticalAlign: "sub" }}
+              />
+            </button>
+            <ul className="dropdown-menu shadow">
+              <li className="d-flex align-items-center gap-2 dropdown-item">
+                <img
+                  src="/Assets/clientEdit.png"
+                  alt="edit client"
+                  width={20}
+                />
+                <a
+                  className="text-dark"
+                  style={{ textDecoration: "none" }}
+                  href={`/users/update-user/${user._id}`}
+                >
+                  Modifier votre profile
+                </a>
+              </li>
+              {user.function === "Admin" && (
+                <div>
+                  <hr className="m-0 mt-1 mb-1" />
+                  <li className="d-flex align-items-center gap-2 dropdown-item">
+                    <img src="/Assets/signup.png" alt="companuId" width={20} />
+                    <a
+                      className="text-dark"
+                      style={{ textDecoration: "none" }}
+                      href="/users/add-employee"
+                    >
+                      Ajouter un employé
+                    </a>
+                  </li>
+                  <hr className="m-0 mt-1 mb-1" />
+                  <li className="d-flex align-items-center gap-2 dropdown-item">
+                    <img
+                      src="/Assets/employee.png"
+                      alt="employees list"
+                      width={20}
+                    />
+                    <a
+                      className="text-dark"
+                      style={{ textDecoration: "none" }}
+                      href="/employees"
+                    >
+                      Vos employés
+                    </a>
+                  </li>
+                  <hr className="m-0 mt-1 mb-1" />
+                  <li className="d-flex align-items-center gap-2 dropdown-item">
+                    <img src="/Assets/tranche.png" alt="tranche" width={20} />
+                    <a
+                      className="text-dark"
+                      style={{ textDecoration: "none" }}
+                      href="/tranches"
+                    >
+                      Tranches
+                    </a>
+                  </li>
+                </div>
+              )}
+              <hr className="m-0 mt-1 mb-1" />
+              <li className="">
+                <form className="logoutForm" onSubmit={(e) => logOut(e)}>
+                  <button
+                    type="submit"
+                    className="pt-1 pb-1 p-3 d-flex align-items-center gap-2 dropdown-item"
+                    style={{
+                      outline: "none",
+                      border: "none",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <img src="/Assets/logout.png" alt="logout" width={20} />
+                    Déconnexion
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
       {showMenu ? (
         <div id="menuContent">
-          <div className="userSetting text-end mb-4">
+          {/* <div className="userSetting text-end mb-4">
             <div className="dropdown">
               <button
                 className="btn btn-dark p-3 pt-1 pb-1"
@@ -182,7 +274,7 @@ export default function Menu() {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <div className="UserInfoSegment mt-5">
             <div className="p-2 pb-1">
               <div className="profileLogo centerDiv">
@@ -288,6 +380,24 @@ export default function Menu() {
                   <img src="/Assets/money.png" alt="money" width={20} />
                   <a href="/caisse">Caisse</a>
                 </li>
+
+                <li
+                  className={
+                    currentUrl.pathname === "/revenus" ? "activeLink" : ""
+                  }
+                >
+                  <img src="/Assets/money.png" alt="money" width={20} />
+                  <a href="/revenus">Revenu</a>
+                </li>
+
+                <li
+                  className={
+                    currentUrl.pathname === "/charges" ? "activeLink" : ""
+                  }
+                >
+                  <img src="/Assets/money.png" alt="money" width={20} />
+                  <a href="/charges">Charge</a>
+                </li>
               </ul>
             )}
 
@@ -326,22 +436,33 @@ export default function Menu() {
                   </li>
                 )}
 
-                {/* {user.privileges.tranches && (
-                <li
-                  className={
-                    currentUrl.pathname === "/tranches" ? "activeLink" : ""
-                  }
-                >
-                  <img src="/Assets/tranche.png" alt="tranche" width={20} />
-                  <a href="/tranches">Tranche</a>
-                </li>
-              )} */}
+                {user.privileges.caisse && (
+                  <li
+                    className={
+                      currentUrl.pathname === "/revenus" ? "activeLink" : ""
+                    }
+                  >
+                    <img src="/Assets/money.png" alt="money" width={20} />
+                    <a href="/revenus">Revenu</a>
+                  </li>
+                )}
+
+                {user.privileges.caisse && (
+                  <li
+                    className={
+                      currentUrl.pathname === "/charges" ? "activeLink" : ""
+                    }
+                  >
+                    <img src="/Assets/money.png" alt="money" width={20} />
+                    <a href="/charges">Charge</a>
+                  </li>
+                )}
               </ul>
             )}
           </nav>
         </div>
       ) : (
-        <nav className="shrinkNavLinks mt-5">
+        <nav className="shrinkNavLinks mt-4">
           {/* <img
             src="/Assets/aquamanageicon.png"
             className="mb-3"
@@ -410,6 +531,30 @@ export default function Menu() {
                 </li>
                 <p>Caisse</p>
               </div>
+              <div>
+                <li
+                  className={
+                    currentUrl.pathname === "/revenus" ? "activeLink" : ""
+                  }
+                >
+                  <a href="/revenus">
+                    <img src="/Assets/money.png" alt="money" width={20} />
+                  </a>
+                </li>
+                <p>Revenu</p>
+              </div>
+              <div>
+                <li
+                  className={
+                    currentUrl.pathname === "/charges" ? "activeLink" : ""
+                  }
+                >
+                  <a href="/charges">
+                    <img src="/Assets/money.png" alt="money" width={20} />
+                  </a>
+                </li>
+                <p>Charge</p>
+              </div>
             </ul>
           )}
 
@@ -476,19 +621,38 @@ export default function Menu() {
                 </div>
               )}
 
-              {/* {user.privileges.tranches && (
-                <li
-                  className={
-                    currentUrl.pathname === "/tranches" ? "activeLink" : ""
-                  }
-                >
-                  <img src="/Assets/tranche.png" alt="tranche" width={20} />
-                  <a href="/tranches">Tranche</a>
-                </li>
-              )} */}
+              {user.privileges.caisse && (
+                <div>
+                  <li
+                    className={
+                      currentUrl.pathname === "/revenus" ? "activeLink" : ""
+                    }
+                  >
+                    <a href="/revenus">
+                      <img src="/Assets/money.png" alt="money" width={20} />
+                    </a>
+                  </li>
+                  <p>Revenu</p>
+                </div>
+              )}
+
+              {user.privileges.caisse && (
+                <div>
+                  <li
+                    className={
+                      currentUrl.pathname === "/charges" ? "activeLink" : ""
+                    }
+                  >
+                    <a href="/charges">
+                      <img src="/Assets/money.png" alt="money" width={20} />
+                    </a>
+                  </li>
+                  <p>Charge</p>
+                </div>
+              )}
             </ul>
           )}
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <button
               className="profileLogo centerDiv"
               data-bs-toggle="dropdown"
@@ -527,107 +691,7 @@ export default function Menu() {
                 {user.companyId}
               </li>
             </ul>
-          </div>
-          <div
-            className="userSetting text-end mb-4"
-            style={{
-              position: "absolute",
-              bottom: "20px",
-            }}
-          >
-            <div className="dropdown">
-              <button
-                className="btn btn-dark p-1"
-                data-bs-toggle="dropdown"
-                title="Vos options"
-              >
-                <img
-                  src="/Assets/options.png"
-                  alt="options"
-                  width={20}
-                  style={{ verticalAlign: "sub" }}
-                />
-              </button>
-              <ul className="dropdown-menu shadow">
-                <li className="d-flex align-items-center gap-2 dropdown-item">
-                  <img
-                    src="/Assets/clientEdit.png"
-                    alt="edit client"
-                    width={20}
-                  />
-                  <a
-                    className="text-dark"
-                    style={{ textDecoration: "none" }}
-                    href={`/users/update-user/${user._id}`}
-                  >
-                    Modifier votre profile
-                  </a>
-                </li>
-                {user.function === "Admin" && (
-                  <div>
-                    <hr className="m-0 mt-1 mb-1" />
-                    <li className="d-flex align-items-center gap-2 dropdown-item">
-                      <img
-                        src="/Assets/signup.png"
-                        alt="companuId"
-                        width={20}
-                      />
-                      <a
-                        className="text-dark"
-                        style={{ textDecoration: "none" }}
-                        href="/users/add-employee"
-                      >
-                        Ajouter un employé
-                      </a>
-                    </li>
-                    <hr className="m-0 mt-1 mb-1" />
-                    <li className="d-flex align-items-center gap-2 dropdown-item">
-                      <img
-                        src="/Assets/employee.png"
-                        alt="employees list"
-                        width={20}
-                      />
-                      <a
-                        className="text-dark"
-                        style={{ textDecoration: "none" }}
-                        href="/employees"
-                      >
-                        Vos employés
-                      </a>
-                    </li>
-                    <hr className="m-0 mt-1 mb-1" />
-                    <li className="d-flex align-items-center gap-2 dropdown-item">
-                      <img src="/Assets/tranche.png" alt="tranche" width={20} />
-                      <a
-                        className="text-dark"
-                        style={{ textDecoration: "none" }}
-                        href="/tranches"
-                      >
-                        Tranches
-                      </a>
-                    </li>
-                  </div>
-                )}
-                <hr className="m-0 mt-1 mb-1" />
-                <li className="">
-                  <form className="logoutForm" onSubmit={(e) => logOut(e)}>
-                    <button
-                      type="submit"
-                      className="pt-1 pb-1 p-3 d-flex align-items-center gap-2 dropdown-item"
-                      style={{
-                        outline: "none",
-                        border: "none",
-                        backgroundColor: "white",
-                      }}
-                    >
-                      <img src="/Assets/logout.png" alt="logout" width={20} />
-                      Déconnexion
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-          </div>
+          </div> */}
         </nav>
       )}
     </div>
