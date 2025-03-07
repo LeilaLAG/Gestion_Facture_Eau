@@ -36,7 +36,7 @@ export default function LogIn() {
         { withCredentials: true }
       )
       .then((res) => {
-        navigate("/home");
+        navigate("/accueil");
         setLoginLoading(false);
         setIsDisabled(false);
       })

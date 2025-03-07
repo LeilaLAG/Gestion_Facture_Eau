@@ -117,7 +117,7 @@ export default function Compteurs() {
                 <div className="d-flex align-items-center gap-2">
                   <span className="fw-bold">Nombre totale des compteurs :</span>
                   <img
-                    src="/Assets/counter.png"
+                    src="/Assets/compteurs.png"
                     alt="compteur count"
                     width={20}
                     title="Nombre totale de compteurs"
@@ -159,7 +159,7 @@ export default function Compteurs() {
                           </span>
                           <div className="d-flex align-items-center m-3 mt-0 mb-0">
                             <img
-                              src="/Assets/counter.png"
+                              src="/Assets/compteurs.png"
                               alt="compteur count"
                               width={20}
                             />

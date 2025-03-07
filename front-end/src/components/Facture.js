@@ -178,7 +178,7 @@ export default function Facture() {
                 <div className="d-flex align-items-center gap-2">
                   <span className="fw-bold">Nombre totale des factures :</span>
                   <img
-                    src="/Assets/bill.png"
+                    src="/Assets/factures.png"
                     alt="fact count"
                     width={20}
                     title="Nombre total de factures"
@@ -195,7 +195,7 @@ export default function Facture() {
               href="/facture/print-all-factures"
             >
               <i className="bi bi-printer"></i>
-              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth() + "/" + new Date().getFullYear()}</span>
+              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()}/{new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear()}</span>
             </a>
 
             {clients === "loading" ? (
@@ -232,7 +232,7 @@ export default function Facture() {
                         </span>
                         <div className="d-flex align-items-center m-3 mt-0 mb-0">
                           <img
-                            src="/Assets/bill.png"
+                            src="/Assets/factures.png"
                             alt="facture count"
                             width={20}
                           />

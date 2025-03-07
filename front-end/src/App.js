@@ -31,7 +31,7 @@ function App() {
 
         {/* home page --------------------------------------------------- */}
         <Route
-          path="/home"
+          path="/accueil"
           element={
             <ProtectedRoute>
               <Home />

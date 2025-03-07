@@ -13,7 +13,7 @@ export default function PrintAllFactures() {
   const [clientsData, setClientsData] = useState({});
 
   let factureData = GetFactures(
-    new Date().getFullYear(),
+    new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear(),
     "",
     new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()
   );
