@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import AddFacture from "./crufForm/AddFacture";
 import Swal from "sweetalert2";
 import AddTranche from "./crufForm/AddTranche";
+import AddCharge from "./crufForm/AddCharge";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -64,6 +65,15 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addTranche";
+  } else if (page === "charge") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      datePaiment: "",
+      responsable: "",
+      companyId: user.companyId,
+    };
+    endPoint = "addCharge";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -121,8 +131,7 @@ export default function AddForm({ page }) {
       if (dataToAdd.dateFacture === "") {
         toast.error("Saisir la date de consomation");
         return false;
-      }
-      else if (dataToAdd.numCompteur === 0) {
+      } else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
         return false;
       } else {
@@ -151,6 +160,29 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkChargeInfo() {
+    if (page === "charge") {
+      if (dataToAdd.designation === "") {
+        toast.error("saisir la designation de charge");
+        return false;
+      } else if (dataToAdd.montant === "" || dataToAdd.montant === 0) {
+        toast.error("Saisir le montant de charge");
+        return false;
+      } else if (isNaN(dataToAdd.montant)) {
+        toast.error("le montant doit etre un nombre");
+        return false;
+      } else if (dataToAdd.datePaiment === "") {
+        toast.error("Saisir la date de paiment de charge");
+        return false;
+      } else if (dataToAdd.responsable === "") {
+        toast.error("choisir un responsable pour la charge");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
@@ -158,7 +190,8 @@ export default function AddForm({ page }) {
       checkClientInfo() ||
       checkCompteurInfo() ||
       checkFactureInfo() ||
-      checkTrancheInfo()
+      checkTrancheInfo() ||
+      checkChargeInfo()
     ) {
       setLoading(true);
       axios
@@ -283,6 +316,10 @@ export default function AddForm({ page }) {
 
             {page === "tranche" && (
               <AddTranche onChangeInfo={(e) => handleAddInfo(e)} />
+            )}
+
+            {page === "charge" && (
+              <AddCharge onChangeInfo={(e) => handleAddInfo(e)} />
             )}
             <div className="mt-4 d-flex gap-3">
               <button className="btn btn-success fw-bold" disabled={loading}>
