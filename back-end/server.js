@@ -172,9 +172,9 @@ app.delete("/api/deleteRevenu/:RevenuId", deleteRevenu);
 // Charge
 app.get("/api/charges/:companyId", getCharges);
 app.get("/api/charges/:chargeId/:companyId", getOneCharge);
-app.post("/api/addcharge", createCharge);
-app.put("/api/updatecharge/:chargeId", updateCharge);
-app.delete("/api/deletecharge/:chargeId", deleteCharge);
+app.post("/api/addCharge", createCharge);
+app.put("/api/updateCharge/:chargeId", updateCharge);
+app.delete("/api/deleteCharge/:chargeId", deleteCharge);
 
 // Logout
 app.post("/api/logout", (req, res) => {
