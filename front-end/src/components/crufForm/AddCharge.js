@@ -38,7 +38,6 @@ export default function AddCharge({ onChangeInfo }) {
       <div className="mb-3">
         <label className="d-block">Choisir le responsable</label>
         <select
-          type="date"
           name="responsable"
           className="form-control"
           onChange={onChangeInfo}

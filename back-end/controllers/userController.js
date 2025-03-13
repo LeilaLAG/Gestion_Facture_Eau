@@ -27,25 +27,7 @@ const getOneUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  // const adminPass = process.env.AdminPass
-
   try {
-    // if(req.body.function === "Admin"){
-    //   if(req.body.password != adminPass){
-    //     return res.status(400).json({ error: "Votre Admin mot de passe est invalide !" });
-    //   }
-    // }
-    // else if(req.body.function === "Employer"){
-    //   const findingCompany = await Company.findOne({_id : req.body.companyId}) ;
-
-    //   if(!findingCompany){
-    //     return res.status(400).json({ error: "Ce ID de société est invalide !" });
-    //   }
-
-    //   req.body.companyId = findingCompany.companyName
-
-    // }
-
     const isEmailexist = await User.findOne({ email: req.body.email });
 
     if (!isEmailexist) {
@@ -96,7 +78,9 @@ const updateEmployeePrivileges = async (req, res) => {
             "privileges.clients": grant.clients,
             "privileges.compteurs": grant.compteurs,
             "privileges.factures": grant.factures,
-            "privileges.tranches": grant.tranches,
+            "privileges.revenus": grant.revenus,
+            "privileges.charges": grant.charges,
+            "privileges.caisse": grant.caisse,
           },
         },
         { new: true } // Return the updated document
@@ -124,10 +108,15 @@ const updateEmployeePrivileges = async (req, res) => {
               mod: crud.factures.mod,
               dlt: crud.factures.dlt,
             },
-            "crudAccess.tranches": {
-              add: crud.tranches.add,
-              mod: crud.tranches.mod,
-              dlt: crud.tranches.dlt,
+            "crudAccess.revenus": {
+              add: crud.revenus.add,
+              mod: crud.revenus.mod,
+              dlt: crud.revenus.dlt,
+            },
+            "crudAccess.charges": {
+              add: crud.charges.add,
+              mod: crud.charges.mod,
+              dlt: crud.charges.dlt,
             },
           },
         },
@@ -136,7 +125,10 @@ const updateEmployeePrivileges = async (req, res) => {
     );
 
     // Combine all promises
-    const results = await Promise.all([...updatePrivPromises, ...updateCrudPromises]);
+    const results = await Promise.all([
+      ...updatePrivPromises,
+      ...updateCrudPromises,
+    ]);
 
     return res.status(200).json({
       success: "Les privilèges ont été modifiés avec succès.",
@@ -150,8 +142,6 @@ const updateEmployeePrivileges = async (req, res) => {
     });
   }
 };
-
-
 
 const deleteUser = async (req, res) => {
   const { userId } = req.params;

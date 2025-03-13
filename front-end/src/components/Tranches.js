@@ -177,7 +177,7 @@ export default function Tranches() {
                             onSubmit={(e) => handleActiveTranche(e, tranche)}
                           >
                             <button className="btn btn-warning" title="Activer">
-                              <i class="bi bi-check-circle"></i>
+                              <i className="bi bi-check-circle"></i>
                             </button>
                           </form>
                         </td>
@@ -227,7 +227,7 @@ export default function Tranches() {
                   href="/tranches/add-tranche"
                   className="centerDiv gap-2 fs-5 text-success"
                 >
-                  <i class="bi bi-plus-circle"></i>
+                  <i className="bi bi-plus-circle"></i>
                   <p
                     className="m-0 text-dark centerDiv gap-2"
                     style={{ opacity: ".7", fontSize: "13px" }}
@@ -238,7 +238,7 @@ export default function Tranches() {
                         3 - tranches.length
                       } tranche(s) restant possible de creer`}
                     >
-                      <i class="bi bi-info-circle"></i>
+                      <i className="bi bi-info-circle"></i>
                     </Tooltip>
                   </p>
                 </a>

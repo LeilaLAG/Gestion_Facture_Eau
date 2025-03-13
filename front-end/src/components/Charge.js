@@ -6,8 +6,8 @@ import ErrorMsg from "../costumComponents/ErrorMsg";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import Tooltip from "./Tooltip";
 import GetCharges from "../hooks/GetCharges";
+import { useUser } from "../Auth/ProtectedRoute";
 
 export function Charge() {
   let chargesData = GetCharges();
@@ -16,6 +16,8 @@ export function Charge() {
     month: "2-digit",
     day: "2-digit",
   };
+
+  const { user } = useUser();
 
   // To enable realtime deletion simulating websockets
   const [charges, setCharges] = useState([]);
@@ -79,7 +81,7 @@ export function Charge() {
             >
               <thead>
                 <tr>
-                  {/* <th>N°</th> */}
+                  <th>N°</th>
                   <th>Designation</th>
                   <th>Montant en Dh</th>
                   <th>Date Generation</th>
@@ -117,10 +119,23 @@ export function Charge() {
                       </tr>
                     ) : (
                       <tr key={i}>
+                        <td title={charge._id}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "120px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {charge._id}
+                          </span>
+                        </td>
                         <td>{charge.designation}</td>
                         <td>{charge.montant} Dh</td>
                         <td>
-                          {new Date(charge.dataGeneration).toLocaleDateString(
+                          {new Date(charge.dateGeneration).toLocaleDateString(
                             "eu",
                             {
                               ...DateConfig,
@@ -130,71 +145,129 @@ export function Charge() {
                           )}
                         </td>
                         <td>
-                          {new Date(charge.dataPaiment).toLocaleDateString(
+                          {new Date(charge.datePaiment).toLocaleDateString(
                             "eu",
-                            {
-                              ...DateConfig,
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
+                            DateConfig
                           )}
                         </td>
                         <td>{charge.responsable}</td>
-
-                        <td>
-                          <form
-                            method="put"
-                            action={`/charges/update-charge/${charge._id}`}
-                          >
-                            <button
-                              className="btn btn-primary"
-                              title="Modifier"
-                            >
-                              <i className="bi bi-pencil-square"></i>
-                            </button>
-                          </form>
-                        </td>
-
-                        <td>
-                          <form onSubmit={(e) => handleDeleteCharge(e, charge)}>
-                            <button
-                              className="btn btn-danger"
-                              title="Supprimer"
-                            >
-                              <i className="bi bi-trash3-fill"></i>
-                            </button>
-                          </form>
-                        </td>
+                        {user.function === "Employer"
+                          ? user.crudAccess.charges.mod && (
+                              <td>
+                                <form
+                                  method="put"
+                                  action={`/charges/update-charge/${charge._id}`}
+                                >
+                                  <button
+                                    className="btn btn-primary"
+                                    title="Modifier"
+                                  >
+                                    <i className="bi bi-pencil-square"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )
+                          : user.function === "Admin" && (
+                              <td>
+                                <form
+                                  method="put"
+                                  action={`/charges/update-charge/${charge._id}`}
+                                >
+                                  <button
+                                    className="btn btn-primary"
+                                    title="Modifier"
+                                  >
+                                    <i className="bi bi-pencil-square"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )}
+                        {user.function === "Employer"
+                          ? user.crudAccess.charges.dlt && (
+                              <td>
+                                <form
+                                  onSubmit={(e) =>
+                                    handleDeleteCharge(e, charge)
+                                  }
+                                >
+                                  <button
+                                    className="btn btn-danger"
+                                    title="Supprimer"
+                                  >
+                                    <i className="bi bi-trash3-fill"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )
+                          : user.function === "Admin" && (
+                              <td>
+                                <form
+                                  onSubmit={(e) =>
+                                    handleDeleteCharge(e, charge)
+                                  }
+                                >
+                                  <button
+                                    className="btn btn-danger"
+                                    title="Supprimer"
+                                  >
+                                    <i className="bi bi-trash3-fill"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            )}
                       </tr>
                     )
                   )
                 )}
               </tbody>
             </table>
-            <div
-              className="centerDiv p-2 rounded"
-              colSpan={8}
-              style={{
-                border: "1px dashed lightgray",
-                backgroundColor: "#f7f7f7",
-              }}
-            >
-              <a
-                href="/charges/add-charge"
-                className="centerDiv gap-2 fs-5 text-success"
-              >
-                <i class="bi bi-plus-circle"></i>
-                <p
-                  className="m-0 text-dark centerDiv gap-2"
-                  style={{ opacity: ".7", fontSize: "13px" }}
-                >
-                  <span>Ajouter une nouvelle charge</span>
-                  <Tooltip>
-                    <i class="bi bi-info-circle"></i>
-                  </Tooltip>
-                </p>
-              </a>
-            </div>
+            {user.function === "Employer"
+              ? user.crudAccess.charges.add && (
+                  <div
+                    className="centerDiv p-2 rounded"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/charges/add-charge"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter une nouvelle charge</span>
+                      </p>
+                    </a>
+                  </div>
+                )
+              : user.function === "Admin" && (
+                  <div
+                    className="centerDiv p-2 rounded"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/charges/add-charge"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter une nouvelle charge</span>
+                      </p>
+                    </a>
+                  </div>
+                )}
           </div>
         )}
       </Main>

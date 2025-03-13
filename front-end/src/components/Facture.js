@@ -396,7 +396,7 @@ export default function Facture() {
                                       className="btn btn-dark"
                                       title="Imprimer"
                                     >
-                                      <i class="bi bi-printer"></i>
+                                      <i className="bi bi-printer"></i>
                                     </a>
                                   </td>
                                   {user.function === "Employer"
@@ -418,7 +418,7 @@ export default function Facture() {
                                                     : false
                                                 }
                                               >
-                                                <i class="bi bi-cash-stack"></i>
+                                                <i className="bi bi-cash-stack"></i>
                                               </button>
                                             </form>
                                           </td>
@@ -455,7 +455,7 @@ export default function Facture() {
                                                     : false
                                                 }
                                               >
-                                                <i class="bi bi-cash-stack"></i>
+                                                <i className="bi bi-cash-stack"></i>
                                               </button>
                                             </form>
                                           </td>

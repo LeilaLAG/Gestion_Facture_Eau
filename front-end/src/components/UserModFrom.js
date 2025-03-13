@@ -142,9 +142,9 @@ export default function UserModFrom() {
               <button className="btn btn-dark w-25 fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Modifier"}
               </button>
-              <a href="/home" className="btn btn-danger w-25 fw-bold">
+              {/* <a href="/home" className="btn btn-danger w-25 fw-bold">
                 Retour
-              </a>
+              </a> */}
             </div>
           </form>
         </div>

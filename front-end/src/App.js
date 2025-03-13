@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Route, Routes } from "react-router-dom";
-import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 import Clients from "./components/Clients";
@@ -58,7 +57,6 @@ function App() {
         />
 
         {/* user ---------------------------------------------------*/}
-        <Route path="/add-admin-user" element={<SignUp />} />
         <Route
           path="/users/update-user/:userId"
           element={

@@ -51,7 +51,7 @@ export default function LogIn() {
     <div>
       <Toaster position="top-right" />
       <div className="LoginFormCOntainer h-100 d-flex justify-content-around">
-        <div>
+        <div style={{height : "100dvh" }}>
           <img src="Assets/loginImg.jpg" alt="" />
         </div>
         <form
@@ -103,10 +103,6 @@ export default function LogIn() {
             >
               {loginLoading ? <ActionLoading /> : "Authentifier"}
             </button>
-            {/* <hr/>
-            <div className="text-center">
-              <a className="color_blue_text" href="/sign-up">Creer votre profile</a>
-            </div> */}
           </div>
         </form>
       </div>

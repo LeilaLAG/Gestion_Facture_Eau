@@ -13,6 +13,7 @@ import AddFacture from "./crufForm/AddFacture";
 import Swal from "sweetalert2";
 import AddTranche from "./crufForm/AddTranche";
 import AddCharge from "./crufForm/AddCharge";
+import AddRevenu from "./crufForm/AddRevenu";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -74,6 +75,13 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addCharge";
+  }else if (page === "revenu") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "addRevenu";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -183,6 +191,20 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkRevenuInfo() {
+    if (page === "revenu") {
+      if (dataToAdd.designation === "") {
+        toast.error("saisir la designation de revenu");
+        return false;
+      } else if (dataToAdd.montant === "" || dataToAdd.montant === 0) {
+        toast.error("Saisir le montant de revenu");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
@@ -191,7 +213,8 @@ export default function AddForm({ page }) {
       checkCompteurInfo() ||
       checkFactureInfo() ||
       checkTrancheInfo() ||
-      checkChargeInfo()
+      checkChargeInfo() ||
+      checkRevenuInfo()
     ) {
       setLoading(true);
       axios
@@ -264,9 +287,9 @@ export default function AddForm({ page }) {
         })
         .catch((err) => {
           setLoading(false);
-          console.log(err.response.data.error);
+          // console.log(err.response.data.error);
           // toast.error("Un problem est servenu lors de l'ajout!");
-          console.log(err);
+          // console.log(err);
         });
     }
   }
@@ -294,7 +317,7 @@ export default function AddForm({ page }) {
               }}
               className="bg-success"
             ></div>
-            <h3 className="text-center mb-4">{`Ajouter données ${page}`}</h3>
+            <h3 className="text-center mb-4">{`Ajouter des données ${page}`}</h3>
             {page === "client" && (
               <AddClient onChangeInfo={(e) => handleAddInfo(e)} />
             )}
@@ -321,6 +344,11 @@ export default function AddForm({ page }) {
             {page === "charge" && (
               <AddCharge onChangeInfo={(e) => handleAddInfo(e)} />
             )}
+
+            {page === "revenu" && (
+              <AddRevenu onChangeInfo={(e) => handleAddInfo(e)} />
+            )}
+            
             <div className="mt-4 d-flex gap-3">
               <button className="btn btn-success fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Ajouter"}

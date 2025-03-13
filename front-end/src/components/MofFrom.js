@@ -12,15 +12,18 @@ import ModCompteur from "./crufForm/ModCompteur";
 import ModFacture from "./crufForm/ModFacture";
 import ModTranche from "./crufForm/ModTranche";
 import ModCharge from "./crufForm/ModCharge";
+import ModRevenu from "./crufForm/ModRevenu";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
+  const clients = GetClients();
+
   const { clientId } = useParams();
   const { compteurId } = useParams();
   const { factureId } = useParams();
   const { trancheId } = useParams();
   const { chargeId } = useParams();
-  const clients = GetClients();
+  const { revenuId } = useParams();
 
   let dataObject = {};
   let endPoint = "";
@@ -75,6 +78,13 @@ export default function ModForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "updateCharge";
+  } else if (page === "revenu") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "updateRevenu";
   }
 
   const [dataToMod, setDataToMod] = useState(dataObject);
@@ -131,8 +141,26 @@ export default function ModForm({ page }) {
         )
         .then((res) => setDataToMod(res.data.charge))
         .catch((err) => toast.error("error"));
+    } else if (revenuId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/revenus/${revenuId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.revenu))
+        .catch((err) => toast.error("error"));
     }
-  }, [clientId, compteurId, factureId, trancheId, chargeId, user.companyId]);
+  }, [
+    clientId,
+    compteurId,
+    factureId,
+    trancheId,
+    chargeId,
+    revenuId,
+    user.companyId,
+  ]);
 
   function handleModInfo(e) {
     e.preventDefault();
@@ -236,6 +264,20 @@ export default function ModForm({ page }) {
     }
   }
 
+  function checkRevenuInfo() {
+    if (page === "revenu") {
+      if (dataToMod.designation === "") {
+        toast.error("saisir la designation de revenu");
+        return false;
+      } else if (dataToMod.montant === "" || dataToMod.montant === 0) {
+        toast.error("Saisir le montant de revenu");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleModData(e) {
     e.preventDefault();
 
@@ -244,7 +286,8 @@ export default function ModForm({ page }) {
       checkCompteurInfo() ||
       checkFactureInfo() ||
       checkTrancheInfo() ||
-      checkChargeInfo()
+      checkChargeInfo() ||
+      checkRevenuInfo()
     ) {
       setLoading(true);
       axios
@@ -252,7 +295,7 @@ export default function ModForm({ page }) {
           `${process.env.REACT_APP_HOST}:${
             process.env.REACT_APP_PORT
           }/api/${endPoint}/${
-            clientId || compteurId || factureId || trancheId || chargeId
+            clientId || compteurId || factureId || trancheId || chargeId || revenuId
           }`,
           dataToMod,
           {
@@ -339,6 +382,14 @@ export default function ModForm({ page }) {
                 dataToMod={dataToMod}
               />
             )}
+
+            {page === "revenu" && (
+              <ModRevenu
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
+            )}
+
             <div className="mt-4 d-flex gap-3">
               <button className="btn btn-primary fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Modifier"}

@@ -24,7 +24,8 @@ export default function Home() {
                 </p>
                 {!user.privileges.clients &&
                 !user.privileges.compteurs &&
-                !user.privileges.factures ? (
+                !user.privileges.factures &&
+                !user.privileges.caisse ? (
                   <div className="centerDiv">
                     <ErrorMsg
                       msg={
@@ -43,9 +44,12 @@ export default function Home() {
                         <a
                           href="/clients"
                           className="fw-bold d-flex gap-2"
-                          style={{ textDecoration: "none" , textTransform:"capitalize" }}
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
                         >
-                          <input type="checkbox" checked/>
+                          <input type="checkbox" checked />
                           <span>clients</span>
                         </a>
                         <ul className="">
@@ -72,9 +76,12 @@ export default function Home() {
                         <a
                           href="/compteurs"
                           className="fw-bold d-flex gap-2"
-                          style={{ textDecoration: "none" , textTransform:"capitalize" }}
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
                         >
-                          <input type="checkbox" checked/>
+                          <input type="checkbox" checked />
                           <span>compteurs</span>
                         </a>
                         <ul className="">
@@ -102,9 +109,12 @@ export default function Home() {
                         <a
                           href="/factures"
                           className="fw-bold d-flex gap-2"
-                          style={{ textDecoration: "none" , textTransform:"capitalize" }}
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
                         >
-                          <input type="checkbox" checked/>
+                          <input type="checkbox" checked />
                           <span>factures</span>
                         </a>
                         <div className="">
@@ -123,6 +133,90 @@ export default function Home() {
                               Vous pouvez supprimer des factures
                             </li>
                           )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.revenus && (
+                      <div>
+                        <a
+                          href="/revenus"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>revenus</span>
+                        </a>
+                        <div className="">
+                          {user.crudAccess.revenus.add && (
+                            <li className="">
+                              Vous pouvez génerer des nouvelles revenus
+                            </li>
+                          )}
+                          {user.crudAccess.revenus.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des revenus
+                            </li>
+                          )}
+                          {user.crudAccess.revenus.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des revenus
+                            </li>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.charges && (
+                      <div>
+                        <a
+                          href="/charges"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>charges</span>
+                        </a>
+                        <div className="">
+                          {user.crudAccess.charges.add && (
+                            <li className="">
+                              Vous pouvez génerer des nouvelles charges
+                            </li>
+                          )}
+                          {user.crudAccess.charges.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des charges
+                            </li>
+                          )}
+                          {user.crudAccess.charges.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des charges
+                            </li>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.caisse && (
+                      <div>
+                        <a
+                          href="/caisse"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>caisse</span>
+                        </a>
+                        <div className="">
+                            <li className="">
+                              Vous pouvez accéder les statistiques de la caisse
+                            </li>
                         </div>
                       </div>
                     )}

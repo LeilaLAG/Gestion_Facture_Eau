@@ -164,10 +164,10 @@ app.delete("/api/deleteTranche/:trancheId", deleteTranche);
 
 // Revenu
 app.get("/api/revenus/:companyId", getRevenus);
-app.get("/api/revenus/:trancheId/:companyId", getOneRevenu);
+app.get("/api/revenus/:revenuId/:companyId", getOneRevenu);
 app.post("/api/addRevenu", createRevenu);
-app.put("/api/updateRevenu/:RevenuId", updateRevenu);
-app.delete("/api/deleteRevenu/:RevenuId", deleteRevenu);
+app.put("/api/updateRevenu/:revenuId", updateRevenu);
+app.delete("/api/deleteRevenu/:revenuId", deleteRevenu);
 
 // Charge
 app.get("/api/charges/:companyId", getCharges);

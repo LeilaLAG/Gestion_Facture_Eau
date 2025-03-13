@@ -20,9 +20,9 @@ export default function Menu() {
     "clients",
     "compteurs",
     "factures",
-    "caisse",
     "revenus",
     "charges",
+    "caisse",
   ];
 
   useEffect(() => {
@@ -90,15 +90,15 @@ export default function Menu() {
       className="Menu shadow"
       style={{ minWidth: showMenu ? "25%" : "max-content" }}
     >
-      <div className="centerDiv justify-content-between">
+      <div className="centerDiv justify-content-between gap-2">
         <button
           className="btn btn-outline-dark p-2 pt-1 pb-1 showMenu"
           onClick={() => setShowMenu((prev) => !prev)}
         >
           {!showMenu ? (
-            <i class="bi bi-list" title="étendre le menu"></i>
+            <i className="bi bi-list" title="étendre le menu"></i>
           ) : (
-            <i class="bi bi-x-lg" title="réduire le menu"></i>
+            <i className="bi bi-x-lg" title="réduire le menu"></i>
           )}
         </button>
         <div className="userSetting text-end">
@@ -108,7 +108,7 @@ export default function Menu() {
               data-bs-toggle="dropdown"
               title="Vos options"
             >
-              <i class="bi bi-gear"></i>
+              <i className="bi bi-gear"></i>
             </button>
             <ul className="dropdown-menu shadow">
               <li className="d-flex align-items-center gap-2 dropdown-item">
@@ -249,21 +249,21 @@ export default function Menu() {
                           {ActiveTranche.error ? (
                             <div className="ActiveTranche badge bg_red_button badge rounded-pill">
                               <div className="centerDiv gap-1">
-                                <i class="bi bi-exclamation-circle"></i>
+                                <i className="bi bi-exclamation-circle"></i>
                                 <p className="m-0">{ActiveTranche.error}</p>
                               </div>
                             </div>
                           ) : (
                             <div className="ActiveTranche badge bg_blue_button badge rounded-pill">
                               <div className="centerDiv gap-1">
-                                <i class="bi bi-check-all"></i>
+                                <i className="bi bi-check-all"></i>
                                 <p className="m-0">
                                   {ActiveTranche.nameTranche}
                                 </p>
                                 <Tooltip
                                   text={`Prix: ${ActiveTranche.prix}Dh . Max-tonnage: ${ActiveTranche.maxTonnage}m³`}
                                 >
-                                  <i class="bi bi-info-circle"></i>
+                                  <i className="bi bi-info-circle"></i>
                                 </Tooltip>
                                 <a
                                   href="/tranches"
@@ -320,21 +320,21 @@ export default function Menu() {
                           {ActiveTranche.error ? (
                             <div className="ActiveTranche badge bg_red_button badge rounded-pill">
                               <div className="centerDiv gap-1">
-                                <i class="bi bi-exclamation-circle"></i>
+                                <i className="bi bi-exclamation-circle"></i>
                                 <p className="m-0">{ActiveTranche.error}</p>
                               </div>
                             </div>
                           ) : (
                             <div className="ActiveTranche badge bg_blue_button badge rounded-pill">
                               <div className="centerDiv gap-1">
-                                <i class="bi bi-check-all"></i>
+                                <i className="bi bi-check-all"></i>
                                 <p className="m-0">
                                   {ActiveTranche.nameTranche}
                                 </p>
                                 <Tooltip
                                   text={`Prix: ${ActiveTranche.prix}Dh . Max-tonnage: ${ActiveTranche.maxTonnage}m³`}
                                 >
-                                  <i class="bi bi-info-circle"></i>
+                                  <i className="bi bi-info-circle"></i>
                                 </Tooltip>
                                 <a
                                   href="/tranches"
@@ -358,7 +358,7 @@ export default function Menu() {
           {user.function === "Admin" && (
             <ul>
               {rubriques.map((rubrique, i) => (
-                <div>
+                <div key={i}>
                   <li
                     className={
                       currentUrl.pathname === `/${rubrique}` ? "activeLink" : ""

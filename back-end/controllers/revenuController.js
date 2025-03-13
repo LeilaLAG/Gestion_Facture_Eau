@@ -12,8 +12,8 @@ const getRevenus = async (req, res) => {
 
 const getOneRevenu = async (req, res) => {
   try {
-    const { RevenuId } = req.params;
-    const revenu = await Revenu.findOne({ _id: RevenuId });
+    const { revenuId } = req.params;
+    const revenu = await Revenu.findOne({ _id: revenuId });
     res.status(200).json({ revenu });
   } catch (error) {
     return res.status(400).json({ error: "Server Error getting one revenu" });
@@ -33,10 +33,10 @@ const createRevenu = async (req, res) => {
 
 const updateRevenu = async (req, res) => {
   try {
-    const { RevenuId } = req.params;
+    const { revenuId } = req.params;
 
     const RevenuToUpdate = await Revenu.findOneAndUpdate(
-      { _id: RevenuId },
+      { _id: revenuId },
       req.body
     );
     res.status(200).json({ RevenuToUpdate });
@@ -47,9 +47,9 @@ const updateRevenu = async (req, res) => {
 
 const deleteRevenu = async (req, res) => {
   try {
-    const { RevenuId } = req.params;
+    const { revenuId } = req.params;
 
-    const RevenuToDelete = await Revenu.findOneAndDelete({ _id: RevenuId });
+    const RevenuToDelete = await Revenu.findOneAndDelete({ _id: revenuId });
     res.status(200).json({ RevenuToDelete });
   } catch (error) {
     return res.status(400).json({ error: "Server Error deleting revenu" });
