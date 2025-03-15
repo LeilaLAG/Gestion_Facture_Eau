@@ -69,6 +69,8 @@ const {
   updateCharge,
 } = require("./controllers/chargeController");
 const { login } = require("./controllers/loginController");
+const {caisseStats} = require('./controllers/caisseController')
+
 const User = require("./models/User");
 
 const app = express();
@@ -175,6 +177,9 @@ app.get("/api/charges/:chargeId/:companyId", getOneCharge);
 app.post("/api/addCharge", createCharge);
 app.put("/api/updateCharge/:chargeId", updateCharge);
 app.delete("/api/deleteCharge/:chargeId", deleteCharge);
+
+// Caisse
+app.get("/api/caisse/:companyId" , caisseStats)
 
 // Logout
 app.post("/api/logout", (req, res) => {

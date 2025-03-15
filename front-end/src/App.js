@@ -21,6 +21,7 @@ import Accueil from "./components/Accueil";
 import PrintAllFactures from "./components/PrintAllFactures";
 import Charge from "./components/Charge";
 import Revenu from "./components/Revenu";
+import Caisse from "./components/Caisse";
 function App() {
   return (
     <div className="App">
@@ -238,6 +239,16 @@ function App() {
           element={
             <ProtectedRoute>
               <ModForm page={"charge"} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* caisse ------------------------------------------------- */}
+        <Route
+          path="/caisse"
+          element={
+            <ProtectedRoute>
+              <Caisse />
             </ProtectedRoute>
           }
         />
