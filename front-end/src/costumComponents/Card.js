@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from "../components/Tooltip";
 
 export default function Card({
   text,
@@ -7,19 +8,28 @@ export default function Card({
   textSize,
   textWeight,
   cardWidth,
+  rnedementStatus,
+  couleur
 }) {
   return (
-    <div className="card rounded p-3 shadow m-1" style={{ width: cardWidth }}>
+    <div className="card rounded p-3 shadow m-1" style={{ mawWidth: "50%" }}>
       <div className="d-flex align-items-center gap-2">
-        <img src={icon} alt="card Icon" width={25} />
+        <img width={20} src={icon} alt="card Icon" />
         <span className="fw-bold fs-5">{title}</span>
       </div>
       <div>
         <p
-          className="m-2"
+          className="m-2 d-flex align-items-center gap-2"
           style={{ fontSize: textSize, fontWeight: textWeight }}
         >
-          {text}
+          <span style={{color : couleur}}>
+            {text}
+          </span>
+          <Tooltip text={rnedementStatus < 0 ? "Un déficit de rendement monsuel" : rnedementStatus > 0 ? "Une bénéfice de rendement mensuel" : rnedementStatus === 0 && "Aucun déficit ou bénéfice"}>
+            {
+              rnedementStatus < 0 ? <img width={20} src="/Assets/loss.png" alt="loss"/> : rnedementStatus > 0 ? <img width={20} src="/Assets/profit.png" alt="profit"/> : rnedementStatus === 0 && <img width={20} src="/Assets/noprofit.png" alt="no profit"/>
+            }
+          </Tooltip>
         </p>
       </div>
     </div>

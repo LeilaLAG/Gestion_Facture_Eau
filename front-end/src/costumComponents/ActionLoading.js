@@ -1,4 +1,5 @@
 import React from "react";
+import '../style/customCompStyle.css'
 
 export default function ActionLoading() {
   return (

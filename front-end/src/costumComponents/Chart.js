@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the required components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page}) => {
+const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page , caisse}) => {
 
     let data = {}
     let options = {}
@@ -31,6 +31,27 @@ const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page}) => 
           },
         };
         
+    }
+
+    else if(page==="caisse"){
+      data = {
+        labels: ['revenus' , "charges" , "facture payées" , "facture non payées"],
+        datasets: [
+          {
+            data: caisse,
+            backgroundColor: ["rgba(190, 228, 101, 0.8)" , "rgba(249, 173, 143, 0.8)" , "rgba(94, 204, 100, 0.8)" , "rgba(227, 64, 64, 0.8)"],
+            borderColor: "rgb(81, 112, 112)",
+            borderWidth: 1,
+          },
+        ],
+      };
+    
+      options = {
+        responsive: true,
+        plugins: {
+          legend: page==="caisse" ? {display : false} : { position: "top" },
+        },
+      };
     }
 
   return <Bar data={data} options={options} />;

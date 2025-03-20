@@ -51,12 +51,12 @@ export default function LogIn() {
     <div>
       <Toaster position="top-right" />
       <div className="LoginFormCOntainer h-100 d-flex justify-content-around">
-        <div style={{height : "100dvh" }}>
-          <img src="Assets/loginImg.jpg" alt="" />
+        <div style={{height : "100dvh" , zIndex:'-1' }}>
+          <img src="Assets/loginImg1.jpg" alt="" />
         </div>
         <form
         method="POST"
-          className="LoginFrom shadow"
+          className="LoginFrom "
           onSubmit={(e) => {
             handleSubmitLoginUser(e);
           }}

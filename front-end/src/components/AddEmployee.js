@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "../Auth/ProtectedRoute";
 import Menu from "./Menu";
 import Main from "./Main";
+import ActionLoading from "../costumComponents/ActionLoading";
 
 export default function AddEmployee() {
   const { user } = useUser();
@@ -166,7 +167,7 @@ export default function AddEmployee() {
                 className="btn btn-warning fw-bold"
                 disabled={isDisabled}
               >
-                {signupLoading ? 'En cours de création ...' : "Créer"}
+                {signupLoading ? <ActionLoading/> : "Créer"}
               </button>
               <a href="/employees" className="btn btn-danger fw-bold">
                 Retour

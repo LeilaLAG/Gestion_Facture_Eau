@@ -184,9 +184,6 @@ export default function Facture() {
                     title="Nombre total de factures"
                   />
                   <span className="fw-bold">{facture.length}</span>
-                  <span
-                    style={{ fontSize: "13px" }}
-                  >{`( Données ${filterParams.month}/${filterParams.year} )`}</span>
                 </div>
               </div>
             </article>
