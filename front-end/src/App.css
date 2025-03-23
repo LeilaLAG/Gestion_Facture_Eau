@@ -80,6 +80,9 @@
   .noPrin {
     display: none;
   }
+  .Print {
+    display: block !important;
+  }
   .billToPrint,
   .billsToPrint {
     width: 100% !important;

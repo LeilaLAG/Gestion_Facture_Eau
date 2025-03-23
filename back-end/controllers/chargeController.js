@@ -3,10 +3,18 @@ const Charge = require("../models/Charge");
 const getCharges = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const charges = await Charge.find({ companyId });
+    const { year , month } = req.query;
+    const filter = {companyId}
+    filter.$expr = {
+      $and: [
+        { $eq: [{ $year: "$datePaiment" }, parseInt(year)] },
+        { $eq: [{ $month: "$datePaiment" }, parseInt(month)] },
+      ],
+    };
+    const charges = await Charge.find(filter);
     res.status(200).json({ charges });
   } catch (error) {
-    return res.status(400).json({ error: "Server Error getting all Charges" });
+    return res.status(400).json({ error: "Un erreur est servenu lors de la recupération des charges" });
   }
 };
 

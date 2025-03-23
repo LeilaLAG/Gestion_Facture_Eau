@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
 
-export default function GetRevenus() {
+export default function GetRevenus(year , month) {
   const [Revenus, setRevenus] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +12,7 @@ export default function GetRevenus() {
     async function fetchRevenusData() {
       await axios
         .get(
-          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/revenus/${user.companyId}/`,
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/revenus/${user.companyId}?year=${year}&month=${month}`,
           {
             withCredentials: true,
           }
@@ -28,6 +28,6 @@ export default function GetRevenus() {
     }
 
     fetchRevenusData();
-  }, [user.companyId]);
+  }, [user.companyId , year , month]);
   return loading ? "loading" : Revenus;
 }

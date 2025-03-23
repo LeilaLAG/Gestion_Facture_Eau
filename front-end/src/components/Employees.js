@@ -105,7 +105,7 @@ export default function Employees() {
       )
       .then((res) => {
         Swal.fire({
-          title: `<img src="Assets/confirm.gif" alt="confirm" width="50" />`,
+          title: `<img src="/Assets/confirm.gif" alt="confirm" width="50" />`,
           text: "Confirmer les changements ?",
           showCancelButton: true,
           confirmButtonColor: "#d33",
@@ -125,7 +125,7 @@ export default function Employees() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer l'employer ${emp.fullName}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "../Auth/ProtectedRoute";
-import BarChart from "../costumComponents/Chart";
+import { BarChart } from "../costumComponents/Chart";
 
 export default function PrintFacture() {
   const { factureId } = useParams();
@@ -55,9 +55,9 @@ export default function PrintFacture() {
   }
 
   return (
-    <div className="centerDiv h-100">
-      <div className="border border-2 p-4 billToPrint" style={{width : "50%"}}>
-        <div className="noPrin">
+    <div className="centerDiv flex-wrap justify-content-around h-100">
+      <div className="noPrin centerDiv">
+        <div style={{position:"sticky"  , top : "20px"}}>
           <button
             className="btn btn-dark p-4 pb-1 pt-1 fw-bold"
             onClick={() => window.print()}
@@ -72,8 +72,19 @@ export default function PrintFacture() {
             Retour
           </a>
         </div>
-        <h3 className="text-center mb-4 fw-bold">Facture d'eau</h3>
+      </div>
+      <div className="border border-2 p-4 billToPrint" >
+        <div className="centerDiv justify-content-between align-items-end">
+          <h3 className="text-center mb-4 fw-bold">Facture d'eau</h3>
+          <div>
+            <img src="/Assets/aquamanage.svg" alt="" width={70} />
+          </div>
+        </div>
         <div className="">
+          <div className="mb-2 border border-1 p-1 text-center">
+            <span className="fw-bold">Société: </span>
+            <span>{user.companyId}</span>
+          </div>
           <div className="mb-2 border border-1 p-1 text-center">
             <span className="fw-bold">N° facture: </span>
             <span>{billToPrint._id}</span>
@@ -141,7 +152,7 @@ export default function PrintFacture() {
           </div>
         </div>
         {/* <hr /> */}
-        <div style={{ height: "180px" }} className="border border-1 p-1">
+        <div className="border border-1 p-1" style={{ height: "180px" }}>
           <BarChart
             page="printBill"
             lastClientBillsConsomation={settingUpBillDataToSendToChart()}

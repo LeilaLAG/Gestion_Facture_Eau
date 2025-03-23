@@ -34,7 +34,7 @@ export default function Tranches() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer ${trancheToDlt.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -66,7 +66,7 @@ export default function Tranches() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/activate.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/activate.gif" alt="delete" width="50" />`,
       text: `Etes vous sure d'activer ${activitedTranche.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#cfcf2e",
@@ -169,7 +169,7 @@ export default function Tranches() {
                         <td>{new Date(tranche.created_at).toLocaleDateString('eu' , {...DateConfig , hour : '2-digit' , minute : "2-digit"})}</td>
                         <td>
                           {tranche.isActive && (
-                            <img src="Assets/check.png" alt="Yes" width={20} />
+                            <img src="/Assets/check.png" alt="Yes" width={20} />
                           )}
                         </td>
                         <td>

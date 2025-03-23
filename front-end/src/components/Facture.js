@@ -52,7 +52,7 @@ export default function Facture() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Êtes-vous sûr de supprimer la facture ${factToDlt._id}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -124,7 +124,7 @@ export default function Facture() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/paid.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/paid.gif" alt="delete" width="50" />`,
       text: `Êtes-vous sûr que cette facture ${factureId} a été payer ?`,
       showCancelButton: true,
       confirmButtonColor: "#6fac0d",
@@ -192,7 +192,7 @@ export default function Facture() {
               href="/facture/print-all-factures"
             >
               <i className="bi bi-printer"></i>
-              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()}/{new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear()}</span>
+              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()} / {new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear()}</span>
             </a>
 
             {clients === "loading" ? (

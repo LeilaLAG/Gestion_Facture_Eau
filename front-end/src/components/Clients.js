@@ -36,7 +36,7 @@ export default function Clients() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer le client ${clientToDlt.nameClient}? tous les données (compteurs et factures) vont etre supprimer aussi`,
       showCancelButton: true,
       confirmButtonColor: "#d33",

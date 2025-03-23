@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import GetFactures from "../hooks/GetFactures";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
-import BarChart from "../costumComponents/Chart";
+import { BarChart } from "../costumComponents/Chart";
 import ErrorMsg from "../costumComponents/ErrorMsg";
 
 export default function PrintAllFactures() {
@@ -13,7 +13,9 @@ export default function PrintAllFactures() {
   const [clientsData, setClientsData] = useState({});
 
   let factureData = GetFactures(
-    new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear(),
+    new Date().getMonth() + 1 === 1
+      ? new Date().getFullYear() - 1
+      : new Date().getFullYear(),
     "",
     new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()
   );
@@ -41,9 +43,9 @@ export default function PrintAllFactures() {
   }, [factureData, companyId]);
 
   return (
-    <div className="vh-100 d-flex justify-content-center">
-      <div className="">
-        <div className="noPrin centerDiv mt-2">
+    <div className="vh-100 d-flex flex-wrap justify-content-around">
+      <div className="noPrin">
+        <div style={{position:"sticky"  , top : "10px"}}>
           <button
             className="btn btn-dark p-4 pb-1 pt-1 fw-bold"
             onClick={() => window.print()}
@@ -58,12 +60,15 @@ export default function PrintAllFactures() {
             Retour
           </a>
         </div>
-
+      </div>
+      <div className="">
         {factureData !== "loading" &&
           (factureData.length === 0 ? (
             <div className="centerDiv h-100">
               <ErrorMsg
-                msg={`Aucune facture à imprimer pour le mois ${new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()}`}
+                msg={`Aucune facture à imprimer pour le mois ${
+                  new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()
+                }`}
                 errorIconWidth={20}
                 coleur={"red"}
                 boldness="bold"
@@ -99,8 +104,19 @@ export default function PrintAllFactures() {
                     className="border border-2 p-4 billsToPrint mt-2"
                     key={billToPrint._id}
                   >
-                    <h3 className="text-center mb-4 fw-bold">Facture d'eau</h3>
+                    <div className="centerDiv justify-content-between align-items-end">
+                      <h3 className="text-center mb-4 fw-bold">
+                        Facture d'eau
+                      </h3>
+                      <div>
+                        <img src="/Assets/aquamanage.svg" alt="" width={70} />
+                      </div>
+                    </div>
                     <div>
+                      <div className="mb-2 border border-1 p-1 text-center">
+                        <span className="fw-bold">Société: </span>
+                        <span>{user.companyId}</span>
+                      </div>
                       <div className="mb-2 border border-1 p-1 text-center">
                         <span className="fw-bold">N° facture: </span>
                         <span>{billToPrint._id}</span>

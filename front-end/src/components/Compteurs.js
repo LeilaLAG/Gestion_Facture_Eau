@@ -41,7 +41,7 @@ export default function Compteurs() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer le compteur N°${compteurToDlt.numCompteur}`,
       showCancelButton: true,
       confirmButtonColor: "#d33",

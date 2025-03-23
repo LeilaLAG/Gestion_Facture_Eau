@@ -3,10 +3,19 @@ const Revenu = require("../models/Revenu");
 const getRevenus = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const revenus = await Revenu.find({ companyId });
+    const { year , month } = req.query;
+
+    const filter = {companyId}
+    filter.$expr = {
+      $and: [
+        { $eq: [{ $year: "$dateRevenu" }, parseInt(year)] },
+        { $eq: [{ $month: "$dateRevenu" }, parseInt(month)] },
+      ],
+    };
+    const revenus = await Revenu.find(filter);
     res.status(200).json({ revenus });
   } catch (error) {
-    return res.status(400).json({ error: "Server Error getting all revenus" });
+    return res.status(400).json({ error: "Un erreur est servenu lors de la recupération des revenus" });
   }
 };
 

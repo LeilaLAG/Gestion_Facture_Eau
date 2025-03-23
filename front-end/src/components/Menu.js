@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import Tooltip from "./Tooltip";
 import Swal from "sweetalert2";
 
-export default function Menu() {
+export default function Menu({print}) {
   const { user } = useUser();
 
   const currentUrl = useLocation();
@@ -60,7 +60,7 @@ export default function Menu() {
   function logOut(e) {
     e.preventDefault();
     Swal.fire({
-      title: `<img src="Assets/logout.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/logout.gif" alt="delete" width="50" />`,
       text: "Voulez-vous déconnecter ?",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -87,7 +87,7 @@ export default function Menu() {
 
   return (
     <div
-      className="Menu shadow"
+      className={`Menu shadow ${print}`}
       style={{ minWidth: showMenu ? "25%" : "max-content" }}
     >
       <div className="centerDiv justify-content-between gap-2">

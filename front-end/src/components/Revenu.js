@@ -15,7 +15,10 @@ export default function Revenu() {
     month: "2-digit",
     day: "2-digit",
   };
-  const revenusData = GetRevenus();
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  const revenusData = GetRevenus(year, month);
 
   const { user } = useUser();
 
@@ -36,7 +39,7 @@ export default function Revenu() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer ce revenu ?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -66,9 +69,49 @@ export default function Revenu() {
   return (
     <div className="d-flex h-100">
       <Toaster position="top-right" />
-      <Menu />
+      <Menu print={"noPrin"} />
       <Main>
+        <div style={{ display: "none" }} className="Print">
+          <img src="/Assets/aquamanage.svg" alt="" width={100} />
+          <div className="mt-2 mb-2 d-flex align-items-center gap-2">
+            <img src="/Assets/company.png" alt="name" width={15} />
+            <span >{user.companyId}</span>
+          </div>
+        </div>
         <h3 className="fw-bold mb-4">Liste des revenus :</h3>
+        <form className="m-1 d-flex align-items-center gap-2 mb-3">
+          <label className="fw-bold noPrin">Filtrer les revenus </label>
+          <div>
+            <input
+              type="number"
+              className="p-2 pt-0 pb-0"
+              max={12}
+              min={1}
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              placeholder={`${month}`}
+            />
+            <span> / </span>
+            <input
+              type="text"
+              className="p-2 pt-0 pb-0"
+              name="year"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              placeholder={`${year}`}
+            />
+          </div>
+        </form>
+        <div className="mb-3 m-1 noPrin">
+          <button
+            className="btn btn-dark p-3 pt-1 pb-1 fw-bold"
+            onClick={() => window.print()}
+          >
+            <i style={{marginRight:"10px"}} className="bi bi-printer"></i>
+            Imprimer les revenus de {month} / {year}
+          </button>
+        </div>
         {revenus === "loading" ? (
           <div className="centerDiv w-100">
             <Loading />
@@ -85,7 +128,9 @@ export default function Revenu() {
                   <th>Designation</th>
                   <th>Montant</th>
                   <th>Date revenus</th>
-                  <th colSpan={3}>Actions</th>
+                  <th className="noPrin" colSpan={3}>
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +175,19 @@ export default function Revenu() {
                             {revenu._id}
                           </span>
                         </td>
-                        <td>{revenu.designation}</td>
+                        <td>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "120px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {revenu.designation}
+                          </span>
+                        </td>
                         <td>{revenu.montant} Dh</td>
                         <td>
                           {new Date(revenu.dateRevenu).toLocaleDateString(
@@ -144,7 +201,7 @@ export default function Revenu() {
                         </td>
                         {user.function === "Employer"
                           ? user.crudAccess.revenus.mod && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   method="put"
                                   action={`/revenus/update-revenu/${revenu._id}`}
@@ -159,7 +216,7 @@ export default function Revenu() {
                               </td>
                             )
                           : user.function === "Admin" && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   method="put"
                                   action={`/revenus/update-revenu/${revenu._id}`}
@@ -175,7 +232,7 @@ export default function Revenu() {
                             )}
                         {user.function === "Employer"
                           ? user.crudAccess.revenus.dlt && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   onSubmit={(e) =>
                                     handleDeleterevenu(e, revenu)
@@ -191,7 +248,7 @@ export default function Revenu() {
                               </td>
                             )
                           : user.function === "Admin" && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   onSubmit={(e) =>
                                     handleDeleterevenu(e, revenu)
@@ -215,7 +272,7 @@ export default function Revenu() {
             {user.function === "Employer"
               ? user.crudAccess.revenus.add && (
                   <div
-                    className="centerDiv p-2 rounded"
+                    className="centerDiv p-2 rounded noPrin"
                     colSpan={8}
                     style={{
                       border: "1px dashed lightgray",
@@ -238,7 +295,7 @@ export default function Revenu() {
                 )
               : user.function === "Admin" && (
                   <div
-                    className="centerDiv p-2 rounded"
+                    className="centerDiv p-2 rounded noPrin"
                     colSpan={8}
                     style={{
                       border: "1px dashed lightgray",

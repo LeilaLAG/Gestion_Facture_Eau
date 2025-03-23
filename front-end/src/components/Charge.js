@@ -10,12 +10,16 @@ import GetCharges from "../hooks/GetCharges";
 import { useUser } from "../Auth/ProtectedRoute";
 
 export function Charge() {
-  let chargesData = GetCharges();
   const DateConfig = {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   };
+
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  let chargesData = GetCharges(year, month);
 
   const { user } = useUser();
 
@@ -36,7 +40,7 @@ export function Charge() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer cette charge ?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -66,9 +70,49 @@ export function Charge() {
   return (
     <div className="d-flex h-100">
       <Toaster position="top-right" />
-      <Menu />
+      <Menu print={"noPrin"} />
       <Main>
+        <div style={{ display: "none" }} className="Print">
+          <img src="/Assets/aquamanage.svg" alt="" width={100} />
+          <div className="mt-2 mb-2 d-flex align-items-center gap-2">
+            <img src="/Assets/company.png" alt="name" width={15} />
+            <span>{user.companyId}</span>
+          </div>
+        </div>
         <h3 className="fw-bold mb-4">Liste des charges :</h3>
+        <form className="m-1 d-flex align-items-center gap-2 mb-3">
+          <label className="fw-bold noPrin">Filtrer les charges </label>
+          <div>
+            <input
+              type="number"
+              className="p-2 pt-0 pb-0"
+              max={12}
+              min={1}
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              placeholder={`${month}`}
+            />
+            <span> / </span>
+            <input
+              type="text"
+              className="p-2 pt-0 pb-0"
+              name="year"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              placeholder={`${year}`}
+            />
+          </div>
+        </form>
+        <div className="mb-3 m-1 noPrin">
+          <button
+            className="btn btn-dark p-3 pt-1 pb-1 fw-bold"
+            onClick={() => window.print()}
+          >
+            <i style={{marginRight:"10px"}} className="bi bi-printer"></i>
+            Imprimer les charges de {month} / {year}
+          </button>
+        </div>
         {charges === "loading" ? (
           <div className="centerDiv w-100">
             <Loading />
@@ -84,10 +128,12 @@ export function Charge() {
                   <th>N°</th>
                   <th>Designation</th>
                   <th>Montant en Dh</th>
-                  <th>Date Generation</th>
+                  <th className="noPrin">Date Generation</th>
                   <th>Date Paiment</th>
                   <th>Responsable</th>
-                  <th colSpan={3}>Actions</th>
+                  <th className="noPrin" colSpan={3}>
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -132,9 +178,21 @@ export function Charge() {
                             {charge._id}
                           </span>
                         </td>
-                        <td>{charge.designation}</td>
-                        <td>{charge.montant} Dh</td>
                         <td>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "120px",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {charge.designation}
+                          </span>
+                        </td>
+                        <td>{charge.montant} Dh</td>
+                        <td className="noPrin">
                           {new Date(charge.dateGeneration).toLocaleDateString(
                             "eu",
                             {
@@ -153,7 +211,7 @@ export function Charge() {
                         <td>{charge.responsable}</td>
                         {user.function === "Employer"
                           ? user.crudAccess.charges.mod && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   method="put"
                                   action={`/charges/update-charge/${charge._id}`}
@@ -168,7 +226,7 @@ export function Charge() {
                               </td>
                             )
                           : user.function === "Admin" && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   method="put"
                                   action={`/charges/update-charge/${charge._id}`}
@@ -184,7 +242,7 @@ export function Charge() {
                             )}
                         {user.function === "Employer"
                           ? user.crudAccess.charges.dlt && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   onSubmit={(e) =>
                                     handleDeleteCharge(e, charge)
@@ -200,7 +258,7 @@ export function Charge() {
                               </td>
                             )
                           : user.function === "Admin" && (
-                              <td>
+                              <td className="noPrin">
                                 <form
                                   onSubmit={(e) =>
                                     handleDeleteCharge(e, charge)
@@ -224,7 +282,7 @@ export function Charge() {
             {user.function === "Employer"
               ? user.crudAccess.charges.add && (
                   <div
-                    className="centerDiv p-2 rounded"
+                    className="centerDiv p-2 rounded noPrin"
                     colSpan={8}
                     style={{
                       border: "1px dashed lightgray",
@@ -247,7 +305,7 @@ export function Charge() {
                 )
               : user.function === "Admin" && (
                   <div
-                    className="centerDiv p-2 rounded"
+                    className="centerDiv p-2 rounded noPrin"
                     colSpan={8}
                     style={{
                       border: "1px dashed lightgray",

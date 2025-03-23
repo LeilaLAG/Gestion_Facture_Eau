@@ -52,7 +52,7 @@ export default function LogIn() {
       <Toaster position="top-right" />
       <div className="LoginFormCOntainer h-100 d-flex justify-content-around">
         <div style={{height : "100dvh" , zIndex:'-1' }}>
-          <img src="Assets/loginImg1.jpg" alt="" />
+          <img src="/Assets/loginImg1.jpg" alt="" />
         </div>
         <form
         method="POST"
