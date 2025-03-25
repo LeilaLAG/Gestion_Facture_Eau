@@ -19,10 +19,22 @@ import AddEmployee from "./components/AddEmployee";
 import PrintFacture from "./components/PrintFacture";
 import Tranches from "./components/Tranches";
 import Accueil from "./components/Accueil";
+import About from "./components/About";
+import ApplicationContact from "./components/ApplicationContact";
+
 function App() {
   return (
     <div className="App">
+      
       <Routes>
+      <Route 
+      path="/about" 
+      element={<About />} 
+      />
+      <Route 
+      path="/application-Contact" 
+      element={<ApplicationContact />} 
+      />
         {/* authentication -------------------------------------------- */}
         <Route path="/log-in" element={<LogIn />} />
 

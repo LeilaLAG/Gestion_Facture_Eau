@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the required components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page, clients , factures}) => {
+const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page, clients  }) => {
 
     let data = {}
     let options = {}
@@ -49,23 +49,8 @@ const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page, clie
         ],
       };
      }
-
-     else if(page==="factureHome"){
-      data = {
-        labels: ["Payé", "Non Payé", ]
-        ,
-        datasets: [
-          {
-            label: "les factures payé Non payé",
-            data: factures,
-            backgroundColor: "rgba(26, 141, 218, 0.6)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-        ],
-      };
-     }
-
+ 
+    
   return <Bar data={data} options={options} />;
 };
 

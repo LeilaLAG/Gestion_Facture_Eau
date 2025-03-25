@@ -86,6 +86,7 @@ export default function Menu() {
         title="Réduire le menu"
       >
         {!showMenu ? <i class="bi bi-list"></i> : <i class="bi bi-x-lg"></i>}
+
       </button>
       {showMenu ? (
         <div id="menuContent">
@@ -257,19 +258,22 @@ export default function Menu() {
                     {ActiveTranche.error ? (
                       <div className="ActiveTranche badge bg_red_button badge rounded-pill">
                         <div className="centerDiv gap-1">
-                          <i class="bi bi-exclamation-circle"></i>
+                          <i className="bi bi-exclamation-circle"></i>
+
                           <p className="m-0">{ActiveTranche.error}</p>
                         </div>
                       </div>
                     ) : (
                       <div className="ActiveTranche badge bg_blue_button badge rounded-pill">
                         <div className="centerDiv gap-1">
-                          <i class="bi bi-check-all"></i>
+                          <i className="bi bi-check-all"></i>
+
                           <p className="m-0">{ActiveTranche.nameTranche}</p>
                           <Tooltip
                             text={`Prix: ${ActiveTranche.prix}Dh . Max-tonnage: ${ActiveTranche.maxTonnage}m³`}
                           >
-                            <i class="bi bi-info-circle"></i>
+                                      <i className="bi bi-info-circle"></i>
+
                           </Tooltip>
                           <a href="/tranches" className="text-light fw-light">
                             ( Voir vos tranches )

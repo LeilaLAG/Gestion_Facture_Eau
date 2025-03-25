@@ -1,8 +1,11 @@
 import React from "react";
+import NavBar from "./NavBar"; 
 import "../style/acceueil.css";
+
 export default function Accueil() {
   return (
     <section className="hero" style={{ flexDirection: "column" }}>
+      <NavBar /> {/* Adding the NavBar component */}
       <div className="content" style={{ flexDirection: "column" }}>
         <img
           src="/Assets/aquamanage.svg"

@@ -6,33 +6,32 @@ import { Toaster } from "react-hot-toast";
 import ErrorMsg from "../costumComponents/ErrorMsg";
 import GetClients from "../hooks/GetClients";
 import BarChart from "../costumComponents/Chart";
-import GetFactures from "../hooks/GetFactures";
+import DoughnutChart from "../costumComponents/DoughnutChart";
 
+import GetFactures from "../hooks/GetFactures";
 
 export default function Home() {
   const { user } = useUser();
 
-  const factures = GetFactures(new Date().getFullYear(),"" ) ;
+  const factures = GetFactures(new Date().getFullYear(), "" );
   const facturesPerMonth = () => {
     const ftPerMonth = [];
     if (factures !== "loading") {
       ftPerMonth.push(
         factures.filter(
-          (facture) => facture.painementStatus==="Payée"
+          (facture) => facture.painementStatus === "Payée"
         ).length
       );
       ftPerMonth.push(
         factures.filter(
-          (facture) => facture.painementStatus==="Non payée"
+          (facture) => facture.painementStatus === "Non payée"
         ).length
       );
     }
 
     return ftPerMonth;
   };
-  //console.log(facturesPerMonth());
-  console.log (factures!== "loading" &&factures 
-   )
+  console.log(facturesPerMonth());
   
   const clients = GetClients();
   const clientsPerMonth = () => {
@@ -62,7 +61,7 @@ export default function Home() {
             {user.function === "Admin" ? (
               <div>
                 <BarChart clients={clientsPerMonth()} page={"home"} />
-                <BarChart factures={facturesPerMonth()} page={"factureHome"} />
+                <DoughnutChart facture={facturesPerMonth()} />
               </div>
             ) : (
               user.function === "Employer" && (
@@ -96,12 +95,12 @@ export default function Home() {
                           <div className="centerDiv gap-2 mt-1">
                             {user.crudAccess.clients.add && (
                               <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i class="bi bi-plus-circle" title="Ajout"></i>
+                                <i className="bi bi-plus-circle" title="Ajout"></i>
                               </div>
                             )}
                             {user.crudAccess.clients.mod && (
                               <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i class="bi bi-pen" title="Modification"></i>
+                                <i className="bi bi-pen" title="Modification"></i>
                               </div>
                             )}
                             {user.crudAccess.clients.dlt && (
@@ -127,12 +126,12 @@ export default function Home() {
                           <div className="centerDiv gap-2 mt-1">
                             {user.crudAccess.compteurs.add && (
                               <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i class="bi bi-plus-circle" title="Ajout"></i>
+                                <i className="bi bi-plus-circle" title="Ajout"></i>
                               </div>
                             )}
                             {user.crudAccess.compteurs.mod && (
                               <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i class="bi bi-pen" title="Modification"></i>
+                                <i className="bi bi-pen" title="Modification"></i>
                               </div>
                             )}
                             {user.crudAccess.compteurs.dlt && (
@@ -158,12 +157,12 @@ export default function Home() {
                           <div className="centerDiv gap-2 mt-1">
                             {user.crudAccess.factures.add && (
                               <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i class="bi bi-plus-circle" title="Ajout"></i>
+                                <i className="bi bi-plus-circle" title="Ajout"></i>
                               </div>
                             )}
                             {user.crudAccess.factures.mod && (
                               <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i class="bi bi-pen" title="Modification"></i>
+                                <i className="bi bi-pen" title="Modification"></i>
                               </div>
                             )}
                             {user.crudAccess.factures.dlt && (
