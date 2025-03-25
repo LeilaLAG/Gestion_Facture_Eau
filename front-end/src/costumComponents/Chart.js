@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the required components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page}) => {
+const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page, clients , factures}) => {
 
     let data = {}
     let options = {}
@@ -23,6 +23,7 @@ const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page}) => 
             },
           ],
         };
+        
       
         options = {
           responsive: true,
@@ -32,6 +33,38 @@ const BarChart = ({lastClientBillsConsomation , lastClientBillsDate , page}) => 
         };
         
     }
+
+     else if(page==="home"){
+      data = {
+        labels: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+        ,
+        datasets: [
+          {
+            label: "les clients creer par mois",
+            data: clients,
+            backgroundColor: "rgba(26, 141, 218, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+     }
+
+     else if(page==="factureHome"){
+      data = {
+        labels: ["Payé", "Non Payé", ]
+        ,
+        datasets: [
+          {
+            label: "les factures payé Non payé",
+            data: factures,
+            backgroundColor: "rgba(26, 141, 218, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+     }
 
   return <Bar data={data} options={options} />;
 };

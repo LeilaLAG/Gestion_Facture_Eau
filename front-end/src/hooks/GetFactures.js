@@ -20,7 +20,7 @@ export default function GetFactures(year , month) {
         })
         .catch((err) => {
           setLoading(false);
-          setFacture([{ error: "Un problem est servenue!" }]);
+          setFacture([{ error:err }]);
         });
     }
 
