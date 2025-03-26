@@ -15,8 +15,6 @@ export default function Home() {
       <Main>
         <div className="centerDiv w-100 h-100">
           <div className="">
-            {/* <img src="/Assets/home.png" alt="home" width={50} />
-            <h2 className="mt-2">Bienvenue sur la page d'accueil</h2> */}
             {user.function === "Employer" && (
               <div className="">
                 <p className="fs-4 fw-bold">

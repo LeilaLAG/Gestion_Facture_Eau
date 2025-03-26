@@ -57,50 +57,55 @@ export default function Caisse() {
     const printWindow = window.open("", "", "width=800,height=600");
 
     const tableRows = clients
-      .map(
-        (client) =>
+      .map(function(client){
+        if (
           typeFacture.find((bill) => bill.numClient === client.numClient) !==
-            undefined &&
-          `
-          <tr>
-            <td>${
-              typeFacture.find(
-                (bill) => bill.numClient === client.numClient
-              ) !== undefined
-                ? typeFacture.find(
-                    (bill) => bill.numClient === client.numClient
-                  ).numCompteur
-                : "-"
-            }</td>
-            <td>${client.numClient}</td>
-            <td>${client.nameClient}</td>
-            <td>${
-              typeFacture === factureNonPaye
-                ? typeFacture.filter(
-                    (bill) => bill.numClient === client.numClient
-                  ).length
-                : typeFacture === facturePaye
-                ? new Date(
-                    typeFacture.find(
+          undefined
+        ) {
+          return `
+            <tr>
+              <td>${
+                typeFacture.find(
+                  (bill) => bill.numClient === client.numClient
+                ) !== undefined
+                  ? typeFacture.find(
                       (bill) => bill.numClient === client.numClient
-                    ).datePainement
-                  ).toLocaleDateString("eu", DateConfig)
-                : typeFacture.find(
-                    (bill) => bill.numClient === client.numClient
-                  ).painementStatus
-            }</td>
-            <td>
-              ${typeFacture.reduce(
-                (total, bill) =>
-                  bill.numClient === client.numClient
-                    ? total + bill.totalFacture
-                    : total,
-                0
-              )} Dh
-            </td>
-          </tr>
-        `
-      )
+                    ).numCompteur
+                  : "-"
+              }</td>
+              <td>${client.numClient}</td>
+              <td>${client.nameClient}</td>
+              <td>${
+                typeFacture === factureNonPaye
+                  ? typeFacture.filter(
+                      (bill) => bill.numClient === client.numClient
+                    ).length
+                  : typeFacture === facturePaye
+                  ? new Date(
+                      typeFacture.find(
+                        (bill) => bill.numClient === client.numClient
+                      ).datePainement
+                    ).toLocaleDateString("eu", DateConfig)
+                  : typeFacture.find(
+                      (bill) => bill.numClient === client.numClient
+                    ).painementStatus
+              }</td>
+              <td>
+                ${typeFacture.reduce(
+                  (total, bill) =>
+                    bill.numClient === client.numClient
+                      ? total + bill.totalFacture
+                      : total,
+                  0
+                )} Dh
+              </td>
+            </tr>
+          `;
+        }
+        else{
+          return ""
+        }
+      })
       .join("");
 
     // Write the table HTML into the new window's document
@@ -131,27 +136,31 @@ export default function Caisse() {
           </style>
         </head>
         <body>
-        <h2>${
-          typeFacture === factureNonPaye
-            ? "Liste des factures non payées"
-            : typeFacture === facturePaye
-            ? "Liste des revenus de factures"
-            : "Liste des factures"
-        }</h2>
-        <div>
-          <img src="/Assets/aquamanage.svg" alt="" width="100" />
-          <div className="mt-2 mb-2 d-flex align-items-center gap-2">
-            <img src="/Assets/company.png" alt="name" width={15} />
-            <span>${user.companyId}</span>
+        
+        <div style="margin-bottom : 20px">
+          <h2>${
+            typeFacture === factureNonPaye
+              ? "Liste des factures non payées"
+              : typeFacture === facturePaye
+              ? "Liste des revenus de factures"
+              : "Liste des factures"
+          }</h2>
+          <div>
+            <img src="/Assets/aquamanage.svg" alt="" width="100" />
+            <div className="mt-2 mb-2 d-flex align-items-center gap-2">
+              <img src="/Assets/company.png" alt="name" width={15} />
+              <span>${user.companyId}</span>
+            </div>
           </div>
         </div>
-        <p>${
-          typeFacture === allFactures || typeFacture === facturePaye
-            ? month + " / " + year
-            : ""
-        }</p>
+        
           <table>
             <thead>
+              <tr>${
+                typeFacture === allFactures || typeFacture === facturePaye
+                  ? month + " / " + year
+                  : ""
+              }</tr>
               <tr>
                 <th>Numero de compteur</th>
                 <th>Numero de client</th>

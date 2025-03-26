@@ -82,7 +82,7 @@ export function Charge() {
         <h3 className="fw-bold mb-4">Liste des charges :</h3>
         <form className="m-1 d-flex align-items-center gap-2 mb-3">
           <label className="fw-bold noPrin">Filtrer les charges </label>
-          <div>
+          <div className="noPrin">
             <input
               type="number"
               className="p-2 pt-0 pb-0"
@@ -109,7 +109,7 @@ export function Charge() {
             className="btn btn-dark p-3 pt-1 pb-1 fw-bold"
             onClick={() => window.print()}
           >
-            <i style={{marginRight:"10px"}} className="bi bi-printer"></i>
+            <i style={{ marginRight: "10px" }} className="bi bi-printer"></i>
             Imprimer les charges de {month} / {year}
           </button>
         </div>
@@ -124,6 +124,12 @@ export function Charge() {
               style={{ verticalAlign: "middle" }}
             >
               <thead>
+                <tr
+                  style={{ display: "none", width: "100%" }}
+                  className="Print border border-0"
+                >
+                  {month} / {year}
+                </tr>
                 <tr>
                   <th>N°</th>
                   <th>Designation</th>

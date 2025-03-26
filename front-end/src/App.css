@@ -8,6 +8,7 @@
 .color_blue_text {
   color: #0080cb;
 }
+
 .color_blue_text:hover {
   color: #00509a;
 }
@@ -15,6 +16,7 @@
 .color_red_text {
   color: #f7568d;
 }
+
 .color_red_text:hover {
   color: #fe206a;
 }
@@ -23,6 +25,7 @@
   background-color: #7bcdfd;
   transition: 0.3s;
 }
+
 .bg_blue:hover {
   background-color: #3398f6;
 }
@@ -37,6 +40,7 @@
   transition: 0.3s background-color;
   text-decoration: none;
 }
+
 .bg_blue_button:hover {
   background-color: #006acb;
 }
@@ -51,6 +55,7 @@
   transition: 0.3s background-color;
   text-decoration: none;
 }
+
 .bg_red_button:hover {
   background-color: #fe3175;
 }
@@ -70,6 +75,7 @@
     width: 75%;
   }
 }
+
 @media screen and (max-width: 740px) {
   .AddModForms {
     width: 100%;
@@ -80,16 +86,23 @@
   .noPrin {
     display: none;
   }
+
+  .Main {
+    overflow: visible !important;
+  }
+
   .Print {
     display: block !important;
   }
+
   .billToPrint,
   .billsToPrint {
     width: 100% !important;
   }
 
   .billsToPrint {
-    page-break-before: always; /* Start each bill on a new page */
+    page-break-before: always;
+    /* Start each bill on a new page */
     break-before: page;
     height: 70%;
   }
