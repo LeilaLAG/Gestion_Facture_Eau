@@ -54,7 +54,7 @@ export const BarChart = ({
     };
   } else if (page === "caisse") {
     data = {
-      labels: ["revenus", "charges", "facture payées", "facture non payées"],
+      labels: ["revenus", "charges", "facture payées", "facture non payées" , "credits payés"],
       datasets: [
         {
           data: caisse,
@@ -81,19 +81,20 @@ export const BarChart = ({
   return <Bar height={height} data={data} options={options} />;
 };
 
-export const PieChart = ({ page, allRevenu }) => {
+export const PieChart = ({ width, page, allRevenu }) => {
   let data = {};
   let options = {};
 
   if (page === "caisse") {
     data = {
-      labels: ["revenus", "facture payées"],
+      labels: ["revenus", "facture payées" , "credit payés"],
       datasets: [
         {
           data: allRevenu,
           backgroundColor: [
             "rgba(150, 195, 44, 0.8)",
             "rgba(107, 110, 243, 0.8)",
+            "rgba(243, 132, 107, 0.8)",
           ],
         },
       ],
@@ -107,5 +108,5 @@ export const PieChart = ({ page, allRevenu }) => {
     };
   }
 
-  return <Pie data={data} options={options} />;
+  return <Pie width={width} data={data} options={options} />;
 };

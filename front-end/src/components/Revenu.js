@@ -118,6 +118,53 @@ export default function Revenu() {
           </div>
         ) : (
           <div className="pb-2" style={{ overflowX: "auto" }}>
+            {user.function === "Employer"
+              ? user.crudAccess.revenus.add && (
+                  <div
+                    className="centerDiv p-2 mb-1 rounded noPrin"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/revenus/add-revenu"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter un nouvel revenu</span>
+                      </p>
+                    </a>
+                  </div>
+                )
+              : user.function === "Admin" && (
+                  <div
+                    className="centerDiv p-2 mb-1 rounded noPrin"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/revenus/add-revenu"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter un nouvel revenu</span>
+                      </p>
+                    </a>
+                  </div>
+                )}
             <table
               className="table table-bordered text-center w-100 mb-1"
               style={{ verticalAlign: "middle" }}
@@ -275,53 +322,6 @@ export default function Revenu() {
                 )}
               </tbody>
             </table>
-            {user.function === "Employer"
-              ? user.crudAccess.revenus.add && (
-                  <div
-                    className="centerDiv p-2 rounded noPrin"
-                    colSpan={8}
-                    style={{
-                      border: "1px dashed lightgray",
-                      backgroundColor: "#f7f7f7",
-                    }}
-                  >
-                    <a
-                      href="/revenus/add-revenu"
-                      className="centerDiv gap-2 fs-5 text-success"
-                    >
-                      <i className="bi bi-plus-circle"></i>
-                      <p
-                        className="m-0 text-dark centerDiv gap-2"
-                        style={{ opacity: ".7", fontSize: "13px" }}
-                      >
-                        <span>Ajouter un nouvel revenu</span>
-                      </p>
-                    </a>
-                  </div>
-                )
-              : user.function === "Admin" && (
-                  <div
-                    className="centerDiv p-2 rounded noPrin"
-                    colSpan={8}
-                    style={{
-                      border: "1px dashed lightgray",
-                      backgroundColor: "#f7f7f7",
-                    }}
-                  >
-                    <a
-                      href="/revenus/add-revenu"
-                      className="centerDiv gap-2 fs-5 text-success"
-                    >
-                      <i className="bi bi-plus-circle"></i>
-                      <p
-                        className="m-0 text-dark centerDiv gap-2"
-                        style={{ opacity: ".7", fontSize: "13px" }}
-                      >
-                        <span>Ajouter un nouvel revenu</span>
-                      </p>
-                    </a>
-                  </div>
-                )}
           </div>
         )}
       </Main>

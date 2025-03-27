@@ -80,6 +80,87 @@ export default function Credit() {
   //     }
   //   });
   // }
+ 
+  const printCreditList = (id) => {
+    // Create a new window
+    const printWindow = window.open("", "", "width=800,height=600");
+
+    const tableRows = credits
+    .filter(c=>c.numCompteur === id)
+      .map(function(credit){
+          return `
+            <tr>
+              <td>${credit.montantPaye}</td>
+              <td>${new Date(
+                credit.datePaiement
+              ).toLocaleDateString("eu", DateConfig)}</td>
+            </tr>
+          `;
+      })
+      .join("");
+
+    // Write the table HTML into the new window's document
+    printWindow.document.write(`
+        <html>
+        <head>
+          <title>Liste des crédits</title>
+          <style>
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th, td {
+              border: 1px solid black;
+              padding: 8px;
+              text-align: center;
+            }
+            th {
+              background-color: #f2f2f2;
+              text-align: center;
+            }
+          </style>
+        </head>
+        <body>
+        
+        <div style="margin-bottom : 20px">
+          <h2>Liste des crédits</h2>
+          <div>
+            <img src="/Assets/aquamanage.svg" alt="" width="100" />
+            <div className="mt-2 mb-2 d-flex align-items-center gap-2">
+              <img src="/Assets/company.png" alt="name" width={15} />
+              <span>${user.companyId}</span>
+            </div>
+          </div>
+        </div>
+        
+          <table>
+            <thead>
+              <tr>
+              Numéro de compteur
+              ${id}
+              </tr>
+              <tr>
+                <th>Montant payé</th>
+                <th>Date de paiement</th>
+              </tr>
+            </thead>
+            <tbody>
+             ${tableRows}
+            </tbody>
+          </table>
+        </body>
+        </html>
+      `);
+
+    // Close the document to finish rendering
+    printWindow.document.close();
+
+    // Wait a bit and then trigger the print
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 500);
+  };
 
   return (
     <div className="d-flex h-100">
@@ -185,6 +266,10 @@ export default function Credit() {
                             <img src="/Assets/compteur.png" alt="" width={18} />
                             {compteur.numCompteur}
                           </span>
+                          <button className="btn btn-dark p-3 pt-1 pb-1" onClick={()=>printCreditList(compteur.numCompteur)}>
+                            <i style={{ marginRight: "10px" }} className="bi bi-printer"></i>
+                            Imprimer la liste des crédits
+                          </button>
                           <div style={{marginRight:'10px'}}>
                             {compteur.credit} Dh
                           </div>
@@ -207,9 +292,8 @@ export default function Credit() {
                           <thead>
                             <tr>
                               <th>N°</th>
-                              {/* <th>Credit à payé</th> */}
-                              <th>montantPaye</th>
-                              <th>datePaiement</th>
+                              <th>Montant payé</th>
+                              <th>Date paiement</th>
                               <th colSpan={2}>Actions</th>
                             </tr>
                           </thead>
@@ -258,11 +342,6 @@ export default function Credit() {
                                   ) : (
                                     <tr key={i}>
                                       <td>{credit._id}</td>
-                                      {/* <td>
-                                        {credit.numCompteur ===
-                                          compteur.numCompteur &&
-                                          compteur.credit}
-                                      </td> */}
                                       <td>{credit.montantPaye} Dh</td>
                                       <td>
                                         {new Date(

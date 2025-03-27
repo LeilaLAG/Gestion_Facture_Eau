@@ -2,6 +2,7 @@ const Revenu = require("../models/Revenu");
 const Charge = require("../models/Charge");
 const Facture = require("../models/Facture");
 const Client = require("../models/Client");
+const Credit = require("../models/Credit");
 
 async function caisseStats(req, res) {
   const { companyId } = req.params;
@@ -19,7 +20,7 @@ async function caisseStats(req, res) {
     return filter;
   }
 
-  const [revenuStats, chargeStats, factureStats , unpaidFactureStats , allFactures , factureNonPaye , facturePaye , clients] = await Promise.all([
+  const [revenuStats, chargeStats, factureStats , unpaidFactureStats , allFactures , factureNonPaye , facturePaye , creditsPaye ,  clients] = await Promise.all([
     Revenu.aggregate([
       { $match: filterCaisseData("$dateRevenu") },
       { $group: { _id: null, total: { $sum: "$montant" } } },
@@ -50,6 +51,11 @@ async function caisseStats(req, res) {
       { $match: filterCaisseData("$dateFacture") },
       { $match: { painementStatus: "Payée" } },
     ]),
+
+    Credit.aggregate([
+      { $match: filterCaisseData("$datePaiement") },
+      { $group: { _id: null, total: { $sum: "$montantPaye" } } },
+    ]),
     
     Client.find({companyId}),
   ]);
@@ -62,6 +68,7 @@ async function caisseStats(req, res) {
     allFactures : allFactures,
     factureNonPaye : factureNonPaye,
     facturePaye : facturePaye,
+    creditsPaye : creditsPaye.length ? creditsPaye[0].total : 0,
     clients : clients
   });
 }

@@ -18,6 +18,7 @@ export default function Caisse() {
   const [charge, setCharge] = useState(0);
   const [facture, setFacture] = useState(0);
   const [unpaidFacture, setUnpaidFacture] = useState(0);
+  const [creditsPaye, setcreditsPaye] = useState(0);
 
   const [allFactures, setAllFactures] = useState([]);
   const [factureNonPaye, setFactureNonPaye] = useState([]);
@@ -43,6 +44,7 @@ export default function Caisse() {
         setAllFactures(res.data.allFactures);
         setFactureNonPaye(res.data.factureNonPaye);
         setFacturePaye(res.data.facturePaye);
+        setcreditsPaye(res.data.creditsPaye);
         setClients(res.data.clients);
       })
       .catch((err) =>
@@ -57,7 +59,7 @@ export default function Caisse() {
     const printWindow = window.open("", "", "width=800,height=600");
 
     const tableRows = clients
-      .map(function(client){
+      .map(function (client) {
         if (
           typeFacture.find((bill) => bill.numClient === client.numClient) !==
           undefined
@@ -101,9 +103,8 @@ export default function Caisse() {
               </td>
             </tr>
           `;
-        }
-        else{
-          return ""
+        } else {
+          return "";
         }
       })
       .join("");
@@ -204,12 +205,15 @@ export default function Caisse() {
             <span>{user.companyId}</span>
           </div>
         </div>
-        <h3 className="fw-bold mb-4">La caisse :</h3>
+        <div className="d-flex justify-content-between">
+          <h3 className="fw-bold mb-3">La caisse :</h3>
+          <h5 style={{display:"none"}} className="Print">{month +"/"+ year}</h5>
+        </div>
         <form className="m-1 d-flex align-items-center gap-2 mb-2">
           <label className="fw-bold noPrin">
             Filtrer les données de la caisse{" "}
           </label>
-          <div>
+          <div className="noPrin">
             <input
               type="number"
               className="p-2 pt-0 pb-0"
@@ -231,6 +235,7 @@ export default function Caisse() {
             />
           </div>
         </form>
+        
         <div className="mt-2 mb-2 m-1 noPrin">
           <div>
             <button
@@ -285,6 +290,12 @@ export default function Caisse() {
                 textSize="20px"
               />
               <Card
+                text={creditsPaye + " Dh"}
+                title={"credits payées"}
+                icon={"/Assets/compteurs.png"}
+                textSize="20px"
+              />
+              <Card
                 text={unpaidFacture + " Dh"}
                 title={"factures non payées"}
                 icon={"/Assets/factures.png"}
@@ -313,12 +324,15 @@ export default function Caisse() {
                   Avancement de la caisse
                 </span>
                 <BarChart
-                  caisse={[revenu, charge, facture, unpaidFacture]}
+                  caisse={[revenu, charge, facture, unpaidFacture, creditsPaye]}
                   page={"caisse"}
                 />
               </div>
-              <div style={{ width: "35%" }}>
-                <PieChart allRevenu={[revenu, facture]} page={"caisse"} />
+              <div style={{ width: "30%" }}>
+                <PieChart
+                  allRevenu={[revenu, facture, creditsPaye]}
+                  page={"caisse"}
+                />
                 <span
                   className="text-center w-100"
                   style={{ fontSize: "13px", display: "inline-block" }}

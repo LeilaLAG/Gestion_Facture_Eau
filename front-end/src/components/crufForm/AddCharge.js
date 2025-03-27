@@ -42,7 +42,7 @@ export default function AddCharge({ onChangeInfo }) {
           className="form-control"
           onChange={onChangeInfo}
         >
-          <option value=""></option>
+          <option value="">Choisir un responsable</option>
           {employers !== "loading" &&
             employers.map((emp, i) => (
               <option key={i} value={emp.fullName}>
