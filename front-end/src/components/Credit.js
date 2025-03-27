@@ -81,30 +81,6 @@ export default function Credit() {
   //   });
   // }
 
-  // filtring --------------------------------------------------------
-  // const [filterParams, setFilterParams] = useState({
-  //   namecompteur: "",
-  // });
-
-  // function handleFilterParams(e) {
-  //   setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
-  // }
-
-  // function handleSubmitFilter(e) {
-  //   e.preventDefault();
-
-  //   setcompteurs(compteurData);
-
-  //   const { namecompteur } = filterParams;
-
-  //   if (namecompteur !== "") {
-  //     setcompteurs((prev) =>
-  //       prev.filter((compteur) => compteur.namecompteur === namecompteur)
-  //     );
-  //     return
-  //   }
-  // }
-
   return (
     <div className="d-flex h-100">
       {/* <Toaster position="top-right" /> */}
@@ -160,28 +136,6 @@ export default function Credit() {
           </div>
         ) : (
           <div className="pb-2">
-            {/* <article
-              style={{ position: "sticky", top: "0%", zIndex: 10 }}
-              className="pt-2 pb-2 bg-white accordion"
-            >
-              <FilterData
-                page="compteur"
-                onSubmitFilter={(e) => handleSubmitFilter(e)}
-                onChangeFilter={(e) => handleFilterParams(e)}
-              />
-              <div className="d-flex align-items-center gap-4 pt-2 pb-0">
-                <div className="d-flex align-items-center gap-2">
-                  <span className="fw-bold">Nombre totale des compteurs :</span>
-                  <img
-                    src="/Assets/compteurs.png"
-                    alt="compteur count"
-                    width={20}
-                    title="Nombre totale de compteurs"
-                  />
-                  <span className="fw-bold">{compteurs.length}</span>
-                </div>
-              </div>
-            </article> */}
             {compteurs.length <= 0 ? (
               <div className="mt-5">
                 <ErrorMsg
@@ -231,6 +185,9 @@ export default function Credit() {
                             <img src="/Assets/compteur.png" alt="" width={18} />
                             {compteur.numCompteur}
                           </span>
+                          <div style={{marginRight:'10px'}}>
+                            {compteur.credit} Dh
+                          </div>
                         </div>
                       </button>
                     </h2>
@@ -250,7 +207,7 @@ export default function Credit() {
                           <thead>
                             <tr>
                               <th>N°</th>
-                              <th>Credit à payé</th>
+                              {/* <th>Credit à payé</th> */}
                               <th>montantPaye</th>
                               <th>datePaiement</th>
                               <th colSpan={2}>Actions</th>
@@ -301,12 +258,12 @@ export default function Credit() {
                                   ) : (
                                     <tr key={i}>
                                       <td>{credit._id}</td>
-                                      <td>
+                                      {/* <td>
                                         {credit.numCompteur ===
                                           compteur.numCompteur &&
                                           compteur.credit}
-                                      </td>
-                                      <td>{credit.montantPaye}</td>
+                                      </td> */}
+                                      <td>{credit.montantPaye} Dh</td>
                                       <td>
                                         {new Date(
                                           credit.datePaiement

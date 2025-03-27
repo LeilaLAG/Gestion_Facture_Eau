@@ -12,13 +12,15 @@ export default function AddCredit({ onChangeInfo }) {
           className="form-control"
           onChange={onChangeInfo}
         >
-          <option value=""></option>
+          <option value="">Choisir un compteur</option>
           {comps !== "loading" &&
-            comps.map((c, i) => (
-              <option key={i} value={c.numCompteur}>
-                {c.numCompteur}
-              </option>
-            ))}
+            comps
+              .filter((c) => c.credit > 0)
+              .map((c, i) => (
+                <option key={i} value={c.numCompteur}>
+                  {c.numCompteur}
+                </option>
+              ))}
         </select>
       </div>
       <div className="mb-3">

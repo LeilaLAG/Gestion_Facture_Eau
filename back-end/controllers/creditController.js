@@ -1,9 +1,10 @@
 const Credit = require("../models/Credit");
+const Compteur = require("../models/Compteur");
 
 const getCredits = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const { year, month, compId } = req.query;
+    const { year, month } = req.query;
 
     const filter = { companyId };
     if (year) {
@@ -41,7 +42,11 @@ const getOneCredit = async (req, res) => {
 
 const createCredit = async (req, res) => {
   try {
+    const {montantPaye , numCompteur , companyId} = req.body
+    const compteur = await Compteur.findOne({numCompteur , companyId})
+    let newCreditValue = compteur.credit - montantPaye
     const addedCredit = await Credit.create(req.body);
+    await Compteur.findOneAndUpdate({numCompteur , companyId} , {credit : newCreditValue})
     return res.status(200).json({ addedCredit });
   } catch (err) {
     return res.status(400).json({
@@ -54,10 +59,16 @@ const updateCredit = async (req, res) => {
   try {
     const { creditId } = req.params;
 
+    
+    const {montantPaye , numCompteur , companyId} = req.body
+    const compteur = await Compteur.findOne({numCompteur , companyId})
+    let newCreditValue = parseFloat(compteur.credit) - parseFloat(montantPaye)
+    
     const CreditToUpdate = await Credit.findOneAndUpdate(
       { _id: creditId },
       req.body
     );
+    await Compteur.findOneAndUpdate({numCompteur , companyId} , {credit : newCreditValue})
     return res.status(200).json({ CreditToUpdate });
   } catch (error) {
     return res.status(400).json({ error: "Server Error updating Credit" });
