@@ -13,6 +13,7 @@ import ModFacture from "./crufForm/ModFacture";
 import ModTranche from "./crufForm/ModTranche";
 import ModCharge from "./crufForm/ModCharge";
 import ModRevenu from "./crufForm/ModRevenu";
+import ModCredit from "./crufForm/ModCredit";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
@@ -24,7 +25,7 @@ export default function ModForm({ page }) {
   const { trancheId } = useParams();
   const { chargeId } = useParams();
   const { revenuId } = useParams();
-
+  const { creditId } = useParams();
   let dataObject = {};
   let endPoint = "";
 
@@ -85,8 +86,14 @@ export default function ModForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "updateRevenu";
+  } else if (page === "credit") {
+    dataObject = {
+      numCompteur: "",
+      montantPaye: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "updateCredit";
   }
-
   const [dataToMod, setDataToMod] = useState(dataObject);
   const [loading, setLoading] = useState(false);
 
@@ -151,6 +158,18 @@ export default function ModForm({ page }) {
         )
         .then((res) => setDataToMod(res.data.revenu))
         .catch((err) => toast.error("error"));
+    } else if (creditId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/credits/${creditId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setDataToMod(res.data.credit);
+        })
+        .catch((err) => console.log(err));
     }
   }, [
     clientId,
@@ -159,9 +178,9 @@ export default function ModForm({ page }) {
     trancheId,
     chargeId,
     revenuId,
+    creditId,
     user.companyId,
   ]);
-
   function handleModInfo(e) {
     e.preventDefault();
     setDataToMod({
@@ -278,6 +297,20 @@ export default function ModForm({ page }) {
     }
   }
 
+  function checkCreditInfo() {
+    if (page === "credit") {
+      if (dataToMod.numCompteur === "") {
+        toast.error("choisir un compteur");
+        return false;
+      } else if (dataToMod.montantPaye <= 0 || isNaN(dataToMod.montantPaye)) {
+        toast.error("Saisir le montant paye de credit");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleModData(e) {
     e.preventDefault();
 
@@ -287,7 +320,8 @@ export default function ModForm({ page }) {
       checkFactureInfo() ||
       checkTrancheInfo() ||
       checkChargeInfo() ||
-      checkRevenuInfo()
+      checkRevenuInfo() ||
+      checkCreditInfo()
     ) {
       setLoading(true);
       axios
@@ -295,7 +329,13 @@ export default function ModForm({ page }) {
           `${process.env.REACT_APP_HOST}:${
             process.env.REACT_APP_PORT
           }/api/${endPoint}/${
-            clientId || compteurId || factureId || trancheId || chargeId || revenuId
+            clientId ||
+            compteurId ||
+            factureId ||
+            trancheId ||
+            chargeId ||
+            revenuId ||
+            creditId
           }`,
           dataToMod,
           {
@@ -312,7 +352,7 @@ export default function ModForm({ page }) {
             setLoading(false);
             return;
           }
-
+          console.log(dataToMod);
           toast.success(`${page} a été modifier avec succée`);
           setLoading(false);
         })
@@ -385,6 +425,13 @@ export default function ModForm({ page }) {
 
             {page === "revenu" && (
               <ModRevenu
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
+            )}
+
+            {page === "credit" && (
+              <ModCredit
                 onChangeModInfo={(e) => handleModInfo(e)}
                 dataToMod={dataToMod}
               />
