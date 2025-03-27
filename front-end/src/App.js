@@ -22,6 +22,7 @@ import PrintAllFactures from "./components/PrintAllFactures";
 import Charge from "./components/Charge";
 import Revenu from "./components/Revenu";
 import Caisse from "./components/Caisse";
+import Credit from "./components/Credit";
 
 function App() {
   return (
@@ -244,6 +245,32 @@ function App() {
           }
         />
 
+        {/* credits ---------------------------------------------------- */}
+        <Route
+          path="/credits"
+          element={
+            <ProtectedRoute>
+              <Credit />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/credits/add-credit"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"credit"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/credits/update-credit/:creditId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"credit"} />
+            </ProtectedRoute>
+          }
+        />
+
         {/* caisse ------------------------------------------------- */}
         <Route
           path="/caisse"
@@ -253,7 +280,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
       </Routes>
     </div>
   );
