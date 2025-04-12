@@ -34,6 +34,16 @@ export default function ModClient({ onChangeModInfo, dataToMod }) {
         />
       </div>
       <div className="mb-3">
+        <label className="d-block">Mot de passe</label>
+        <input
+          type="text"
+          name="password"
+          className="form-control"
+          placeholder="Saisir un nouveau mot de passe pour le client"
+          onChange={onChangeModInfo}
+        />
+      </div>
+      <div className="mb-3">
         <label className="d-block">Date de naissance</label>
         <input
           type="date"

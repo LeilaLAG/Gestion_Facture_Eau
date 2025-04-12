@@ -29,6 +29,7 @@ export default function AddForm({ page }) {
     dataObject = {
       nameClient: "",
       cin: "",
+      password: "",
       birthDate: "",
       tele: "",
       adresse: "",

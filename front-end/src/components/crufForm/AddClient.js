@@ -24,6 +24,16 @@ export default function AddClient({onChangeInfo}) {
         />
       </div>
       <div className="mb-3">
+        <label className="d-block">Mot de passe</label>
+        <input
+          type="text"
+          name="password"
+          className="form-control"
+          placeholder="Saisir un mot de passe pour le client"
+          onChange={onChangeInfo}
+        />
+      </div>
+      <div className="mb-3">
         <label className="d-block">Date de naissance</label>
         <input
           type="date"
