@@ -75,7 +75,7 @@ export default function Home() {
       <Main>
         <div className="centerDiv w-100 h-100">
           <div className="">
-            {user.function === "Employer" && (
+            {user.function === "Employer" ? (
               <div className="">
                 <p className="fs-4 fw-bold">
                   Vous pouvez accéder aux rubriques suivantes :
