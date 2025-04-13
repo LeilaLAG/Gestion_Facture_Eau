@@ -36,7 +36,7 @@ export default function LogIn() {
         { withCredentials: true }
       )
       .then((res) => {
-        navigate("/home");
+        navigate("/accueil");
         setLoginLoading(false);
         setIsDisabled(false);
       })
@@ -51,12 +51,12 @@ export default function LogIn() {
     <div>
       <Toaster position="top-right" />
       <div className="LoginFormCOntainer h-100 d-flex justify-content-around">
-        <div>
-          <img src="Assets/loginImg.jpg" alt="" />
+        <div style={{height : "100dvh" , zIndex:'-1' }}>
+          <img src="/Assets/loginImg1.jpg" alt="" />
         </div>
         <form
         method="POST"
-          className="LoginFrom shadow"
+          className="LoginFrom "
           onSubmit={(e) => {
             handleSubmitLoginUser(e);
           }}
@@ -103,10 +103,6 @@ export default function LogIn() {
             >
               {loginLoading ? <ActionLoading /> : "Authentifier"}
             </button>
-            {/* <hr/>
-            <div className="text-center">
-              <a className="color_blue_text" href="/sign-up">Creer votre profile</a>
-            </div> */}
           </div>
         </form>
       </div>

@@ -54,132 +54,215 @@ export default function Home() {
       <Menu />
       <Main>
         <div className="centerDiv w-100 h-100">
-          <div className="text-center">
-            <img src="/Assets/home.png" alt="home" width={50} />
-            <h2 className="mt-2">Bienvenue sur la page d'accueil</h2>
-
-            {user.function === "Admin" ? (
-              <div>
-                <BarChart clients={clientsPerMonth()} page={"home"} />
-                <DoughnutChart facture={facturesPerMonth()} />
+          <div className="">
+            {/* <img src="/Assets/home.png" alt="home" width={50} />
+            <h2 className="mt-2">Bienvenue sur la page d'accueil</h2> */}
+            {user.function === "Employer" && (
+              <div className="">
+                <p className="fs-4 fw-bold">
+                  Vous pouvez accéder aux rubriques suivantes :
+                </p>
+                {!user.privileges.clients &&
+                !user.privileges.compteurs &&
+                !user.privileges.factures &&
+                !user.privileges.caisse ? (
+                  <div className="centerDiv">
+                    <ErrorMsg
+                      msg={
+                        "Vous n'avez aucun privillege, contactez votre Admin"
+                      }
+                      errorIconWidth={20}
+                      coleur={"red"}
+                      boldness="bold"
+                      imgPath="Assets/empty.png"
+                    />
+                  </div>
+                ) : (
+                  <div className="">
+                    {user.privileges.clients && (
+                      <div>
+                        <a
+                          href="/clients"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>clients</span>
+                        </a>
+                        <ul className="">
+                          {user.crudAccess.clients.add && (
+                            <li className="">
+                              Vous pouvez ajouter nouveaux clients
+                            </li>
+                          )}
+                          {user.crudAccess.clients.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des clients
+                            </li>
+                          )}
+                          {user.crudAccess.clients.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des clients
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                    {user.privileges.compteurs && (
+                      <div>
+                        <a
+                          href="/compteurs"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>compteurs</span>
+                        </a>
+                        <ul className="">
+                          {user.crudAccess.compteurs.add && (
+                            <li className="">
+                              Vous pouvez ajouter des nouveaux compteurs
+                            </li>
+                          )}
+                          {user.crudAccess.compteurs.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des
+                              compteurs
+                            </li>
+                          )}
+                          {user.crudAccess.compteurs.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des compteurs
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                    {user.privileges.factures && (
+                      <div>
+                        <a
+                          href="/factures"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>factures</span>
+                        </a>
+                        <div className="">
+                          {user.crudAccess.factures.add && (
+                            <li className="">
+                              Vous pouvez génerer des nouvelles factures
+                            </li>
+                          )}
+                          {user.crudAccess.factures.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des factures
+                            </li>
+                          )}
+                          {user.crudAccess.factures.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des factures
+                            </li>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.revenus && (
+                      <div>
+                        <a
+                          href="/revenus"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>revenus</span>
+                        </a>
+                        <div className="">
+                          {user.crudAccess.revenus.add && (
+                            <li className="">
+                              Vous pouvez génerer des nouvelles revenus
+                            </li>
+                          )}
+                          {user.crudAccess.revenus.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des revenus
+                            </li>
+                          )}
+                          {user.crudAccess.revenus.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des revenus
+                            </li>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.charges && (
+                      <div>
+                        <a
+                          href="/charges"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>charges</span>
+                        </a>
+                        <div className="">
+                          {user.crudAccess.charges.add && (
+                            <li className="">
+                              Vous pouvez génerer des nouvelles charges
+                            </li>
+                          )}
+                          {user.crudAccess.charges.mod && (
+                            <li className="">
+                              Vous pouvez modifier les informations des charges
+                            </li>
+                          )}
+                          {user.crudAccess.charges.dlt && (
+                            <li className="">
+                              Vous pouvez supprimer des charges
+                            </li>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {user.privileges.caisse && (
+                      <div>
+                        <a
+                          href="/caisse"
+                          className="fw-bold d-flex gap-2"
+                          style={{
+                            textDecoration: "none",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          <input type="checkbox" checked />
+                          <span>caisse</span>
+                        </a>
+                        <div className="">
+                            <li className="">
+                              Vous pouvez accéder les statistiques de la caisse
+                            </li>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            ) : (
-              user.function === "Employer" && (
-                <div className="border boder-1 rounder p-3 rounded shadow">
-                  <p>Vous pouvez accéder aux rubriques suivantes :</p>
-                  {!user.privileges.clients &&
-                  !user.privileges.compteurs &&
-                  !user.privileges.factures ? (
-                    <div className="centerDiv">
-                      <ErrorMsg
-                        msg={
-                          "Vous n'avez aucun privillege, contactez votre Admin"
-                        }
-                        errorIconWidth={20}
-                        coleur={"red"}
-                        boldness="bold"
-                        imgPath="Assets/empty.png"
-                      />
-                    </div>
-                  ) : (
-                    <div className="centerDiv gap-2">
-                      {user.privileges.clients && (
-                        <div>
-                          <a
-                            href="/clients"
-                            className="centerDiv d-flex gap-4 fw-bold text-dark btn btn-info p-4 pb-1 pt-1"
-                            style={{ textDecoration: "none" }}
-                          >
-                            clients
-                          </a>
-                          <div className="centerDiv gap-2 mt-1">
-                            {user.crudAccess.clients.add && (
-                              <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i className="bi bi-plus-circle" title="Ajout"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.clients.mod && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i className="bi bi-pen" title="Modification"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.clients.dlt && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i
-                                  className="bi bi-trash3-fill"
-                                  title="Suppression"
-                                ></i>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      {user.privileges.compteurs && (
-                        <div>
-                          <a
-                            href="/compteurs"
-                            className="centerDiv d-flex gap-4 fw-bold text-dark btn btn-info p-4 pb-1 pt-1"
-                            style={{ textDecoration: "none" }}
-                          >
-                            compteurs
-                          </a>
-                          <div className="centerDiv gap-2 mt-1">
-                            {user.crudAccess.compteurs.add && (
-                              <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i className="bi bi-plus-circle" title="Ajout"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.compteurs.mod && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i className="bi bi-pen" title="Modification"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.compteurs.dlt && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i
-                                  className="bi bi-trash3-fill"
-                                  title="Suppression"
-                                ></i>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      {user.privileges.factures && (
-                        <div>
-                          <a
-                            href="/factures"
-                            className="centerDiv d-flex gap-4 fw-bold text-dark btn btn-info p-4 pb-1 pt-1"
-                            style={{ textDecoration: "none" }}
-                          >
-                            factures
-                          </a>
-                          <div className="centerDiv gap-2 mt-1">
-                            {user.crudAccess.factures.add && (
-                              <div className="btn btn-success p-2 pb-0 pt-0">
-                                <i className="bi bi-plus-circle" title="Ajout"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.factures.mod && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i className="bi bi-pen" title="Modification"></i>
-                              </div>
-                            )}
-                            {user.crudAccess.factures.dlt && (
-                              <div className="btn btn-primary p-2 pb-0 pt-0">
-                                <i
-                                  className="bi bi-trash3-fill"
-                                  title="Suppression"
-                                ></i>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )
             )}
           </div>
         </div>

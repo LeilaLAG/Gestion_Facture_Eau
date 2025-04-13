@@ -12,6 +12,8 @@ import { useParams } from "react-router-dom";
 import AddFacture from "./crufForm/AddFacture";
 import Swal from "sweetalert2";
 import AddTranche from "./crufForm/AddTranche";
+import AddCharge from "./crufForm/AddCharge";
+import AddRevenu from "./crufForm/AddRevenu";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -64,6 +66,22 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addTranche";
+  } else if (page === "charge") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      datePaiment: "",
+      responsable: "",
+      companyId: user.companyId,
+    };
+    endPoint = "addCharge";
+  }else if (page === "revenu") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "addRevenu";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -121,18 +139,6 @@ export default function AddForm({ page }) {
       if (dataToAdd.dateFacture === "") {
         toast.error("Saisir la date de consomation");
         return false;
-      } else if (
-        new Date(dataToAdd.dateFacture).getFullYear() <
-          new Date().getFullYear() ||
-        new Date(dataToAdd.dateFacture).getMonth() + 1 <
-          new Date().getMonth() + 1
-      ) {
-        toast.error(
-          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
-            new Date().getMonth() + 1
-          }/${new Date().getFullYear()}`
-        );
-        return false;
       } else if (dataToAdd.numCompteur === 0) {
         toast.error("choisir un compteur");
         return false;
@@ -162,6 +168,43 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkChargeInfo() {
+    if (page === "charge") {
+      if (dataToAdd.designation === "") {
+        toast.error("saisir la designation de charge");
+        return false;
+      } else if (dataToAdd.montant === "" || dataToAdd.montant === 0) {
+        toast.error("Saisir le montant de charge");
+        return false;
+      } else if (isNaN(dataToAdd.montant)) {
+        toast.error("le montant doit etre un nombre");
+        return false;
+      } else if (dataToAdd.datePaiment === "") {
+        toast.error("Saisir la date de paiment de charge");
+        return false;
+      } else if (dataToAdd.responsable === "") {
+        toast.error("choisir un responsable pour la charge");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  function checkRevenuInfo() {
+    if (page === "revenu") {
+      if (dataToAdd.designation === "") {
+        toast.error("saisir la designation de revenu");
+        return false;
+      } else if (dataToAdd.montant === "" || dataToAdd.montant === 0) {
+        toast.error("Saisir le montant de revenu");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
@@ -169,7 +212,9 @@ export default function AddForm({ page }) {
       checkClientInfo() ||
       checkCompteurInfo() ||
       checkFactureInfo() ||
-      checkTrancheInfo()
+      checkTrancheInfo() ||
+      checkChargeInfo() ||
+      checkRevenuInfo()
     ) {
       setLoading(true);
       axios
@@ -223,13 +268,15 @@ export default function AddForm({ page }) {
               }
             });
             return;
-          }
-          else if(page === "facture" && res.data.activeTranche){
+          } else if (page === "facture" && res.data.activeTranche) {
             toast.error(`${res.data.activeTranche}!`);
             setLoading(false);
             return;
-          }
-          else if(page === "tranche" && res.data.errorMsg){
+          } else if (page === "facture" && res.data.invalidDateFacture) {
+            toast.error(`${res.data.invalidDateFacture}!`);
+            setLoading(false);
+            return;
+          } else if (page === "tranche" && res.data.errorMsg) {
             toast.error(`${res.data.errorMsg}!`);
             setLoading(false);
             return;
@@ -240,8 +287,9 @@ export default function AddForm({ page }) {
         })
         .catch((err) => {
           setLoading(false);
-          console.log(err.response.data.error);
-          toast.error("Un problem est servenu lors de l'ajout!");
+          // console.log(err.response.data.error);
+          // toast.error("Un problem est servenu lors de l'ajout!");
+          // console.log(err);
         });
     }
   }
@@ -269,7 +317,7 @@ export default function AddForm({ page }) {
               }}
               className="bg-success"
             ></div>
-            <h3 className="text-center mb-4">{`Ajouter données ${page}`}</h3>
+            <h3 className="text-center mb-4">{`Ajouter des données ${page}`}</h3>
             {page === "client" && (
               <AddClient onChangeInfo={(e) => handleAddInfo(e)} />
             )}
@@ -292,11 +340,17 @@ export default function AddForm({ page }) {
             {page === "tranche" && (
               <AddTranche onChangeInfo={(e) => handleAddInfo(e)} />
             )}
+
+            {page === "charge" && (
+              <AddCharge onChangeInfo={(e) => handleAddInfo(e)} />
+            )}
+
+            {page === "revenu" && (
+              <AddRevenu onChangeInfo={(e) => handleAddInfo(e)} />
+            )}
+            
             <div className="mt-4 d-flex gap-3">
-              <button
-                className="btn btn-success fw-bold"
-                disabled={loading}
-              >
+              <button className="btn btn-success fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Ajouter"}
               </button>
               <a href={`/${page}s`} className="btn btn-danger fw-bold">

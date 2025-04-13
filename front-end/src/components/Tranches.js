@@ -34,7 +34,7 @@ export default function Tranches() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Etes vous sure de supprimer ${trancheToDlt.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -66,7 +66,7 @@ export default function Tranches() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/activate.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/activate.gif" alt="delete" width="50" />`,
       text: `Etes vous sure d'activer ${activitedTranche.nameTranche}?`,
       showCancelButton: true,
       confirmButtonColor: "#cfcf2e",
@@ -169,7 +169,7 @@ export default function Tranches() {
                         <td>{new Date(tranche.created_at).toLocaleDateString('eu' , {...DateConfig , hour : '2-digit' , minute : "2-digit"})}</td>
                         <td>
                           {tranche.isActive && (
-                            <img src="Assets/check.png" alt="Yes" width={20} />
+                            <img src="/Assets/check.png" alt="Yes" width={20} />
                           )}
                         </td>
                         <td>
@@ -177,8 +177,7 @@ export default function Tranches() {
                             onSubmit={(e) => handleActiveTranche(e, tranche)}
                           >
                             <button className="btn btn-warning" title="Activer">
-                              <i class="bi bi-check-circle"></i>
-
+                              <i className="bi bi-check-circle"></i>
                             </button>
                           </form>
                         </td>
@@ -228,8 +227,7 @@ export default function Tranches() {
                   href="/tranches/add-tranche"
                   className="centerDiv gap-2 fs-5 text-success"
                 >
-                              <i className="bi bi-plus-circle"></i>
-
+                  <i className="bi bi-plus-circle"></i>
                   <p
                     className="m-0 text-dark centerDiv gap-2"
                     style={{ opacity: ".7", fontSize: "13px" }}
@@ -240,9 +238,7 @@ export default function Tranches() {
                         3 - tranches.length
                       } tranche(s) restant possible de creer`}
                     >
-                              <i className="bi bi-info-circle"></i>
-                                      <i className="bi bi-info-circle"></i>
-
+                      <i className="bi bi-info-circle"></i>
                     </Tooltip>
                   </p>
                 </a>

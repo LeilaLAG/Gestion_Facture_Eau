@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import ActionLoading from "../costumComponents/ActionLoading";
 import { useUser } from "../Auth/ProtectedRoute";
 import Menu from "./Menu";
 import Main from "./Main";
+import ActionLoading from "../costumComponents/ActionLoading";
 
 export default function AddEmployee() {
   const { user } = useUser();
@@ -73,7 +73,7 @@ export default function AddEmployee() {
             toast.error("Cette adresse Email est déja utilisé!");
             return;
           }
-          toast.success("Votre profile a été creer");
+          toast.success("Le profile a été creer");
           setTimeout(() => {
             window.location.reload()
           }, 2000);
@@ -167,7 +167,7 @@ export default function AddEmployee() {
                 className="btn btn-warning fw-bold"
                 disabled={isDisabled}
               >
-                {signupLoading ? <ActionLoading /> : "Créer"}
+                {signupLoading ? <ActionLoading/> : "Créer"}
               </button>
               <a href="/employees" className="btn btn-danger fw-bold">
                 Retour

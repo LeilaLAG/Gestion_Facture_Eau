@@ -1,136 +1,163 @@
 .Menu {
-    /* width: 25%; */
-    height: 100%;
-    padding: 30px;
+  /* width: 25%; */
+  height: 100dvh;
+  padding: 30px;
+  background-color: white;
 }
 
 .userSetting img {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .userSettingBox {
-    position: absolute;
-    width: 200px;
-    height: 100px;
-    background-color: antiquewhite;
-    right: 0;
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  background-color: antiquewhite;
+  right: 0;
 }
 
 .UserInfoSegment p {
-    word-wrap: break-word;
-    margin: 0;
+  word-wrap: break-word;
+  margin: 0;
 }
 
 .userFullName {
-    font-size: 25px;
-    text-transform: capitalize;
-    max-width: 65%;
-    padding-left: .5rem;
-    font-weight: 600;
+  font-size: 25px;
+  text-transform: capitalize;
+  max-width: 65%;
+  padding-left: 0.5rem;
+  font-weight: 600;
 }
 
 .profileLogo {
-    text-transform: capitalize;
-    font-size: 30px;
-    font-weight: 600;
-    background-color: #0077bb;
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+  text-transform: capitalize;
+  font-size: 30px;
+  font-weight: 600;
+  background-color: #0077bb;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }
 
 .userFunction {
-    text-transform: capitalize;
-    font-size: 13px;
+  text-transform: capitalize;
+  font-size: 13px;
 }
 
 .userCompany {
-    opacity: .7;
-    font-size: 15px;
-    width: 70%;
-    word-wrap: break-word;
+  opacity: 0.7;
+  font-size: 15px;
+  width: 70%;
+  word-wrap: break-word;
 }
 
-.navLinks , .shrinkNavLinks {
-    overflow-y: auto;
-    height: 70%;
+#menuContent {
+  height: 95%;
+  overflow-y: auto;
+}
+.navLinks {
+  height: 60%;
+  width: 100%;
+}
+.navLinks,
+.shrinkNavLinks {
+  overflow-y: auto;
 }
 
-.navLinks>ul , .shrinkNavLinks>ul {
-    list-style-type: none;
-    padding: 0;
-    /* font-weight: bold; */
+.navLinks > ul,
+.shrinkNavLinks > ul {
+  list-style-type: none;
+  padding: 0;
+  /* font-weight: bold; */
 }
 
-.navLinks>ul>li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: black;
-    padding-left: 10px;
-    transition: .2s;
-    border-radius: 5px;
-    margin-bottom: 10px;
+.navLinks > ul > li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: black;
+  padding-left: 10px;
+  transition: 0.2s;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-transform: capitalize;
 }
 
 /* .shrinkNavLinks>ul {
     padding: 5px;
 } */
 
-.shrinkNavLinks>ul>li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: black;
-    margin-bottom: 20px;
-    transition: .3s;
-    padding: 5px;
-    border-radius: 5px;
+.shrinkNavLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90%;
+  text-transform: capitalize;
 }
 
-.navLinks>ul>li a {
-    text-decoration: none;
-    color: black;
-    width: 100%;
-    padding: 10px 0;
+.shrinkNavLinks > ul > div > li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
+.shrinkNavLinks > ul > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 10px;
+}
+
+.navLinks > ul > li a {
+  text-decoration: none;
+  color: black;
+  width: 100%;
+  padding: 10px 0;
+}
 
 .ActiveTrancheContainer {
-    margin-left: 30px;
+  margin-left: 30px;
 }
 
 .ActiveTranche {
-    position: relative;
+  position: relative;
 }
 
 .ActiveTranche::before {
-    content: '';
-    position: absolute;
-    bottom: 10px;
-    left: -12px;
-    width: 10px;
-    height: 30px;
-    border: 1px solid gray;
-    border-top: 0;
-    border-right: 0;
-    border-radius: 0 0 0 3px;
-    z-index: -1;
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: -12px;
+  width: 10px;
+  height: 30px;
+  border: 1px solid gray;
+  border-top: 0;
+  border-right: 0;
+  border-radius: 0 0 0 3px;
+  /* z-index: -1; */
 }
 
-.activeLink , .navLinks>ul>li:hover , .shrinkNavLinks li:hover {
-    background-color: #00aad9;
-    font-weight: bold;
+.activeLink,
+.navLinks > ul > li:hover,
+.shrinkNavLinks li:hover {
+  background-color: #00aad9;
+  font-weight: bold;
 }
 
-@media screen and (max-width : 1140px) {
-    .Menu {
-        /* width: 100% !important; */
-        /* position: fixed; */
-        z-index: 100;
-        background-color: white;
-    }
+@media screen and (max-width: 1140px) {
+  .Menu {
+    /* width: 100% !important; */
+    /* position: fixed; */
+    z-index: 100;
+    background-color: white;
+  }
 }

@@ -29,7 +29,9 @@ const UserSchema = new mongoose.Schema({
     clients: { type: Boolean, default: false },
     compteurs: { type: Boolean, default: false },
     factures: { type: Boolean, default: false },
-    // tranches: { type: Boolean, default: false },
+    revenus: { type: Boolean, default: false },
+    charges: { type: Boolean, default: false },
+    caisse: { type: Boolean, default: false },
   },
   crudAccess: {
     clients: {
@@ -47,11 +49,16 @@ const UserSchema = new mongoose.Schema({
       mod: { type: Boolean, default: false },
       dlt: { type: Boolean, default: false },
     },
-    // tranches: {
-    //   add: { type: Boolean, default: false },
-    //   mod: { type: Boolean, default: false },
-    //   dlt: { type: Boolean, default: false },
-    // },
+    revenus: {
+      add: { type: Boolean, default: false },
+      mod: { type: Boolean, default: false },
+      dlt: { type: Boolean, default: false },
+    },
+    charges: {
+      add: { type: Boolean, default: false },
+      mod: { type: Boolean, default: false },
+      dlt: { type: Boolean, default: false },
+    },
   },
 });
 

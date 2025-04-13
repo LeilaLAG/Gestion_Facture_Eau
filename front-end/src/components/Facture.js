@@ -24,7 +24,7 @@ export default function Facture() {
     month: new Date().getMonth() + 1,
   });
 
-  let factureData = GetFactures(filterParams.year, filterParams.month);
+  let factureData = GetFactures(filterParams.year, filterParams.month, "");
 
   const clientData = GetClients();
   const compteurData = GetCompteurs();
@@ -52,7 +52,7 @@ export default function Facture() {
     }
 
     Swal.fire({
-      title: `<img src="Assets/trash.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/trash.gif" alt="delete" width="50" />`,
       text: `Êtes-vous sûr de supprimer la facture ${factToDlt._id}?`,
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -124,7 +124,7 @@ export default function Facture() {
     e.preventDefault();
 
     Swal.fire({
-      title: `<img src="Assets/paid.gif" alt="delete" width="50" />`,
+      title: `<img src="/Assets/paid.gif" alt="delete" width="50" />`,
       text: `Êtes-vous sûr que cette facture ${factureId} a été payer ?`,
       showCancelButton: true,
       confirmButtonColor: "#6fac0d",
@@ -178,16 +178,22 @@ export default function Facture() {
                 <div className="d-flex align-items-center gap-2">
                   <span className="fw-bold">Nombre totale des factures :</span>
                   <img
-                    src="/Assets/bill.png"
+                    src="/Assets/factures.png"
                     alt="fact count"
                     width={20}
                     title="Nombre total de factures"
                   />
                   <span className="fw-bold">{facture.length}</span>
-                  <span style={{fontSize : "13px"}}>{`( Données ${filterParams.month}/${filterParams.year} )`}</span>
                 </div>
               </div>
             </article>
+            <a
+              className="btn btn-dark p-3 pt-1 pb-1 fw-bold mb-2 centerDiv"
+              href="/facture/print-all-factures"
+            >
+              <i className="bi bi-printer"></i>
+              <span style={{marginLeft : "10px"}}>Imprimer tous les factures de {new Date().getMonth() + 1 === 1 ? 12 : new Date().getMonth()} / {new Date().getMonth() + 1 === 1 ? new Date().getFullYear()-1 : new Date().getFullYear()}</span>
+            </a>
 
             {clients === "loading" ? (
               <Loading />
@@ -223,7 +229,7 @@ export default function Facture() {
                         </span>
                         <div className="d-flex align-items-center m-3 mt-0 mb-0">
                           <img
-                            src="/Assets/bill.png"
+                            src="/Assets/factures.png"
                             alt="facture count"
                             width={20}
                           />
@@ -243,7 +249,10 @@ export default function Facture() {
                     className="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body p-2 "  style={{overflowX : "auto"}}>
+                    <div
+                      className="accordion-body p-2 "
+                      style={{ overflowX: "auto" }}
+                    >
                       <form
                         onSubmit={function (e) {
                           filterFacture(e);
@@ -341,7 +350,7 @@ export default function Facture() {
                                         display: "inline-block",
                                         width: "70px",
                                         overflow: "hidden",
-                                        whiteSpace:"nowrap",
+                                        whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
                                       }}
                                     >
@@ -384,7 +393,7 @@ export default function Facture() {
                                       className="btn btn-dark"
                                       title="Imprimer"
                                     >
-                                      <i class="bi bi-printer"></i>
+                                      <i className="bi bi-printer"></i>
                                     </a>
                                   </td>
                                   {user.function === "Employer"
@@ -406,7 +415,7 @@ export default function Facture() {
                                                     : false
                                                 }
                                               >
-                                                <i class="bi bi-cash-stack"></i>
+                                                <i className="bi bi-cash-stack"></i>
                                               </button>
                                             </form>
                                           </td>
@@ -443,7 +452,7 @@ export default function Facture() {
                                                     : false
                                                 }
                                               >
-                                                <i class="bi bi-cash-stack"></i>
+                                                <i className="bi bi-cash-stack"></i>
                                               </button>
                                             </form>
                                           </td>

@@ -11,14 +11,19 @@ import ModClient from "./crufForm/ModClient";
 import ModCompteur from "./crufForm/ModCompteur";
 import ModFacture from "./crufForm/ModFacture";
 import ModTranche from "./crufForm/ModTranche";
+import ModCharge from "./crufForm/ModCharge";
+import ModRevenu from "./crufForm/ModRevenu";
 
 export default function ModForm({ page }) {
   const { user } = useUser();
+  const clients = GetClients();
+
   const { clientId } = useParams();
   const { compteurId } = useParams();
   const { factureId } = useParams();
   const { trancheId } = useParams();
-  const clients = GetClients();
+  const { chargeId } = useParams();
+  const { revenuId } = useParams();
 
   let dataObject = {};
   let endPoint = "";
@@ -46,7 +51,7 @@ export default function ModForm({ page }) {
     endPoint = "updateCompteur";
   } else if (page === "facture") {
     dataObject = {
-      dateFacture: "",
+      // dateFacture: "",
       datePainement: "",
       numCompteur: 0,
       valeurCompteurPreleve: 0,
@@ -64,6 +69,22 @@ export default function ModForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "updateTranche";
+  } else if (page === "charge") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      datePaiment: "",
+      responsable: "",
+      companyId: user.companyId,
+    };
+    endPoint = "updateCharge";
+  } else if (page === "revenu") {
+    dataObject = {
+      designation: "",
+      montant: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "updateRevenu";
   }
 
   const [dataToMod, setDataToMod] = useState(dataObject);
@@ -110,8 +131,36 @@ export default function ModForm({ page }) {
         )
         .then((res) => setDataToMod(res.data.tranche))
         .catch((err) => toast.error("Un problem est servenue!"));
+    } else if (chargeId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/charges/${chargeId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.charge))
+        .catch((err) => toast.error("error"));
+    } else if (revenuId) {
+      axios
+        .get(
+          `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/revenus/${revenuId}/${user.companyId}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => setDataToMod(res.data.revenu))
+        .catch((err) => toast.error("error"));
     }
-  }, [clientId, compteurId, factureId, trancheId, user.companyId]);
+  }, [
+    clientId,
+    compteurId,
+    factureId,
+    trancheId,
+    chargeId,
+    revenuId,
+    user.companyId,
+  ]);
 
   function handleModInfo(e) {
     e.preventDefault();
@@ -172,18 +221,6 @@ export default function ModForm({ page }) {
       if (dataToMod.dateFacture === "") {
         toast.error("choisir la date de facture");
         return false;
-      } else if (
-        new Date(dataToMod.dateFacture).getFullYear() <
-          new Date().getFullYear() ||
-        new Date(dataToMod.dateFacture).getMonth() + 1 <
-          new Date().getMonth() + 1
-      ) {
-        toast.error(
-          `Saisir une date valide supérieur ou égale la date d'aujourdhui ${
-            new Date().getMonth() + 1
-          }/${new Date().getFullYear()}`
-        );
-        return false;
       } else if (dataToMod.painementStatus === "") {
         toast.error("Saisir la situation du paiment");
         return false;
@@ -198,8 +235,44 @@ export default function ModForm({ page }) {
       if (dataToMod.nameTranche === "") {
         toast.error("saisir le nom du tranche");
         return false;
-      } 
-      else {
+      } else {
+        return true;
+      }
+    }
+  }
+
+  function checkChargeInfo() {
+    if (page === "charge") {
+      if (dataToMod.designation === "") {
+        toast.error("saisir la designation de charge");
+        return false;
+      } else if (dataToMod.montant === "" || dataToMod.montant === 0) {
+        toast.error("Saisir le montant de charge");
+        return false;
+      } else if (isNaN(dataToMod.montant)) {
+        toast.error("le montant doit etre un nombre");
+        return false;
+      } else if (dataToMod.datePaiment === "") {
+        toast.error("Saisir la date de paiment de charge");
+        return false;
+      } else if (dataToMod.responsable === "") {
+        toast.error("choisir un responsable pour la charge");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  function checkRevenuInfo() {
+    if (page === "revenu") {
+      if (dataToMod.designation === "") {
+        toast.error("saisir la designation de revenu");
+        return false;
+      } else if (dataToMod.montant === "" || dataToMod.montant === 0) {
+        toast.error("Saisir le montant de revenu");
+        return false;
+      } else {
         return true;
       }
     }
@@ -212,7 +285,9 @@ export default function ModForm({ page }) {
       checkClientInfo() ||
       checkCompteurInfo() ||
       checkFactureInfo() ||
-      checkTrancheInfo()
+      checkTrancheInfo() ||
+      checkChargeInfo() ||
+      checkRevenuInfo()
     ) {
       setLoading(true);
       axios
@@ -220,7 +295,7 @@ export default function ModForm({ page }) {
           `${process.env.REACT_APP_HOST}:${
             process.env.REACT_APP_PORT
           }/api/${endPoint}/${
-            clientId || compteurId || factureId || trancheId
+            clientId || compteurId || factureId || trancheId || chargeId || revenuId
           }`,
           dataToMod,
           {
@@ -232,8 +307,7 @@ export default function ModForm({ page }) {
             toast.error("Cette CIN exist deja!");
             setLoading(false);
             return;
-          }
-          else if (page === "tranche" && res.data.errorMsg) {
+          } else if (page === "tranche" && res.data.errorMsg) {
             toast.error(res.data.errorMsg);
             setLoading(false);
             return;
@@ -301,11 +375,23 @@ export default function ModForm({ page }) {
                 dataToMod={dataToMod}
               />
             )}
+
+            {page === "charge" && (
+              <ModCharge
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
+            )}
+
+            {page === "revenu" && (
+              <ModRevenu
+                onChangeModInfo={(e) => handleModInfo(e)}
+                dataToMod={dataToMod}
+              />
+            )}
+
             <div className="mt-4 d-flex gap-3">
-              <button
-                className="btn btn-primary fw-bold"
-                disabled={loading}
-              >
+              <button className="btn btn-primary fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Modifier"}
               </button>
               <a href={`/${page}s`} className="btn btn-danger fw-bold">

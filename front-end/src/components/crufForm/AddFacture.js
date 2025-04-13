@@ -3,10 +3,26 @@ import GetCompteurs from "../../hooks/GetCompteurs";
 
 function AddFacture({ onChangeInfo, client }) {
   const compteurs = GetCompteurs();
-
+  // const mois = [
+  //   "Janvier",
+  //   "Février",
+  //   "Mars",
+  //   "Avril",
+  //   "Mai",
+  //   "Juin",
+  //   "Juillet",
+  //   "Août",
+  //   "Septembre",
+  //   "Octobre",
+  //   "Novembre",
+  //   "Décembre",
+  // ];
   return (
     <div className="mt-2">
       <div className="mb-3">
+        {/* <span style={{ color: "red" }}>
+          *Remarque: La date doit être du mois {mois[new Date().getMonth()]}
+        </span> */}
         <label className="d-block">Date de consomation</label>
         <input
           type="date"
@@ -25,7 +41,8 @@ function AddFacture({ onChangeInfo, client }) {
         >
           <option>Choisir le compteur</option>
           {compteurs !== "loading" &&
-            (compteurs.filter((c) => c.numClient === parseInt(client)).length <= 0 ? (
+            (compteurs.filter((c) => c.numClient === parseInt(client)).length <=
+            0 ? (
               <option>Aucun compteur</option>
             ) : (
               compteurs
@@ -51,7 +68,6 @@ function AddFacture({ onChangeInfo, client }) {
           className="form-control"
           onChange={onChangeInfo}
         />
-        
       </div>
     </div>
   );

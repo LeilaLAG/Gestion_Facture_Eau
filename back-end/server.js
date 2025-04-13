@@ -53,7 +53,24 @@ const {
   deleteTranche,
   updateTranche,
 } = require("./controllers/trancheController");
+const {
+  getRevenus,
+  getOneRevenu,
+  getActiveRevenu,
+  createRevenu,
+  deleteRevenu,
+  updateRevenu,
+} = require("./controllers/revenuController");
+const {
+  getCharges,
+  getOneCharge,
+  createCharge,
+  deleteCharge,
+  updateCharge,
+} = require("./controllers/chargeController");
 const { login } = require("./controllers/loginController");
+const {caisseStats} = require('./controllers/caisseController')
+
 const User = require("./models/User");
 
 const app = express();
@@ -146,6 +163,23 @@ app.get("/api/activeTranche/:companyId", getActiveTranche);
 app.post("/api/addTranche", createTranche);
 app.put("/api/updateTranche/:trancheId", updateTranche);
 app.delete("/api/deleteTranche/:trancheId", deleteTranche);
+
+// Revenu
+app.get("/api/revenus/:companyId", getRevenus);
+app.get("/api/revenus/:revenuId/:companyId", getOneRevenu);
+app.post("/api/addRevenu", createRevenu);
+app.put("/api/updateRevenu/:revenuId", updateRevenu);
+app.delete("/api/deleteRevenu/:revenuId", deleteRevenu);
+
+// Charge
+app.get("/api/charges/:companyId", getCharges);
+app.get("/api/charges/:chargeId/:companyId", getOneCharge);
+app.post("/api/addCharge", createCharge);
+app.put("/api/updateCharge/:chargeId", updateCharge);
+app.delete("/api/deleteCharge/:chargeId", deleteCharge);
+
+// Caisse
+app.get("/api/caisse/:companyId" , caisseStats)
 
 // Logout
 app.post("/api/logout", (req, res) => {

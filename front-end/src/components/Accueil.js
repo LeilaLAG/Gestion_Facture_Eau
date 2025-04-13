@@ -14,9 +14,9 @@ export default function Accueil() {
           width={150}
         />
         <hr width={100} />
-        <h1> Bienvenue sur Aqua Manage </h1>
+        {/* <h1> Bienvenue sur Aqua Manage </h1> */}
         {/* <p>AQUA MANAGE, SIMPLE ET FACILE</p> */}
-        <a href="/log-in" className="bg_blue_button fw-bold mt-4">
+        <a href="/log-in" className="bg_blue_button fw-bold">
           Authentifier
         </a>
       </div>

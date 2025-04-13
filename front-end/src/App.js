@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Route, Routes } from "react-router-dom";
-import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 import Clients from "./components/Clients";
@@ -19,8 +18,10 @@ import AddEmployee from "./components/AddEmployee";
 import PrintFacture from "./components/PrintFacture";
 import Tranches from "./components/Tranches";
 import Accueil from "./components/Accueil";
-import About from "./components/About";
-import ApplicationContact from "./components/ApplicationContact";
+import PrintAllFactures from "./components/PrintAllFactures";
+import Charge from "./components/Charge";
+import Revenu from "./components/Revenu";
+import Caisse from "./components/Caisse";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
 
         {/* home page --------------------------------------------------- */}
         <Route
-          path="/home"
+          path="/accueil"
           element={
             <ProtectedRoute>
               <Home />
@@ -67,7 +68,6 @@ function App() {
         />
 
         {/* user ---------------------------------------------------*/}
-        <Route path="/add-admin-user" element={<SignUp />} />
         <Route
           path="/users/update-user/:userId"
           element={
@@ -163,6 +163,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/facture/print-all-factures"
+          element={
+            <ProtectedRoute>
+              <PrintAllFactures />
+            </ProtectedRoute>
+          }
+        />
 
         {/* tranches ---------------------------------------------------- */}
         <Route
@@ -189,7 +197,72 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Accueil ---------------------------------------------------- */}
         <Route path="/" element={<Accueil />} />
+
+        {/* revenus ---------------------------------------------------- */}
+        <Route
+          path="/revenus"
+          element={
+            <ProtectedRoute>
+              <Revenu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenus/add-revenu"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"revenu"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenus/update-revenu/:revenuId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"revenu"} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* charges ---------------------------------------------------- */}
+        <Route
+          path="/charges"
+          element={
+            <ProtectedRoute>
+              <Charge />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/charges/add-charge"
+          element={
+            <ProtectedRoute>
+              <AddForm page={"charge"} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/charges/update-charge/:chargeId"
+          element={
+            <ProtectedRoute>
+              <ModForm page={"charge"} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* caisse ------------------------------------------------- */}
+        <Route
+          path="/caisse"
+          element={
+            <ProtectedRoute>
+              <Caisse />
+            </ProtectedRoute>
+          }
+        />
+        
       </Routes>
     </div>
   );
