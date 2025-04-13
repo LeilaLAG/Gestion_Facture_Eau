@@ -27,6 +27,7 @@ export const BarChart = ({
   lastClientBillsDate,
   page,
   caisse,
+  clients,
   height,
 }) => {
   let data = {};
@@ -68,7 +69,8 @@ export const BarChart = ({
           borderWidth: 1,
         },
       ],
-    };
+    }
+    
 
     options = {
       responsive: true,
@@ -77,7 +79,21 @@ export const BarChart = ({
       },
     };
   }
-
+  else if(page==="home"){
+    data = {
+      labels: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+      ,
+      datasets: [
+        {
+          label: "les clients creer par mois",
+          data: clients,
+          backgroundColor: "rgba(26, 141, 218, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
+   }
   return <Bar height={height} data={data} options={options} />;
 };
 

@@ -21,7 +21,7 @@ ChartJS.register(
     Legend
 );
 
-const DoughnutChart = ({ facture, fetchAllFactures }) => {
+const DoughnutChart = ({ facture }) => {
     const chartData = {
         labels: [' facture Payée ' + new Date().getFullYear(), 'facture Non payée ' + new Date().getFullYear()],
         datasets: [
@@ -35,21 +35,9 @@ const DoughnutChart = ({ facture, fetchAllFactures }) => {
 
     return (
         <div>
-            <button 
-                onClick={fetchAllFactures} 
-                style={{ 
-                    backgroundColor: '#36A2EB', 
-                    color: '#fff', 
-                    border: 'none', 
-                    padding: '10px 20px', 
-                    borderRadius: '5px', 
-                    cursor: 'pointer' 
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#FF6384'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#36A2EB'}
-            >
-                archive de toute les factures
-            </button>
+          
+             
+            
             <Doughnut data={chartData} />
         </div>
     );

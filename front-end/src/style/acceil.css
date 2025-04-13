@@ -1,0 +1,101 @@
+.navbar {
+  background-color: white; /* Or any color you want 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); Optional shadow 
+}
+
+.nav-links a {
+  color: black; /* or any color you want */
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  text-decoration: underline; /* Optional hover effect */
+}
+
+
+
+.invoice-table {
+  overflow-x: auto; /* Enable horizontal scrolling for small screens */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  max-height: 400px; /* Set a maximum height for the table */
+  margin-top: 20px; /* Add top margin */
+  margin-bottom: 20px;
+}
+
+
+.box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.invoice-table {
+  overflow-x: auto; /* Enable horizontal scrolling for small screens */
+  margin-top: 20px; /* Add top margin */
+  margin-bottom: 20px;
+}
+
+.chart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the chart horizontally */
+}
+
+.chart-box h3 {
+  text-align: center; /* Center the title */
+}
+
+/* Add any other styling you need */
+.contact-box {
+  
+  background-color: #0080cb; /* Light grey background */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  margin:  auto; /* Center the box */
+  max-width: 600px; /* Limit the box width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+}
+.parent-container {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+  min-height: 100vh; /* Make it take up the full viewport height */
+}
+
+.contact-box h2 {
+  color: whitesmoke; /* Dark grey heading */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-item {
+  margin-bottom: 20px;
+}
+
+.contact-item strong {
+  display: block;
+  font-weight: bold;
+  color: whitesmoke; /* Medium grey label */
+  font-size: 1.2em; 
+}
+
+.contact-item p {
+  margin: 5px 0 0;
+  color: wheat; /* Slightly darker grey text */
+}
+
+/* Responsive adjustments (optional) */
+@media (max-width: 768px) {
+  .contact-box {
+    margin: 10px; /* Reduce margin on smaller screens */
+  }
+}

@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import "../style/menu.css";
 import axios from "axios";
 import { useUser } from "../Auth/ProtectedRoute";
-import { useLocation } from "react-router-dom";
+import { useLocation,  } from "react-router-dom";
+
 import Tooltip from "./Tooltip";
 import Swal from "sweetalert2";
 
 export default function Menu({print}) {
   const { user } = useUser();
 
+ 
   const currentUrl = useLocation();
+
 
   const [ActiveTranche, setActiveTranche] = useState({});
 

@@ -8,7 +8,8 @@ import {motion} from "framer-motion"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
+<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+
     <React.StrictMode>
       <motion.div
         initial={{opacity : 0}}
