@@ -1,9 +1,11 @@
 import axios from "axios";
 import "../style/login.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ActionLoading from "../costumComponents/ActionLoading";
+import Cookies from 'js-cookie';
+
 
 export default function LogIn() {
   const [loginUser, setLoginUser] = useState({
@@ -14,7 +16,16 @@ export default function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const [rememberedEmail, setrememberedEmail] = useState("");
+
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const userCookie = Cookies.get('rememberMe')
+
+    setrememberedEmail(userCookie)
+
+  } , [])
 
   function handleChangeLoginUserInfo(e) {
     setLoginUser({ ...loginUser, [e.target.name]: e.target.value });
@@ -30,7 +41,7 @@ export default function LogIn() {
       .post(
         `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/login`,
         {
-          email: loginUser.email,
+          email: loginUser.email ? loginUser.email : rememberedEmail,
           password: loginUser.password,
         },
         { withCredentials: true }
@@ -71,6 +82,7 @@ export default function LogIn() {
               name="email"
               className="form-control"
               placeholder="Saisir votre adresse email"
+              defaultValue={rememberedEmail}
               onChange={(e) => {
                 handleChangeLoginUserInfo(e);
               }}

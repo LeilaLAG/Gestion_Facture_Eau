@@ -55,7 +55,7 @@ export default function ModCharge({ onChangeModInfo, dataToMod }) {
           value={dataToMod.responsable}
           onChange={onChangeModInfo}
         >
-          <option value=""></option>
+          <option value="">Choisir un responsable</option>
           {employers !== "loading" &&
             employers.map((emp, i) => (
               <option key={i} value={emp.fullName}>

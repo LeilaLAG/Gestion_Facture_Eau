@@ -75,13 +75,13 @@ export default function Revenu() {
           <img src="/Assets/aquamanage.svg" alt="" width={100} />
           <div className="mt-2 mb-2 d-flex align-items-center gap-2">
             <img src="/Assets/company.png" alt="name" width={15} />
-            <span >{user.companyId}</span>
+            <span>{user.companyId}</span>
           </div>
         </div>
         <h3 className="fw-bold mb-4">Liste des revenus :</h3>
         <form className="m-1 d-flex align-items-center gap-2 mb-3">
           <label className="fw-bold noPrin">Filtrer les revenus </label>
-          <div>
+          <div className="noPrin">
             <input
               type="number"
               className="p-2 pt-0 pb-0"
@@ -108,7 +108,7 @@ export default function Revenu() {
             className="btn btn-dark p-3 pt-1 pb-1 fw-bold"
             onClick={() => window.print()}
           >
-            <i style={{marginRight:"10px"}} className="bi bi-printer"></i>
+            <i style={{ marginRight: "10px" }} className="bi bi-printer"></i>
             Imprimer les revenus de {month} / {year}
           </button>
         </div>
@@ -118,11 +118,64 @@ export default function Revenu() {
           </div>
         ) : (
           <div className="pb-2" style={{ overflowX: "auto" }}>
+            {user.function === "Employer"
+              ? user.crudAccess.revenus.add && (
+                  <div
+                    className="centerDiv p-2 mb-1 rounded noPrin"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/revenus/add-revenu"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter un nouvel revenu</span>
+                      </p>
+                    </a>
+                  </div>
+                )
+              : user.function === "Admin" && (
+                  <div
+                    className="centerDiv p-2 mb-1 rounded noPrin"
+                    colSpan={8}
+                    style={{
+                      border: "1px dashed lightgray",
+                      backgroundColor: "#f7f7f7",
+                    }}
+                  >
+                    <a
+                      href="/revenus/add-revenu"
+                      className="centerDiv gap-2 fs-5 text-success"
+                    >
+                      <i className="bi bi-plus-circle"></i>
+                      <p
+                        className="m-0 text-dark centerDiv gap-2"
+                        style={{ opacity: ".7", fontSize: "13px" }}
+                      >
+                        <span>Ajouter un nouvel revenu</span>
+                      </p>
+                    </a>
+                  </div>
+                )}
             <table
               className="table table-bordered text-center w-100 mb-1"
               style={{ verticalAlign: "middle" }}
             >
               <thead>
+                <tr
+                  style={{ display: "none", width: "100%" }}
+                  className="Print border border-0"
+                >
+                  {month} / {year}
+                </tr>
                 <tr>
                   <th>N°</th>
                   <th>Designation</th>
@@ -269,53 +322,6 @@ export default function Revenu() {
                 )}
               </tbody>
             </table>
-            {user.function === "Employer"
-              ? user.crudAccess.revenus.add && (
-                  <div
-                    className="centerDiv p-2 rounded noPrin"
-                    colSpan={8}
-                    style={{
-                      border: "1px dashed lightgray",
-                      backgroundColor: "#f7f7f7",
-                    }}
-                  >
-                    <a
-                      href="/revenus/add-revenu"
-                      className="centerDiv gap-2 fs-5 text-success"
-                    >
-                      <i className="bi bi-plus-circle"></i>
-                      <p
-                        className="m-0 text-dark centerDiv gap-2"
-                        style={{ opacity: ".7", fontSize: "13px" }}
-                      >
-                        <span>Ajouter un nouvel revenu</span>
-                      </p>
-                    </a>
-                  </div>
-                )
-              : user.function === "Admin" && (
-                  <div
-                    className="centerDiv p-2 rounded noPrin"
-                    colSpan={8}
-                    style={{
-                      border: "1px dashed lightgray",
-                      backgroundColor: "#f7f7f7",
-                    }}
-                  >
-                    <a
-                      href="/revenus/add-revenu"
-                      className="centerDiv gap-2 fs-5 text-success"
-                    >
-                      <i className="bi bi-plus-circle"></i>
-                      <p
-                        className="m-0 text-dark centerDiv gap-2"
-                        style={{ opacity: ".7", fontSize: "13px" }}
-                      >
-                        <span>Ajouter un nouvel revenu</span>
-                      </p>
-                    </a>
-                  </div>
-                )}
           </div>
         )}
       </Main>

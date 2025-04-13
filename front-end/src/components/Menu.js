@@ -7,7 +7,7 @@ import { useLocation,  } from "react-router-dom";
 import Tooltip from "./Tooltip";
 import Swal from "sweetalert2";
 
-export default function Menu({print}) {
+export default function Menu({ print }) {
   const { user } = useUser();
 
  
@@ -246,6 +246,24 @@ export default function Menu({print}) {
                       />
                       <a href={`/${rubrique}`}>{rubrique}</a>
                     </li>
+                    {rubrique === "compteurs" &&
+                      (currentUrl.pathname === "/compteurs" ||
+                        currentUrl.pathname === "/credits") && (
+                        <div className="ActiveTrancheContainer mb-2">
+                          <a
+                            className="ActiveTranche w-50 badge bg_blue_button badge rounded-pill d-flex align-items-center gap-2"
+                            href="/credits"
+                            alt="credits"
+                          >
+                            <img
+                              src="/Assets/credit.png"
+                              alt="credit"
+                              width={20}
+                            />
+                            <span>Credits</span>
+                          </a>
+                        </div>
+                      )}
                     {rubrique === "factures" &&
                       currentUrl.pathname === "/factures" && (
                         <div className="ActiveTrancheContainer mb-2">
@@ -317,6 +335,24 @@ export default function Menu({print}) {
                         <a href={`/${rubrique}`}>{rubrique}</a>
                       </li>
                     )}
+                    {rubrique === "compteurs" &&
+                      (currentUrl.pathname === "/compteurs" ||
+                        currentUrl.pathname === "/credits") && (
+                        <div className="ActiveTrancheContainer mb-2">
+                          <a
+                            className="ActiveTranche w-50 badge bg_blue_button badge rounded-pill d-flex align-items-center gap-2"
+                            href="/credits"
+                            alt="credits"
+                          >
+                            <img
+                              src="/Assets/credit.png"
+                              alt="credit"
+                              width={20}
+                            />
+                            <span>Credits</span>
+                          </a>
+                        </div>
+                      )}
                     {rubrique === "factures" &&
                       currentUrl.pathname === "/factures" && (
                         <div className="ActiveTrancheContainer mb-2">
@@ -376,6 +412,24 @@ export default function Menu({print}) {
                     </a>
                   </li>
                   <p>{rubrique}</p>
+                  {rubrique === "compteurs" &&
+                    (currentUrl.pathname === "/compteurs" ||
+                      currentUrl.pathname === "/credits") && (
+                      <div className="mb-2">
+                        <a
+                          className="badge bg_blue_button badge rounded-pill d-flex align-items-center gap-2"
+                          href="/credits"
+                          alt="credits"
+                        >
+                          <img
+                            src="/Assets/credit.png"
+                            alt="credit"
+                            width={20}
+                          />
+                          <span>Credits</span>
+                        </a>
+                      </div>
+                    )}
                 </div>
               ))}
             </ul>
@@ -421,6 +475,24 @@ export default function Menu({print}) {
                         </a>
                       </li>
                       <p>{rubrique}</p>
+                      {rubrique === "compteurs" &&
+                        (currentUrl.pathname === "/compteurs" ||
+                          currentUrl.pathname === "/credits") && (
+                          <div className="mb-2">
+                            <a
+                              className="badge bg_blue_button badge rounded-pill d-flex align-items-center gap-2"
+                              href="/credits"
+                              alt="credits"
+                            >
+                              <img
+                                src="/Assets/credit.png"
+                                alt="credit"
+                                width={20}
+                              />
+                              <span>Credits</span>
+                            </a>
+                          </div>
+                        )}
                     </div>
                   )}
                 </>

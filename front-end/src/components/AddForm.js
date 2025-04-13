@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import AddTranche from "./crufForm/AddTranche";
 import AddCharge from "./crufForm/AddCharge";
 import AddRevenu from "./crufForm/AddRevenu";
+import AddCredit from "./crufForm/AddCredit";
 
 export default function AddForm({ page }) {
   const { user } = useUser();
@@ -28,6 +29,7 @@ export default function AddForm({ page }) {
     dataObject = {
       nameClient: "",
       cin: "",
+      password: "",
       birthDate: "",
       tele: "",
       adresse: "",
@@ -75,13 +77,20 @@ export default function AddForm({ page }) {
       companyId: user.companyId,
     };
     endPoint = "addCharge";
-  }else if (page === "revenu") {
+  } else if (page === "revenu") {
     dataObject = {
       designation: "",
       montant: 0,
       companyId: user.companyId,
     };
     endPoint = "addRevenu";
+  } else if (page === "credit") {
+    dataObject = {
+      numCompteur: "",
+      montantPaye: 0,
+      companyId: user.companyId,
+    };
+    endPoint = "addCredit";
   }
 
   const [dataToAdd, setDataToAdd] = useState(dataObject);
@@ -205,6 +214,20 @@ export default function AddForm({ page }) {
     }
   }
 
+  function checkCreditInfo() {
+    if (page === "credit") {
+      if (dataToAdd.numCompteur === "") {
+        toast.error("choisir un compteur");
+        return false;
+      } else if (dataToAdd.montantPaye <= 0 || isNaN(dataToAdd.montantPaye)) {
+        toast.error("Saisir le montant paye de credit");
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   function handleAddNewData(e) {
     e.preventDefault();
 
@@ -214,7 +237,8 @@ export default function AddForm({ page }) {
       checkFactureInfo() ||
       checkTrancheInfo() ||
       checkChargeInfo() ||
-      checkRevenuInfo()
+      checkRevenuInfo() ||
+      checkCreditInfo()
     ) {
       setLoading(true);
       axios
@@ -348,7 +372,11 @@ export default function AddForm({ page }) {
             {page === "revenu" && (
               <AddRevenu onChangeInfo={(e) => handleAddInfo(e)} />
             )}
-            
+
+            {page === "credit" && (
+              <AddCredit onChangeInfo={(e) => handleAddInfo(e)} />
+            )}
+
             <div className="mt-4 d-flex gap-3">
               <button className="btn btn-success fw-bold" disabled={loading}>
                 {loading ? <ActionLoading /> : "Ajouter"}

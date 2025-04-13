@@ -14,6 +14,9 @@ const ClientSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    password : {
+        type : String,
+    },
     birthDate : {
         type : Date,
         required : true

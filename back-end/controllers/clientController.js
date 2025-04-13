@@ -1,6 +1,7 @@
 const Client = require("../models/Client");
 const Compteur = require("../models/Compteur");
 const Facture = require("../models/Facture");
+const bcrypt = require("bcrypt");
 
 const getClients = async (req, res) => {
   try {
@@ -37,9 +38,11 @@ const createClient = async (req, res) => {
     const isClientexisting = await Client.findOne({companyId , cin})
 
     if(!isClientexisting){
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const addedClient = await Client.create({
         ...req.body,
         numClient: newMaxNumClient,
+        password : hashedPassword
       });
       return res.status(200).json({ addedClient });
     }
@@ -57,9 +60,10 @@ const updateClient = async (req, res) => {
     const isClientexisting = await Client.findOne({companyId , cin , _id : {$ne : _id}})
 
     if(!isClientexisting){
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const clientToUpdate = await Client.findOneAndUpdate(
         { _id: clientId },
-        { ...req.body, modified_at: new Date() }
+        { ...req.body, modified_at: new Date() , password : hashedPassword }
       );
       return res.status(200).json({ clientToUpdate });
     }

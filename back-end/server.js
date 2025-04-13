@@ -68,8 +68,16 @@ const {
   deleteCharge,
   updateCharge,
 } = require("./controllers/chargeController");
+const {
+  getCredits,
+  getOneCredit,
+  createCredit,
+  deleteCredit,
+  updateCredit,
+} = require("./controllers/creditController");
+
 const { login } = require("./controllers/loginController");
-const {caisseStats} = require('./controllers/caisseController')
+const { caisseStats } = require("./controllers/caisseController");
 
 const User = require("./models/User");
 
@@ -179,7 +187,14 @@ app.put("/api/updateCharge/:chargeId", updateCharge);
 app.delete("/api/deleteCharge/:chargeId", deleteCharge);
 
 // Caisse
-app.get("/api/caisse/:companyId" , caisseStats)
+app.get("/api/caisse/:companyId", caisseStats);
+
+// Credit
+app.get("/api/credits/:companyId", getCredits);
+app.get("/api/credits/:creditId/:companyId", getOneCredit);
+app.post("/api/addCredit", createCredit);
+app.put("/api/updateCredit/:creditId", updateCredit);
+app.delete("/api/deleteCredit/:creditId", deleteCredit);
 
 // Logout
 app.post("/api/logout", (req, res) => {

@@ -30,6 +30,13 @@ async function login(req, res) {
           sameSite: 'Strict', // Prevents the cookie from being sent in cross-site requests
           maxAge: 3600000, // Set cookie expiration time (1 hour)
         });
+
+        res.cookie('rememberMe', email, {
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+          sameSite: 'Lax',
+          secure: true,
+          httpOnly: false, // Let frontend read it
+        });
       
         return res.status(200).json({ message: 'Login successful'});
     }

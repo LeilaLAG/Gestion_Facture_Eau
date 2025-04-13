@@ -243,7 +243,7 @@ export default function Compteurs() {
                                           compteur.useDate
                                         ).toLocaleDateString("eu", DateConfig)}
                                       </td>
-                                      <td>{compteur.credit}</td>
+                                      <td>{compteur.credit} Dh</td>
                                       <td>
                                         {!compteur.modified_at
                                           ? "-"
